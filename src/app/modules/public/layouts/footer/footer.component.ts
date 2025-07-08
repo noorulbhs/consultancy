@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SettingsService } from '../../../admin/site-settings/services/settings.service';
 import { NotificationService } from '../../../../core/services/notification.service';
+import { FeatureToggleService } from '../../../admin/services/feature-toggle.service';
 
 @Component({
   selector: 'app-footer',
@@ -14,19 +15,44 @@ import { NotificationService } from '../../../../core/services/notification.serv
 export class FooterComponent implements OnInit {
   footerData: any = {};
   currentYear = new Date().getFullYear();
+  filteredCompanyLinks: any[] = [];
+
+  defaultCompanyLinks = [
+    { url: '/about', title: 'About Us' },
+    { url: '/blog', title: 'Blog', featureId: 'navbar-blog' },
+    { url: '/careers', title: 'Careers', featureId: 'navbar-careers' },
+    { url: '/contact', title: 'Contact Us' }
+  ];
 
   constructor(
     private settingsService: SettingsService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private featureToggleService: FeatureToggleService
   ) {}
 
   ngOnInit(): void {
+    this.featureToggleService.initializeFromStorage();
     this.loadFooterData();
+    
+    // Subscribe to feature toggle changes
+    this.featureToggleService.getFeatures().subscribe(() => {
+      this.updateCompanyLinks();
+    });
   }
 
   private loadFooterData(): void {
     this.settingsService.getSettingsForFooter().subscribe(data => {
       this.footerData = data;
+      this.updateCompanyLinks();
+    });
+  }
+
+  private updateCompanyLinks(): void {
+    this.filteredCompanyLinks = this.defaultCompanyLinks.filter(link => {
+      if (link.featureId) {
+        return this.featureToggleService.isFeatureEnabled(link.featureId);
+      }
+      return true; // Always show links without feature toggle
     });
   }
 

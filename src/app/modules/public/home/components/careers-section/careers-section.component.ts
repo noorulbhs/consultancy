@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { JobService, Job } from '../../../../admin/job-manager/services/job.service';
+import { JobService } from '../../../../admin/job-manager/services/job.service';
 import { FeatureToggleService } from '../../../../admin/services/feature-toggle.service';
 
 @Component({
@@ -12,7 +12,7 @@ import { FeatureToggleService } from '../../../../admin/services/feature-toggle.
   styleUrls: ['./careers-section.component.scss']
 })
 export class CareersSectionComponent implements OnInit {
-  featuredJobs: Job[] = [];
+  featuredJobs: any[] = [];
   totalJobs = 0;
   isVisible = false;
 
@@ -32,7 +32,7 @@ export class CareersSectionComponent implements OnInit {
   }
 
   private loadJobs(): void {
-    this.jobService.getAll().subscribe((jobs: Job[]) => {
+    this.jobService.getAll().subscribe((jobs: any[]) => {
       // Get active jobs
       const activeJobs = jobs.filter(job => job.status === 'active');
       this.totalJobs = activeJobs.length;
@@ -50,7 +50,7 @@ export class CareersSectionComponent implements OnInit {
     });
   }
 
-  formatSalary(job: Job): string {
+  formatSalary(job: any): string {
     if (job.salaryMin && job.salaryMax) {
       return `$${job.salaryMin.toLocaleString()} - $${job.salaryMax.toLocaleString()}`;
     } else if (job.salaryMin) {
@@ -77,5 +77,9 @@ export class CareersSectionComponent implements OnInit {
     if (!description) return '';
     const plainText = description.replace(/<[^>]*>/g, '');
     return plainText.length > 120 ? plainText.substring(0, 120) + '...' : plainText;
+  }
+
+  showCareersNavigation(): boolean {
+    return this.featureToggleService.isFeatureEnabled('navbar-careers');
   }
 }

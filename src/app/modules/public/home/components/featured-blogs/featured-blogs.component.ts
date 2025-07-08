@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { BlogService, BlogPost } from '../../../../admin/blog-manager/services/blog.service';
+import { BlogService } from '../../../../admin/blog-manager/services/blog.service';
 import { FeatureToggleService } from '../../../../admin/services/feature-toggle.service';
 
 @Component({
@@ -12,7 +12,7 @@ import { FeatureToggleService } from '../../../../admin/services/feature-toggle.
   styleUrls: ['./featured-blogs.component.scss']
 })
 export class FeaturedBlogsComponent implements OnInit {
-  featuredBlogs: BlogPost[] = [];
+  featuredBlogs: any[] = [];
   isVisible = false;
 
   constructor(
@@ -31,7 +31,7 @@ export class FeaturedBlogsComponent implements OnInit {
   }
 
   private loadBlogs(): void {
-    this.blogService.getAll().subscribe((blogs: BlogPost[]) => {
+    this.blogService.getAll().subscribe((blogs: any[]) => {
       // Get published blogs, prioritize featured ones
       const publishedBlogs = blogs.filter(blog => blog.published);
       const featured = publishedBlogs.filter(blog => blog.featured);
@@ -61,5 +61,9 @@ export class FeaturedBlogsComponent implements OnInit {
       month: 'long', 
       day: 'numeric' 
     });
+  }
+
+  showBlogNavigation(): boolean {
+    return this.featureToggleService.isFeatureEnabled('navbar-blog');
   }
 }

@@ -87,10 +87,9 @@
             </li>
             <!-- Default company links if none configured -->
             <ng-container *ngIf="!footerData.footer?.aboutLinks || footerData.footer.aboutLinks.length === 0">
-              <li class="mb-2"><a routerLink="/about" class="footer-link">About Us</a></li>
-              <li class="mb-2"><a routerLink="/careers" class="footer-link">Careers</a></li>
-              <li class="mb-2"><a routerLink="/blog" class="footer-link">Blog</a></li>
-              <li class="mb-2"><a routerLink="/contact" class="footer-link">Contact Us</a></li>
+              <li *ngFor="let link of filteredCompanyLinks" class="mb-2">
+                <a [routerLink]="link.url" class="footer-link">{{ link.title }}</a>
+              </li>
             </ng-container>
           </ul>
         </div>
