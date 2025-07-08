@@ -1,0 +1,24 @@
+<section class="why-choose-us-section py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center mb-5">
+        <h2 class="section-title">Why Choose Us</h2>
+        <p class="section-subtitle">Discover what sets us apart from the competition and makes us the right choice for your business.</p>
+      </div>
+    </div>
+    
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6" *ngFor="let feature of features">
+        <div class="feature-card h-100">
+          <div class="feature-icon">
+            <i [class]="feature.icon"></i>
+          </div>
+          <div class="feature-content">
+            <h4 class="feature-title">{{ feature.title }}</h4>
+            <p class="feature-description">{{ feature.description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

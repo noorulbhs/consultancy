@@ -1,0 +1,139 @@
+// ====================================
+// SERVICE FORM MOBILE OPTIMIZATIONS
+// ====================================
+
+// Responsive form improvements
+@media (max-width: 768px) {
+  .container-fluid {
+    padding: 0.5rem;
+  }
+  
+  // Reduce textarea height on mobile for better space utilization
+  #features,
+  #deliverables {
+    min-height: 120px !important;
+  }
+  
+  #technologies {
+    min-height: 80px !important;
+  }
+  
+  #caseStudyChallenge,
+  #caseStudySolution,
+  #caseStudyResults {
+    min-height: 80px !important;
+  }
+  
+  // Better card spacing on mobile
+  .card {
+    margin-bottom: 1rem !important;
+  }
+  
+  // Reduce form control padding on very small screens
+  @media (max-width: 576px) {
+    .form-control,
+    .form-select {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.9rem;
+    }
+    
+    .form-label {
+      font-size: 0.9rem;
+      margin-bottom: 0.3rem;
+    }
+    
+    .form-text {
+      font-size: 0.75rem;
+    }
+    
+    // Even smaller textareas on very small screens
+    #features,
+    #deliverables {
+      min-height: 100px !important;
+    }
+    
+    #technologies,
+    #caseStudyChallenge,
+    #caseStudySolution,
+    #caseStudyResults {
+      min-height: 70px !important;
+    }
+  }
+}
+
+// Better button spacing
+.btn {
+  @media (max-width: 576px) {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+  }
+}
+
+// Optimize preview card for mobile
+@media (max-width: 768px) {
+  .card .fa-3x {
+    font-size: 2rem !important;
+  }
+}
+
+// Force horizontal layout for service details on ALL screen sizes
+.mobile-horizontal {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  
+  .mobile-col {
+    flex: 0 0 50% !important;
+    max-width: 50% !important;
+    width: 50% !important;
+  }
+}
+
+// Force horizontal layout on mobile
+@media (max-width: 576px) {
+  .mobile-horizontal {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    margin: 0 !important;
+    
+    .mobile-col {
+      flex: 1 !important;
+      max-width: 50% !important;
+      width: 50% !important;
+      padding: 0 0.25rem !important;
+    }
+  }
+  
+  // Make form controls smaller on mobile to fit side by side
+  .mobile-col {
+    .form-control {
+      font-size: 0.8rem !important;
+      padding: 0.4rem !important;
+    }
+    
+    .form-label {
+      font-size: 0.8rem !important;
+      margin-bottom: 0.2rem !important;
+    }
+    
+    .form-text {
+      font-size: 0.7rem !important;
+    }
+  }
+  
+  // Specific heights for mobile textareas
+  .mobile-textarea {
+    min-height: 80px !important;
+    height: 80px !important;
+  }
+  
+  #features.mobile-textarea,
+  #deliverables.mobile-textarea {
+    min-height: 100px !important;
+    height: 100px !important;
+  }
+}
+
+// Ensure minimum width for mobile usability
+.col-6 {
+  min-width: 50%;
+}

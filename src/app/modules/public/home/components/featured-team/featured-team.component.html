@@ -1,0 +1,37 @@
+<section class="featured-team-section py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center mb-5">
+        <h2 class="section-title">Meet Our Expert Team</h2>
+        <p class="section-subtitle">Our skilled professionals are ready to help transform your business with innovative solutions</p>
+      </div>
+    </div>
+    
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6" *ngFor="let member of featuredTeam">
+        <div class="team-card">
+          <div class="team-content">
+            <h4 class="team-name">{{ member.name }}</h4>
+            <p class="team-position">{{ member.role }}</p>
+            <p class="team-bio">{{ getBio(member) }}</p>
+            <div class="team-skills" *ngIf="member.skills && member.skills.length > 0">
+              <span class="skill-tag" *ngFor="let skill of getTopSkills(member)">{{ skill }}</span>
+            </div>
+            <!-- Social Links -->
+            <div class="team-social mt-3">
+              <a [href]="member.linkedin" *ngIf="member.linkedin && member.linkedin.trim()" target="_blank" class="social-link">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+              <a [href]="member.twitter" *ngIf="member.twitter && member.twitter.trim()" target="_blank" class="social-link">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a [href]="getEmailLink(member)" *ngIf="member.email && member.email.trim()" class="social-link">
+                <i class="fas fa-envelope"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

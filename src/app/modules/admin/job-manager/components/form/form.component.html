@@ -1,0 +1,244 @@
+<div class="container py-4">
+  <div class="row">
+    <div class="col-lg-10 mx-auto">
+      <div class="card shadow-sm">
+        <div class="card-header bg-success text-white">
+          <h4 class="mb-0">
+            <i class="fas fa-briefcase me-2"></i>
+            {{ editMode ? 'Edit Job Posting' : 'Create New Job Posting' }}
+          </h4>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <!-- Basic Information -->
+              <div class="col-md-8">
+                <h5 class="text-success mb-3">Job Details</h5>
+                
+                <div class="mb-3">
+                  <label for="title" class="form-label fw-bold">Job Title *</label>
+                  <input id="title" class="form-control" formControlName="title" 
+                         placeholder="e.g., Senior Software Engineer" />
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="department" class="form-label fw-bold">Department *</label>
+                      <select id="department" class="form-select" formControlName="department">
+                        <option value="">Select Department</option>
+                        <option *ngFor="let dept of departments" [value]="dept">{{ dept }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="experience" class="form-label fw-bold">Experience Level *</label>
+                      <select id="experience" class="form-select" formControlName="experience">
+                        <option value="">Select Experience Level</option>
+                        <option *ngFor="let exp of experienceLevels" [value]="exp">{{ exp }}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="location" class="form-label fw-bold">Location *</label>
+                      <select id="location" class="form-select" formControlName="location">
+                        <option value="">Select Location</option>
+                        <option *ngFor="let loc of locations" [value]="loc">{{ loc }}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="type" class="form-label fw-bold">Employment Type *</label>
+                      <select id="type" class="form-select" formControlName="type">
+                        <option value="">Select Type</option>
+                        <option *ngFor="let type of jobTypes" [value]="type">{{ type }}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Salary Range -->
+                <div class="mb-3" formGroupName="salary">
+                  <label class="form-label fw-bold">Salary Range *</label>
+                  <div class="row">
+                    <div class="col-5">
+                      <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input type="number" class="form-control" formControlName="min" 
+                               placeholder="Min" />
+                      </div>
+                    </div>
+                    <div class="col-2 text-center d-flex align-items-center justify-content-center">
+                      <span>to</span>
+                    </div>
+                    <div class="col-5">
+                      <div class="input-group">
+                        <span class="input-group-text">$</span>
+                        <input type="number" class="form-control" formControlName="max" 
+                               placeholder="Max" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-text">Annual salary in USD</div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="description" class="form-label fw-bold">Job Description *</label>
+                  <quill-editor formControlName="description"
+                                placeholder="Describe the role, company culture, and what makes this position exciting..."></quill-editor>
+                </div>
+              </div>
+
+              <!-- Settings and Status -->
+              <div class="col-md-4">
+                <h5 class="text-success mb-3">Settings</h5>
+                
+                <div class="mb-4">
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" formControlName="isOpen" id="isOpen">
+                    <label class="form-check-label fw-bold" for="isOpen">
+                      <i class="fas fa-door-open text-success me-1"></i>Job is Open
+                    </label>
+                  </div>
+                  
+                  <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" formControlName="featured" id="featured">
+                    <label class="form-check-label fw-bold" for="featured">
+                      <i class="fas fa-star text-warning me-1"></i>Featured Position
+                    </label>
+                  </div>
+                  
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" formControlName="urgent" id="urgent">
+                    <label class="form-check-label fw-bold" for="urgent">
+                      <i class="fas fa-exclamation-circle text-danger me-1"></i>Urgent Hiring
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Skills Required -->
+                <div class="mb-3">
+                  <label class="form-label fw-bold">Skills Required</label>
+                  <div class="mb-2">
+                    <input type="text" class="form-control form-control-sm" 
+                           placeholder="Add skill and press Enter" 
+                           #skillInput
+                           (keydown)="onEnterKey($event, 'skills', skillInput)">
+                  </div>
+                  <div class="d-flex flex-wrap gap-1">
+                    <span class="badge bg-primary" 
+                          *ngFor="let skill of form.get('skills')?.value; let i = index">
+                      {{ skill }}
+                      <button type="button" class="btn-close btn-close-white ms-1" 
+                              (click)="removeFromArray('skills', i)"></button>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Detailed Information -->
+            <div class="row mt-4">
+              <div class="col-12">
+                <h5 class="text-success mb-3">Detailed Information</h5>
+              </div>
+              
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label class="form-label fw-bold">Requirements</label>
+                  <div class="mb-2">
+                    <input type="text" class="form-control form-control-sm" 
+                           placeholder="Add requirement and press Enter" 
+                           #reqInput
+                           (keydown)="onEnterKey($event, 'requirements', reqInput)">
+                  </div>
+                  <div class="border rounded p-2" style="max-height: 150px; overflow-y: auto;">
+                    <div *ngFor="let req of form.get('requirements')?.value; let i = index" 
+                         class="d-flex justify-content-between align-items-center mb-1">
+                      <small>{{ req }}</small>
+                      <button type="button" class="btn btn-sm btn-outline-danger" 
+                              (click)="removeFromArray('requirements', i)">
+                        <i class="fas fa-times"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label class="form-label fw-bold">Responsibilities</label>
+                  <div class="mb-2">
+                    <input type="text" class="form-control form-control-sm" 
+                           placeholder="Add responsibility and press Enter" 
+                           #respInput
+                           (keydown)="onEnterKey($event, 'responsibilities', respInput)">
+                  </div>
+                  <div class="border rounded p-2" style="max-height: 150px; overflow-y: auto;">
+                    <div *ngFor="let resp of form.get('responsibilities')?.value; let i = index" 
+                         class="d-flex justify-content-between align-items-center mb-1">
+                      <small>{{ resp }}</small>
+                      <button type="button" class="btn btn-sm btn-outline-danger" 
+                              (click)="removeFromArray('responsibilities', i)">
+                        <i class="fas fa-times"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-4">
+                <div class="mb-3">
+                  <label class="form-label fw-bold">Benefits</label>
+                  <div class="mb-2">
+                    <input type="text" class="form-control form-control-sm" 
+                           placeholder="Add benefit and press Enter" 
+                           #benefitInput
+                           (keydown)="onEnterKey($event, 'benefits', benefitInput)">
+                  </div>
+                  <div class="border rounded p-2" style="max-height: 150px; overflow-y: auto;">
+                    <div *ngFor="let benefit of form.get('benefits')?.value; let i = index" 
+                         class="d-flex justify-content-between align-items-center mb-1">
+                      <small>{{ benefit }}</small>
+                      <button type="button" class="btn btn-sm btn-outline-danger" 
+                              (click)="removeFromArray('benefits', i)">
+                        <i class="fas fa-times"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="row mt-4">
+              <div class="col-12">
+                <hr>
+                <div class="d-flex justify-content-between">
+                  <a routerLink="/admin-jobs" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Cancel
+                  </a>
+                  <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-outline-info" (click)="validateForm()">
+                      <i class="fas fa-check-circle me-2"></i>Validate Form
+                    </button>
+                    <button type="submit" class="btn btn-success" [disabled]="form.invalid">
+                      <i class="fas fa-save me-2"></i>
+                      {{ editMode ? 'Update Job Posting' : 'Publish Job Posting' }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

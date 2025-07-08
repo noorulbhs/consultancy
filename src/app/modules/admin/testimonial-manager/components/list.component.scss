@@ -1,0 +1,48 @@
+.testimonial-card {
+  transition: all 0.3s ease;
+  border: 1px solid #dee2e6;
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.1);
+    border-color: #007bff;
+  }
+}
+
+.card-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.badge {
+  font-size: 0.7rem;
+  padding: 0.4em 0.6em;
+}
+
+.bg-primary-subtle {
+  background-color: rgba(13, 110, 253, 0.1);
+}
+
+.testimonial-preview {
+  .fa-quote-left {
+    animation: float 3s ease-in-out infinite;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.sticky-top {
+  top: 20px;
+}
+
+@media (max-width: 768px) {
+  .testimonial-card {
+    margin-bottom: 1rem;
+  }
+}

@@ -1,0 +1,181 @@
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="mb-0"><i class="fas fa-blog me-2 text-primary"></i>Blog Management</h4>
+    <a routerLink="/admin-blogs/new" class="btn btn-primary">
+      <i class="fas fa-plus me-2"></i>Add New Blog Post
+    </a>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-3">
+      <div class="card bg-primary text-white">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h6 class="card-title">Total Posts</h6>
+              <h3 class="mb-0">{{blogs.length}}</h3>
+            </div>
+            <i class="fas fa-newspaper fa-2x opacity-75"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-success text-white">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h6 class="card-title">Featured Posts</h6>
+              <h3 class="mb-0">{{getFeaturedCount()}}</h3>
+            </div>
+            <i class="fas fa-star fa-2x opacity-75"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-info text-white">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h6 class="card-title">Total Views</h6>
+              <h3 class="mb-0">{{getTotalViews()}}</h3>
+            </div>
+            <i class="fas fa-eye fa-2x opacity-75"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card bg-warning text-white">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <div>
+              <h6 class="card-title">Categories</h6>
+              <h3 class="mb-0">{{getUniqueCategories().length}}</h3>
+            </div>
+            <i class="fas fa-tags fa-2x opacity-75"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Blog Posts Grid -->
+  <div class="row g-4">
+    <div class="col-12" *ngFor="let blog of blogs">
+      <div class="card shadow-sm border-0">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-3">
+              <img [src]="blog.featuredImage" class="img-fluid rounded" alt="{{blog.title}}" style="height: 150px; width: 100%; object-fit: cover;">
+              <div class="mt-2">
+                <span class="badge bg-primary me-1">{{blog.category}}</span>
+                <span class="badge bg-warning text-dark" *ngIf="blog.featured">
+                  <i class="fas fa-star me-1"></i>Featured
+                </span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h5 class="card-title mb-2">{{blog.title}}</h5>
+              <p class="card-text text-muted mb-2">{{blog.excerpt}}</p>
+              
+              <div class="d-flex align-items-center mb-2">
+                <img [src]="blog.author.avatar" class="rounded-circle me-2" width="24" height="24" alt="{{blog.author.name}}">
+                <small class="text-muted">{{blog.author.name}} • {{formatDate(blog.date)}}</small>
+              </div>
+              
+              <div class="d-flex flex-wrap gap-1 mb-2">
+                <span class="badge bg-light text-dark" *ngFor="let tag of blog.tags.slice(0, 3)">{{tag}}</span>
+                <span class="badge bg-secondary" *ngIf="blog.tags.length > 3">+{{blog.tags.length - 3}} more</span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="text-end">
+                <div class="mb-2">
+                  <small class="text-muted d-block">{{blog.readingTime}}</small>
+                  <small class="text-muted">
+                    <i class="fas fa-eye me-1"></i>{{blog.views}} views
+                  </small>
+                </div>
+                
+                <div class="btn-group-vertical btn-group-horizontal-mobile gap-2">
+                  <button class="btn btn-sm btn-outline-info" (click)="openBlogModal(blog)">
+                    <i class="fas fa-eye me-1"></i><span class="btn-text">Preview</span>
+                  </button>
+                  <a [routerLink]="['/admin-blogs/edit', blog.id]" class="btn btn-sm btn-outline-primary">
+                    <i class="fas fa-edit me-1"></i><span class="btn-text">Edit</span>
+                  </a>
+                  <button (click)="delete(blog.id)" class="btn btn-sm btn-outline-danger">
+                    <i class="fas fa-trash me-1"></i><span class="btn-text">Delete</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="blogs.length === 0" class="text-center py-5">
+    <i class="fas fa-blog fa-3x text-muted mb-3"></i>
+    <h3 class="text-muted">No blog posts yet</h3>
+    <p class="text-muted">Create your first blog post to get started!</p>
+    <a routerLink="/admin-blogs/new" class="btn btn-primary">
+      <i class="fas fa-plus me-2"></i>Add Your First Post
+    </a>
+  </div>
+</div>
+
+<!-- Blog Preview Modal -->
+<div class="modal fade" id="blogModal" tabindex="-1" aria-labelledby="blogModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content" *ngIf="selectedBlog">
+      <div class="modal-header">
+        <h5 class="modal-title">Blog Preview</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="position-relative mb-4">
+          <img [src]="selectedBlog.featuredImage" class="w-100 rounded" alt="{{selectedBlog.title}}" style="height: 250px; object-fit: cover;">
+          <div class="position-absolute top-0 start-0 m-3">
+            <span class="badge bg-primary fs-6">{{selectedBlog.category}}</span>
+            <span class="badge bg-warning text-dark ms-2" *ngIf="selectedBlog.featured">
+              <i class="fas fa-star me-1"></i>Featured
+            </span>
+          </div>
+        </div>
+        
+        <h1 class="display-6 fw-bold mb-3">{{selectedBlog.title}}</h1>
+        <p class="lead text-muted mb-4">{{selectedBlog.summary}}</p>
+        
+        <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+          <img [src]="selectedBlog.author.avatar" class="rounded-circle me-3" width="50" height="50" alt="{{selectedBlog.author.name}}">
+          <div class="flex-grow-1">
+            <h6 class="mb-0 fw-bold">{{selectedBlog.author.name}}</h6>
+            <small class="text-muted">{{selectedBlog.author.title}}</small>
+            <div class="mt-1">
+              <small class="text-muted me-3">{{formatDate(selectedBlog.date)}}</small>
+              <small class="text-muted me-3">{{selectedBlog.readingTime}}</small>
+              <small class="text-muted"><i class="fas fa-eye me-1"></i>{{selectedBlog.views}} views</small>
+            </div>
+          </div>
+        </div>
+        
+        <div class="d-flex flex-wrap gap-2 mb-4">
+          <span class="badge bg-primary" *ngFor="let tag of selectedBlog.tags">{{tag}}</span>
+        </div>
+        
+        <div class="blog-content" [innerHTML]="selectedBlog.content"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <a [routerLink]="['/admin-blogs/edit', selectedBlog.id]" class="btn btn-primary" data-bs-dismiss="modal">
+          <i class="fas fa-edit me-2"></i>Edit This Post
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

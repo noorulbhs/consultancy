@@ -1,0 +1,315 @@
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="mb-0"><i class="fas fa-users me-2 text-primary"></i>Team Management</h4>
+    <a routerLink="/admin-team/new" class="btn btn-primary">
+      <i class="fas fa-plus me-2"></i>Add New Member
+    </a>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-lg-3 col-md-6">
+      <div class="card bg-primary text-white h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h3 class="mb-1">{{ members.length }}</h3>
+              <p class="mb-0">Total Members</p>
+            </div>
+            <i class="fas fa-users fa-2x opacity-75"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="card bg-success text-white h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h3 class="mb-1">{{ getPublicCount() }}</h3>
+              <p class="mb-0">Public Profiles</p>
+            </div>
+            <i class="fas fa-eye fa-2x opacity-75"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="card bg-warning text-white h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h3 class="mb-1">{{ getFeaturedCount() }}</h3>
+              <p class="mb-0">Featured</p>
+            </div>
+            <i class="fas fa-star fa-2x opacity-75"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="card bg-info text-white h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h3 class="mb-1">{{ getAdminCount() }}</h3>
+              <p class="mb-0">Admin Users</p>
+            </div>
+            <i class="fas fa-user-shield fa-2x opacity-75"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters & Search -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row align-items-center">
+        <div class="col-md-3">
+          <label class="form-label">Search:</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            placeholder="Search by name, role, email..."
+            [(ngModel)]="searchTerm"
+            (input)="onSearchChange()">
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Department:</label>
+          <select [(ngModel)]="filterDepartment" (change)="onFilterChange()" class="form-select">
+            <option value="all">All Departments</option>
+            <option *ngFor="let dept of getDepartments()" [value]="dept">{{ dept }}</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Status:</label>
+          <select [(ngModel)]="filterStatus" (change)="onFilterChange()" class="form-select">
+            <option value="all">All Members</option>
+            <option value="public">Public Only</option>
+            <option value="private">Private Only</option>
+            <option value="featured">Featured Only</option>
+            <option value="admin">Admin Only</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label class="form-label">Sort By:</label>
+          <select [(ngModel)]="sortBy" (change)="onFilterChange()" class="form-select">
+            <option value="name">Name</option>
+            <option value="role">Role</option>
+            <option value="department">Department</option>
+            <option value="joinDate">Join Date</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Team Members Grid -->
+  <div class="row g-4">
+    <div class="col-lg-6 col-xl-4" *ngFor="let member of filteredMembers">
+      <div class="card team-card h-100">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="mb-0">{{ member.name }}</h6>
+            <small class="text-muted">{{ member.department }}</small>
+          </div>
+          <div class="d-flex gap-1">
+            <span class="badge bg-success" *ngIf="member.isPublic">Public</span>
+            <span class="badge bg-warning" *ngIf="member.featured">Featured</span>
+            <span class="badge bg-info" *ngIf="member.isAdmin">Admin</span>
+            <span class="badge bg-secondary" *ngIf="!member.isPublic">Private</span>
+          </div>
+        </div>
+        
+        <div class="card-body">
+          <!-- Role & Experience -->
+          <h6 class="text-primary mb-2">{{ member.role }}</h6>
+          
+          <!-- Contact Info -->
+          <div class="mb-3">
+            <small class="text-muted d-block" *ngIf="member.email">
+              <i class="fas fa-envelope me-1"></i>{{ member.email }}
+            </small>
+            <small class="text-muted d-block" *ngIf="member.phone">
+              <i class="fas fa-phone me-1"></i>{{ member.phone }}
+            </small>
+            <small class="text-muted d-block" *ngIf="member.location">
+              <i class="fas fa-map-marker-alt me-1"></i>{{ member.location }}
+            </small>
+          </div>
+          
+          <!-- Experience & Education -->
+          <div class="row mb-3" *ngIf="member.experience || member.education">
+            <div class="col-6" *ngIf="member.experience">
+              <small class="text-muted d-block">Experience</small>
+              <span class="badge bg-success-subtle text-success">{{ member.experience }}</span>
+            </div>
+            <div class="col-6" *ngIf="member.joinDate">
+              <small class="text-muted d-block">Joined</small>
+              <small class="text-secondary">{{ member.joinDate | date:'mediumDate' }}</small>
+            </div>
+          </div>
+          
+          <!-- Bio -->
+          <p class="text-muted small mb-3" *ngIf="member.bio">
+            {{ member.bio.length > 100 ? (member.bio | slice:0:100) + '...' : member.bio }}
+          </p>
+          
+          <!-- Skills -->
+          <div class="mb-3" *ngIf="member.skills && member.skills.length > 0">
+            <small class="text-muted d-block mb-1">Skills:</small>
+            <span 
+              *ngFor="let skill of member.skills.slice(0, 3)" 
+              class="badge bg-light text-dark me-1 small">
+              {{ skill }}
+            </span>
+            <span *ngIf="member.skills.length > 3" class="badge bg-secondary small">
+              +{{ member.skills.length - 3 }} more
+            </span>
+          </div>
+          
+          <!-- Social Links -->
+          <div class="d-flex gap-1 mb-3">
+            <a [href]="member.linkedin" target="_blank" class="btn btn-sm btn-outline-primary" *ngIf="member.linkedin && member.linkedin.trim()">
+              <i class="fab fa-linkedin"></i>
+            </a>
+            <a [href]="member.twitter" target="_blank" class="btn btn-sm btn-outline-info" *ngIf="member.twitter && member.twitter.trim()">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a [href]="member.github" target="_blank" class="btn btn-sm btn-outline-dark" *ngIf="member.github && member.github.trim()">
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div class="card-footer bg-transparent">
+          <div class="d-flex gap-2">
+            <button 
+              (click)="preview(member)" 
+              class="btn btn-sm btn-outline-info flex-fill">
+              <i class="fas fa-eye me-1"></i>Preview
+            </button>
+            <a 
+              [routerLink]="['/admin-team/edit', member.id]" 
+              class="btn btn-sm btn-outline-primary">
+              <i class="fas fa-edit me-1"></i>Edit
+            </a>
+            <button 
+              (click)="delete(member.id)" 
+              class="btn btn-sm btn-outline-danger">
+              <i class="fas fa-trash me-1"></i>Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="filteredMembers.length === 0" class="text-center py-5">
+    <i class="fas fa-users fa-3x text-muted mb-3"></i>
+    <h3 class="text-muted">No team members found</h3>
+    <p class="text-muted">
+      <span *ngIf="searchTerm || filterDepartment !== 'all' || filterStatus !== 'all'">Try adjusting your filters or search terms.</span>
+      <span *ngIf="!searchTerm && filterDepartment === 'all' && filterStatus === 'all'">Add your first team member to get started!</span>
+    </p>
+    <a routerLink="/admin-team/new" class="btn btn-primary" *ngIf="!searchTerm && filterDepartment === 'all' && filterStatus === 'all'">
+      <i class="fas fa-plus me-2"></i>Add Your First Team Member
+    </a>
+  </div>
+</div>
+
+<!-- Preview Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1" *ngIf="selectedMember">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fas fa-user me-2"></i>Team Member Preview
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="card team-preview-card">
+          <div class="card-body text-center p-4">
+            <!-- Basic Info -->
+            <h4 class="fw-bold mb-1">{{ selectedMember.name }}</h4>
+            <p class="text-primary fw-semibold mb-2">{{ selectedMember.role }}</p>
+            <p class="text-muted mb-3">{{ selectedMember.department }}</p>
+            
+            <!-- Bio -->
+            <p class="text-muted mb-4" *ngIf="selectedMember.bio">{{ selectedMember.bio }}</p>
+            
+            <!-- Details Grid -->
+            <div class="row text-start">
+              <div class="col-md-6" *ngIf="selectedMember.experience">
+                <strong>Experience:</strong>
+                <p class="text-muted">{{ selectedMember.experience }}</p>
+              </div>
+              <div class="col-md-6" *ngIf="selectedMember.education">
+                <strong>Education:</strong>
+                <p class="text-muted">{{ selectedMember.education }}</p>
+              </div>
+              <div class="col-md-6" *ngIf="selectedMember.location">
+                <strong>Location:</strong>
+                <p class="text-muted">{{ selectedMember.location }}</p>
+              </div>
+              <div class="col-md-6" *ngIf="selectedMember.joinDate">
+                <strong>Joined:</strong>
+                <p class="text-muted">{{ selectedMember.joinDate | date:'mediumDate' }}</p>
+              </div>
+            </div>
+            
+            <!-- Skills -->
+            <div class="text-start mb-3" *ngIf="selectedMember.skills && selectedMember.skills.length > 0">
+              <strong>Skills:</strong>
+              <div class="mt-2">
+                <span 
+                  *ngFor="let skill of selectedMember.skills" 
+                  class="badge bg-primary me-1 mb-1">
+                  {{ skill }}
+                </span>
+              </div>
+            </div>
+            
+            <!-- Achievements -->
+            <div class="text-start mb-3" *ngIf="selectedMember.achievements && selectedMember.achievements.length > 0">
+              <strong>Achievements:</strong>
+              <ul class="mt-2">
+                <li *ngFor="let achievement of selectedMember.achievements" class="text-muted">
+                  {{ achievement }}
+                </li>
+              </ul>
+            </div>
+            
+            <!-- Languages -->
+            <div class="text-start mb-3" *ngIf="selectedMember.languages && selectedMember.languages.length > 0">
+              <strong>Languages:</strong>
+              <p class="text-muted mt-1">{{ selectedMember.languages.join(', ') }}</p>
+            </div>
+            
+            <!-- Social Links -->
+            <div class="d-flex justify-content-center gap-2">
+              <a [href]="selectedMember.linkedin" target="_blank" class="btn btn-outline-primary" *ngIf="selectedMember.linkedin && selectedMember.linkedin.trim()">
+                <i class="fab fa-linkedin me-2"></i>LinkedIn
+              </a>
+              <a [href]="selectedMember.twitter" target="_blank" class="btn btn-outline-info" *ngIf="selectedMember.twitter && selectedMember.twitter.trim()">
+                <i class="fab fa-twitter me-2"></i>Twitter
+              </a>
+              <a [href]="selectedMember.github" target="_blank" class="btn btn-outline-dark" *ngIf="selectedMember.github && selectedMember.github.trim()">
+                <i class="fab fa-github me-2"></i>GitHub
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <a [routerLink]="['/admin-team/edit', selectedMember.id]" class="btn btn-primary" data-bs-dismiss="modal">
+          <i class="fas fa-edit me-2"></i>Edit This Member
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

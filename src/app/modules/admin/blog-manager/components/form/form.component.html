@@ -1,0 +1,178 @@
+<div class="container py-4">
+  <div class="row">
+    <div class="col-lg-10 mx-auto">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">
+            <i class="fas fa-blog me-2"></i>
+            {{ editMode ? 'Edit Blog Post' : 'Create New Blog Post' }}
+          </h4>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="form" (ngSubmit)="submit()">
+            <div class="row">
+              <!-- Basic Information -->
+              <div class="col-lg-8">
+                <h5 class="text-primary mb-3">Basic Information</h5>
+                
+                <div class="mb-3">
+                  <label for="title" class="form-label fw-bold">Title *</label>
+                  <input id="title" 
+                         class="form-control" 
+                         [class.is-invalid]="hasFieldError('title')"
+                         formControlName="title" 
+                         placeholder="Enter an engaging blog title" />
+                  <div class="invalid-feedback" *ngIf="hasFieldError('title')">
+                    {{ getFieldError('title') }}
+                  </div>
+                  <div class="form-text">Keep it under 60 characters for better SEO</div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="excerpt" class="form-label fw-bold">Excerpt *</label>
+                  <textarea id="excerpt" 
+                            class="form-control" 
+                            [class.is-invalid]="hasFieldError('excerpt')"
+                            formControlName="excerpt" 
+                            rows="2" placeholder="Brief description for blog cards (150 characters)"></textarea>
+                  <div class="invalid-feedback" *ngIf="hasFieldError('excerpt')">
+                    {{ getFieldError('excerpt') }}
+                  </div>
+                  <div class="form-text">This appears on blog listing pages</div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="summary" class="form-label fw-bold">Summary *</label>
+                  <textarea id="summary" class="form-control" formControlName="summary" 
+                            rows="3" placeholder="Detailed summary of the blog post"></textarea>
+                  <div class="form-text">Appears at the top of the full blog post</div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="content" class="form-label fw-bold">Content *</label>
+                  <quill-editor formControlName="content" [styles]="{ height: '400px' }" 
+                                placeholder="Write your detailed blog content here..."></quill-editor>
+                  <div class="form-text">Use rich formatting for better readability</div>
+                </div>
+              </div>
+
+              <!-- Metadata and Settings -->
+              <div class="col-lg-4">
+                <h5 class="text-primary mb-3">Settings & Metadata</h5>
+                
+                <div class="mb-3">
+                  <label for="category" class="form-label fw-bold">Category *</label>
+                  <select id="category" class="form-select" formControlName="category">
+                    <option value="">Select Category</option>
+                    <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label for="readingTime" class="form-label fw-bold">Reading Time *</label>
+                  <input id="readingTime" class="form-control" formControlName="readingTime" 
+                         placeholder="e.g., 5 min read" />
+                  <div class="form-text">Estimate based on content length</div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="featuredImage" class="form-label fw-bold">Featured Image URL *</label>
+                  <input id="featuredImage" class="form-control" formControlName="featuredImage" 
+                         placeholder="https://example.com/image.jpg" />
+                  <div class="form-text">Use 800x400px for best results</div>
+                </div>
+
+                <div class="mb-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" formControlName="featured" id="featured">
+                    <label class="form-check-label fw-bold" for="featured">
+                      <i class="fas fa-star text-warning me-1"></i>Featured Post
+                    </label>
+                  </div>
+                  <div class="form-text">Featured posts appear prominently</div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label fw-bold">Tags *</label>
+                  <div class="border rounded p-3" style="max-height: 150px; overflow-y: auto;">
+                    <div class="row g-2">
+                      <div class="col-sm-6 col-6" *ngFor="let tag of availableTags">
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" 
+                                 [id]="'tag-' + tag" 
+                                 [checked]="isTagSelected(tag)"
+                                 (change)="onTagChange($event, tag)">
+                          <label class="form-check-label small" [for]="'tag-' + tag">
+                            {{ tag }}
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-text">Select relevant tags for categorization</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Author Information -->
+            <div class="row mt-4" formGroupName="author">
+              <div class="col-12">
+                <h5 class="text-primary mb-3">Author Information</h5>
+              </div>
+              
+              <div class="col-sm-6">
+                <div class="mb-3">
+                  <label for="authorName" class="form-label fw-bold">Author Name *</label>
+                  <input id="authorName" class="form-control" formControlName="name" 
+                         placeholder="John Doe" />
+                </div>
+
+                <div class="mb-3">
+                  <label for="authorTitle" class="form-label fw-bold">Author Title *</label>
+                  <input id="authorTitle" class="form-control" formControlName="title" 
+                         placeholder="Senior Software Engineer" />
+                </div>
+              </div>
+              
+              <div class="col-sm-6">
+                <div class="mb-3">
+                  <label for="authorAvatar" class="form-label fw-bold">Author Avatar URL *</label>
+                  <input id="authorAvatar" class="form-control" formControlName="avatar" 
+                         placeholder="https://example.com/avatar.jpg" />
+                  <div class="form-text">Square image recommended (150x150px)</div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="authorBio" class="form-label fw-bold">Author Bio *</label>
+                  <textarea id="authorBio" class="form-control" formControlName="bio" 
+                            rows="3" placeholder="Brief professional biography"></textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="row mt-4">
+              <div class="col-12">
+                <hr>
+                <div class="d-flex justify-content-between">
+                  <a routerLink="/admin-blogs" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Cancel
+                  </a>
+                  <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-outline-info" (click)="validateForm()">
+                      <i class="fas fa-check-circle me-2"></i>Validate Form
+                    </button>
+                    <button type="submit" class="btn btn-success" [disabled]="form.invalid">
+                      <i class="fas fa-save me-2"></i>
+                      {{ editMode ? 'Update Blog Post' : 'Publish Blog Post' }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

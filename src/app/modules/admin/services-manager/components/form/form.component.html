@@ -1,0 +1,228 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0">
+          <i class="fas fa-cogs me-2 text-primary"></i>
+          {{ editMode ? 'Edit Service' : 'Add New Service' }}
+        </h4>
+        <button type="button" (click)="goBack()" class="btn btn-outline-secondary">
+          <i class="fas fa-arrow-left me-2"></i>Back to Services
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="row">
+      <!-- Basic Information -->
+      <div class="col-lg-8">
+        <div class="card mb-4">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Basic Information</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-8">
+                <div class="mb-3">
+                  <label for="title" class="form-label fw-bold">Service Title *</label>
+                  <input formControlName="title" type="text" class="form-control" id="title" placeholder="e.g., Cloud Migration & Strategy" />
+                  <div class="form-text">Enter a descriptive title for your service</div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="mb-3">
+                  <label for="category" class="form-label fw-bold">Category *</label>
+                  <select formControlName="category" class="form-select" id="category">
+                    <option value="">Select Category</option>
+                    <option value="Cloud Solutions">Cloud Solutions</option>
+                    <option value="DevOps">DevOps</option>
+                    <option value="Development">Development</option>
+                    <option value="Security">Security</option>
+                    <option value="Data & AI">Data & AI</option>
+                    <option value="Strategy">Strategy</option>
+                    <option value="Consulting">Consulting</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="mb-3">
+                  <label for="icon" class="form-label fw-bold">FontAwesome Icon *</label>
+                  <input formControlName="icon" type="text" class="form-control" id="icon" placeholder="e.g., cloud, code, shield-alt" />
+                  <div class="form-text">Icon name from FontAwesome (without 'fa-' prefix)</div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="mb-3">
+                  <label for="price" class="form-label fw-bold">Starting Price *</label>
+                  <input formControlName="price" type="text" class="form-control" id="price" placeholder="From $5,000" />
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <div class="mb-3">
+                  <label for="duration" class="form-label fw-bold">Duration *</label>
+                  <input formControlName="duration" type="text" class="form-control" id="duration" placeholder="4-12 weeks" />
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label fw-bold">Short Description *</label>
+              <textarea formControlName="description" class="form-control" id="description" rows="3" placeholder="Brief description for service cards..."></textarea>
+              <div class="form-text">Keep this concise - it appears on service cards</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="detailedDescription" class="form-label fw-bold">Detailed Description *</label>
+              <quill-editor formControlName="detailedDescription" [styles]="{ height: '200px' }" placeholder="Comprehensive description for service details..."></quill-editor>
+              <div class="form-text">This appears in the service detail modal</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service Details -->
+        <div class="card mb-4">
+          <div class="card-header bg-success text-white">
+            <h5 class="mb-0"><i class="fas fa-list-ul me-2"></i>Service Details</h5>
+          </div>
+          <div class="card-body">
+            <div class="row mobile-horizontal">
+              <div class="col-6 mobile-col">
+                <div class="mb-3">
+                  <label for="features" class="form-label fw-bold">Key Features *</label>
+                  <textarea formControlName="features" class="form-control mobile-textarea" id="features" rows="8" placeholder="Enter each feature on a new line...&#10;Feature 1&#10;Feature 2&#10;Feature 3"></textarea>
+                  <div class="form-text">One feature per line</div>
+                </div>
+              </div>
+              <div class="col-6 mobile-col">
+                <div class="mb-3">
+                  <label for="deliverables" class="form-label fw-bold">Deliverables *</label>
+                  <textarea formControlName="deliverables" class="form-control mobile-textarea" id="deliverables" rows="8" placeholder="Enter each deliverable on a new line...&#10;Project Documentation&#10;Source Code&#10;Training Materials"></textarea>
+                  <div class="form-text">One deliverable per line</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mobile-horizontal">
+              <div class="col-6 mobile-col">
+                <div class="mb-3">
+                  <label for="technologies" class="form-label fw-bold">Technologies Used *</label>
+                  <textarea formControlName="technologies" class="form-control mobile-textarea" id="technologies" rows="4" placeholder="React, Node.js, AWS, Docker, Kubernetes..."></textarea>
+                  <div class="form-text">Separate technologies with commas</div>
+                </div>
+              </div>
+              <div class="col-6 mobile-col">
+                <div class="mb-3">
+                  <label for="clientTypes" class="form-label fw-bold">Target Client Types *</label>
+                  <input formControlName="clientTypes" type="text" class="form-control" id="clientTypes" placeholder="Enterprise, SMB, Startups..." />
+                  <div class="form-text">Separate client types with commas</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Case Study -->
+        <div class="card mb-4">
+          <div class="card-header bg-info text-white">
+            <h5 class="mb-0"><i class="fas fa-trophy me-2"></i>Success Story / Case Study</h5>
+          </div>
+          <div class="card-body">
+            <div class="row mobile-horizontal">
+              <div class="col-6 mobile-col">
+                <div class="mb-3">
+                  <label for="caseStudyClient" class="form-label fw-bold">Client Name</label>
+                  <input formControlName="caseStudyClient" type="text" class="form-control" id="caseStudyClient" placeholder="e.g., TechCorp Solutions" />
+                </div>
+                <div class="mb-3">
+                  <label for="caseStudyChallenge" class="form-label fw-bold">Challenge</label>
+                  <textarea formControlName="caseStudyChallenge" class="form-control mobile-textarea" id="caseStudyChallenge" rows="3" placeholder="What problem did the client face?"></textarea>
+                </div>
+              </div>
+              <div class="col-6 mobile-col">
+                <div class="mb-3">
+                  <label for="caseStudySolution" class="form-label fw-bold">Solution</label>
+                  <textarea formControlName="caseStudySolution" class="form-control mobile-textarea" id="caseStudySolution" rows="3" placeholder="How did you solve their problem?"></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="caseStudyResults" class="form-label fw-bold">Results</label>
+                  <textarea formControlName="caseStudyResults" class="form-control mobile-textarea" id="caseStudyResults" rows="3" placeholder="What were the measurable outcomes?"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service Settings -->
+      <div class="col-lg-4">
+        <div class="card mb-4">
+          <div class="card-header bg-warning text-dark">
+            <h5 class="mb-0"><i class="fas fa-cog me-2"></i>Service Settings</h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label for="status" class="form-label fw-bold">Status *</label>
+              <select formControlName="status" class="form-select" id="status">
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="draft">Draft</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <div class="form-check form-switch">
+                <input formControlName="featured" class="form-check-input" type="checkbox" id="featured">
+                <label class="form-check-label fw-bold" for="featured">
+                  <i class="fas fa-star text-warning me-1"></i>Featured Service
+                </label>
+                <div class="form-text">Featured services appear prominently on the services page</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Preview Card -->
+        <div class="card" *ngIf="form.get('title')?.value">
+          <div class="card-header bg-secondary text-white">
+            <h6 class="mb-0"><i class="fas fa-eye me-2"></i>Preview</h6>
+          </div>
+          <div class="card-body text-center">
+            <i class="fas fa-{{form.get('icon')?.value || 'code'}} fa-3x text-primary mb-3"></i>
+            <h6 class="fw-bold">{{form.get('title')?.value}}</h6>
+            <p class="text-muted small">{{form.get('description')?.value}}</p>
+            <span class="badge bg-primary me-1">{{form.get('category')?.value}}</span>
+            <span class="badge bg-success" *ngIf="form.get('price')?.value">{{form.get('price')?.value}}</span>
+            <br>
+            <span class="badge bg-warning text-dark mt-2" *ngIf="form.get('featured')?.value">
+              <i class="fas fa-star me-1"></i>Featured
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Actions -->
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-primary btn-lg" [disabled]="form.invalid">
+            <i class="fas fa-save me-2"></i>{{ editMode ? 'Update Service' : 'Create Service' }}
+          </button>
+          <button type="button" class="btn btn-outline-info btn-lg" (click)="validateForm()">
+            <i class="fas fa-check-circle me-2"></i>Validate Form
+          </button>
+          <button type="button" (click)="goBack()" class="btn btn-outline-secondary btn-lg">
+            <i class="fas fa-times me-2"></i>Cancel
+          </button>
+          <button type="button" class="btn btn-outline-warning btn-lg" *ngIf="!editMode" (click)="form.reset()">
+            <i class="fas fa-redo me-2"></i>Reset Form
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

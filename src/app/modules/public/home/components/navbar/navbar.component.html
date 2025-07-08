@@ -1,0 +1,29 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-bold" routerLink="/">
+      <mat-icon>business</mat-icon> ITConsult
+    </a>
+
+    <button class="navbar-toggler" type="button" (click)="toggleMenu()">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div [ngClass]="{ 'collapse': isCollapsed, 'navbar-collapse': true }">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item" *ngFor="let link of navLinks">
+          <a 
+            class="nav-link" 
+            [routerLink]="link.path" 
+            routerLinkActive="active"
+            (click)="isCollapsed = true">
+            {{ link.label }}
+          </a>
+        </li>
+      </ul>
+      <a routerLink="/admin-dashboard" class="btn btn-sm btn-outline-dark">Admin Panel</a>
+      <a class="btn btn-primary ms-lg-3" href="#">
+        Get Consultation
+      </a>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,19 @@
+<div class="home-page">
+  <!-- Hero Section -->
+  <app-hero></app-hero>
+  
+  <!-- Why Choose Us Section -->
+  <app-why-choose-us *ngIf="showWhyChooseUs"></app-why-choose-us>
+  
+  <!-- Stats Section -->
+  <app-stats *ngIf="showStats"></app-stats>
+  
+  <!-- Featured Team Section -->
+  <app-featured-team *ngIf="showFeaturedTeam"></app-featured-team>
+  
+  <!-- Testimonials Section -->
+  <app-testimonials *ngIf="showTestimonials"></app-testimonials>
+  
+  <!-- Call to Action Section -->
+  <app-cta *ngIf="showCta"></app-cta>
+</div>

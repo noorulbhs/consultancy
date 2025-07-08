@@ -1,0 +1,60 @@
+<div class="container py-5">
+  <div class="row">
+    <div class="col-12 text-center mb-5">
+      <h1 class="display-4 fw-bold text-primary">About Us</h1>
+      <p class="lead text-muted">Get to know our expert team and our mission</p>
+    </div>
+  </div>
+  
+  <div class="row mb-5">
+    <div class="col-lg-6 mx-auto mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-5 text-center">
+          <h2 class="h3 fw-bold mb-4 text-primary">Our Mission</h2>
+          <p class="text-muted">
+            To deliver reliable and scalable digital solutions tailored to every business need.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 mx-auto mb-4">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-5 text-center">
+          <h2 class="h3 fw-bold mb-4 text-primary">Our Vision</h2>
+          <p class="text-muted">
+            To become a global leader in IT consultancy by continuously innovating and delivering value.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 text-center mb-4">
+      <h2 class="h3 fw-bold">Meet Our Team</h2>
+    </div>
+  </div>
+  
+  <div class="row g-4">
+    <div class="col-md-6 col-lg-4" *ngFor="let member of team">
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="card-body text-center p-4">
+          <h5 class="card-title fw-bold">{{member.name}}</h5>
+          <p class="text-muted mb-1">{{member.role}}</p>
+          <p class="text-muted small">{{member.department}}</p>
+          <div class="mb-3" *ngIf="member.experience">
+            <span class="badge bg-success">{{member.experience}}</span>
+          </div>
+          <div class="d-flex justify-content-center gap-2">
+            <a [href]="member.linkedin" target="_blank" class="btn btn-outline-primary btn-sm" *ngIf="member.linkedin">
+              <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+            <a [href]="member.github" target="_blank" class="btn btn-outline-dark btn-sm" *ngIf="member.github">
+              <i class="fab fa-github"></i> GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

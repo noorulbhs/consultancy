@@ -1,0 +1,172 @@
+<footer class="footer bg-dark text-light">
+  <div class="container">
+    <!-- Main Footer Content -->
+    <div class="row py-5">
+      <!-- Company Information -->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="footer-section">
+          <h5 class="footer-title mb-3">{{ footerData.companyName || 'TechNova IT Solutions' }}</h5>
+          <p class="footer-description mb-3">
+            Leading IT consultancy providing cutting-edge technology solutions, digital transformation, 
+            and innovation services to businesses worldwide.
+          </p>
+          
+          <!-- Contact Info -->
+          <div class="contact-info mb-3">
+            <div class="contact-item mb-2" *ngIf="footerData.address">
+              <i class="fas fa-map-marker-alt me-2"></i>
+              <span>{{ footerData.address }}, {{ footerData.city }}, {{ footerData.state }}, {{ footerData.country }}</span>
+            </div>
+            <div class="contact-item mb-2" *ngIf="footerData.phone">
+              <i class="fas fa-phone me-2"></i>
+              <a [href]="'tel:' + footerData.phone" class="text-light text-decoration-none">{{ footerData.phone }}</a>
+            </div>
+            <div class="contact-item mb-2" *ngIf="footerData.email">
+              <i class="fas fa-envelope me-2"></i>
+              <a [href]="'mailto:' + footerData.email" class="text-light text-decoration-none">{{ footerData.email }}</a>
+            </div>
+          </div>
+
+          <!-- Social Media -->
+          <div class="social-links">
+            <a *ngIf="footerData.social?.linkedin" [href]="footerData.social.linkedin" target="_blank" 
+               class="social-link me-3" title="LinkedIn">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a *ngIf="footerData.social?.twitter" [href]="footerData.social.twitter" target="_blank" 
+               class="social-link me-3" title="Twitter">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a *ngIf="footerData.social?.facebook" [href]="footerData.social.facebook" target="_blank" 
+               class="social-link me-3" title="Facebook">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a *ngIf="footerData.social?.instagram" [href]="footerData.social.instagram" target="_blank" 
+               class="social-link me-3" title="Instagram">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a *ngIf="footerData.social?.youtube" [href]="footerData.social.youtube" target="_blank" 
+               class="social-link me-3" title="YouTube">
+              <i class="fab fa-youtube"></i>
+            </a>
+            <a *ngIf="footerData.social?.github" [href]="footerData.social.github" target="_blank" 
+               class="social-link me-3" title="GitHub">
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Services Links -->
+      <div class="col-lg-2 col-md-6 mb-4">
+        <div class="footer-section">
+          <h6 class="footer-title mb-3">Our Services</h6>
+          <ul class="footer-links list-unstyled">
+            <li *ngFor="let service of footerData.footer?.services" class="mb-2">
+              <a [routerLink]="service.url" class="footer-link">{{ service.title }}</a>
+            </li>
+            <!-- Default services if none configured -->
+            <ng-container *ngIf="!footerData.footer?.services || footerData.footer.services.length === 0">
+              <li class="mb-2"><a routerLink="/services" class="footer-link">Cloud Solutions</a></li>
+              <li class="mb-2"><a routerLink="/services" class="footer-link">Digital Transformation</a></li>
+              <li class="mb-2"><a routerLink="/services" class="footer-link">Cybersecurity</a></li>
+              <li class="mb-2"><a routerLink="/services" class="footer-link">Data Analytics</a></li>
+              <li class="mb-2"><a routerLink="/services" class="footer-link">Software Development</a></li>
+            </ng-container>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Company Links -->
+      <div class="col-lg-2 col-md-6 mb-4">
+        <div class="footer-section">
+          <h6 class="footer-title mb-3">Company</h6>
+          <ul class="footer-links list-unstyled">
+            <li *ngFor="let link of footerData.footer?.aboutLinks" class="mb-2">
+              <a [routerLink]="link.url" class="footer-link">{{ link.title }}</a>
+            </li>
+            <!-- Default company links if none configured -->
+            <ng-container *ngIf="!footerData.footer?.aboutLinks || footerData.footer.aboutLinks.length === 0">
+              <li class="mb-2"><a routerLink="/about" class="footer-link">About Us</a></li>
+              <li class="mb-2"><a routerLink="/careers" class="footer-link">Careers</a></li>
+              <li class="mb-2"><a routerLink="/blog" class="footer-link">Blog</a></li>
+              <li class="mb-2"><a routerLink="/contact" class="footer-link">Contact Us</a></li>
+            </ng-container>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Business Hours & Newsletter -->
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="footer-section">
+          <h6 class="footer-title mb-3">Business Hours</h6>
+          <div class="business-hours mb-4" *ngIf="footerData.businessHours">
+            <div class="hour-item d-flex justify-content-between mb-1">
+              <span>Monday - Friday:</span>
+              <span>{{ footerData.businessHours.monday || '9:00 AM - 6:00 PM' }}</span>
+            </div>
+            <div class="hour-item d-flex justify-content-between mb-1">
+              <span>Saturday:</span>
+              <span>{{ footerData.businessHours.saturday || '10:00 AM - 4:00 PM' }}</span>
+            </div>
+            <div class="hour-item d-flex justify-content-between mb-1">
+              <span>Sunday:</span>
+              <span>{{ footerData.businessHours.sunday || 'Closed' }}</span>
+            </div>
+          </div>
+
+          <!-- Newsletter Signup -->
+          <div class="newsletter">
+            <h6 class="footer-title mb-3">Stay Updated</h6>
+            <p class="small mb-3">Subscribe to our newsletter for the latest tech insights and updates.</p>
+            <div class="input-group">
+              <input type="email" class="form-control bg-dark border-secondary text-light" 
+                     placeholder="Enter your email" #emailInput>
+              <button class="btn btn-primary" type="button" (click)="subscribeNewsletter(emailInput.value)">
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="footer-bottom border-top border-secondary pt-3">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <p class="copyright mb-0">
+            {{ footerData.footer?.copyrightText || '© ' + currentYear + ' TechNova IT Solutions. All rights reserved.' }}
+          </p>
+        </div>
+        <div class="col-md-6">
+          <ul class="footer-bottom-links list-unstyled d-flex justify-content-md-end justify-content-start mb-0">
+            <li *ngFor="let link of footerData.footer?.quickLinks; let last = last" class="me-3">
+              <a [routerLink]="link.url" class="footer-link small">{{ link.title }}</a>
+              <span *ngIf="!last" class="text-muted ms-3">|</span>
+            </li>
+            <!-- Default quick links if none configured -->
+            <ng-container *ngIf="!footerData.footer?.quickLinks || footerData.footer.quickLinks.length === 0">
+              <li class="me-3">
+                <a href="/privacy-policy" class="footer-link small">Privacy Policy</a>
+                <span class="text-muted ms-3">|</span>
+              </li>
+              <li class="me-3">
+                <a href="/terms-of-service" class="footer-link small">Terms of Service</a>
+                <span class="text-muted ms-3">|</span>
+              </li>
+              <li class="me-3">
+                <a href="/sitemap" class="footer-link small">Sitemap</a>
+              </li>
+            </ng-container>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Back to Top Button -->
+  <button class="back-to-top btn btn-primary" (click)="scrollToTop()" title="Back to Top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+</footer>

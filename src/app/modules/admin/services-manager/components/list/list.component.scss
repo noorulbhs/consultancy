@@ -1,0 +1,237 @@
+// ====================================
+// SERVICES MANAGER LIST - MOBILE RESPONSIVE
+// ====================================
+
+// Mobile responsive button groups
+@media (max-width: 768px) {
+  .btn-group-horizontal-mobile {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25rem !important;
+    
+    .btn {
+      flex: 1;
+      min-width: auto;
+      padding: 0.25rem 0.5rem !important;
+      font-size: 0.75rem !important;
+      
+      .btn-text {
+        display: none;
+      }
+      
+      i {
+        margin: 0 !important;
+        font-size: 0.8rem;
+      }
+    }
+  }
+  
+  // Mobile-specific layout optimizations
+  .card {
+    .card-body {
+      padding: 0.75rem;
+    }
+    
+    .row {
+      margin: 0;
+      
+      // Ensure all columns stay inline
+      > [class*="col-"] {
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
+      }
+      
+      // Logo/Icon column (col-3)
+      .col-3:first-child {
+        padding-right: 0.5rem;
+        
+        .service-icon-wrapper {
+          margin-bottom: 0.5rem;
+          
+          i {
+            font-size: 1.5rem !important; // Smaller icon on mobile
+          }
+        }
+        
+        .badges {
+          &.d-flex {
+            gap: 0.2rem !important;
+            
+            .badge {
+              font-size: 0.55rem !important;
+              padding: 0.15rem 0.25rem;
+              margin-bottom: 0 !important;
+              white-space: nowrap;
+              
+              &.service-category {
+                background-color: #007bff !important;
+              }
+              
+              &.service-status {
+                font-size: 0.6rem !important;
+              }
+              
+              // Hide text, show only symbols on mobile
+              .d-md-none {
+                font-size: 0.7rem;
+              }
+            }
+          }
+        }
+      }
+      
+      // Content column (col-6)  
+      .col-6 {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        min-width: 0; // Prevent content overflow
+        
+        .card-title {
+          font-size: 0.9rem !important;
+          margin-bottom: 0.3rem !important;
+          line-height: 1.2;
+          word-break: break-word;
+        }
+        
+        .card-text {
+          font-size: 0.8rem !important;
+          margin-bottom: 0.3rem !important;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        
+        .service-details {
+          margin-bottom: 0.3rem !important;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.3rem;
+          
+          small {
+            font-size: 0.65rem !important;
+            display: inline-block;
+            margin-bottom: 0;
+            white-space: nowrap;
+            
+            i {
+              font-size: 0.6rem;
+            }
+          }
+        }
+        
+        // Technology badges - make them smaller and limit display
+        .d-flex.flex-wrap {
+          gap: 0.2rem !important;
+          
+          .badge {
+            font-size: 0.55rem !important;
+            padding: 0.1rem 0.25rem;
+            margin: 0;
+            white-space: nowrap;
+          }
+        }
+      }
+      
+      // Action buttons column (col-3)
+      .col-3:last-child {
+        padding-left: 0.5rem;
+        
+        .text-end {
+          text-align: center !important;
+        }
+      }
+    }
+  }
+  
+  // Make summary cards more compact on mobile
+  .row.g-4:first-child {
+    .card-body {
+      padding: 0.75rem;
+      
+      h6 {
+        font-size: 0.8rem;
+      }
+      
+      h3 {
+        font-size: 1.5rem;
+      }
+      
+      .fa-2x {
+        font-size: 1.5em !important;
+      }
+    }
+  }
+  
+  // Services grid spacing
+  .row.g-4 {
+    .col-12 {
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+// Ensure buttons look good on larger screens too
+@media (min-width: 769px) {
+  .btn-group-horizontal-mobile {
+    .btn-text {
+      display: inline;
+    }
+  }
+  
+  // Make sure icons are properly sized on desktop
+  .fa-md-3x {
+    font-size: 3rem !important;
+  }
+}
+
+// General improvements
+.card {
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+  }
+}
+
+.badge {
+  font-size: 0.7rem;
+}
+
+.btn-sm {
+  white-space: nowrap;
+}
+
+// Improve badge layout
+.d-flex.flex-wrap.gap-1 {
+  gap: 0.25rem !important;
+}
+
+// Icon size adjustments
+.fa-2x {
+  font-size: 2rem;
+}
+
+// Responsive icon sizing
+@media (max-width: 576px) {
+  .service-icon-wrapper i {
+    font-size: 1.2rem !important;
+  }
+  
+  .badges .badge {
+    font-size: 0.55rem !important;
+    padding: 0.15rem 0.25rem;
+  }
+  
+  .card-title {
+    font-size: 0.85rem !important;
+  }
+  
+  .card-text {
+    font-size: 0.75rem !important;
+  }
+}

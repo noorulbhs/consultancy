@@ -1,0 +1,168 @@
+<div class="container py-5">
+  <div class="row">
+    <div class="col-12 text-center mb-5">
+      <h1 class="display-4 fw-bold text-primary">Contact Us</h1>
+      <p class="lead text-muted">Get in touch with our expert team</p>
+    </div>
+  </div>
+  
+  <div class="row">
+    <!-- Contact Form -->
+    <div class="col-lg-8 mx-auto">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-5">
+          <h3 class="mb-4">Send us a Message</h3>
+          
+          <!-- Success Message -->
+          <div *ngIf="showSuccess" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            Thank you for your message! We'll get back to you within 24 hours.
+            <button type="button" class="btn-close" (click)="showSuccess = false"></button>
+          </div>
+          
+          <!-- Error Message -->
+          <div *ngIf="showError" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            Something went wrong. Please try again later.
+            <button type="button" class="btn-close" (click)="showError = false"></button>
+          </div>
+          
+          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="name" class="form-label">Full Name *</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="name"
+                  formControlName="name"
+                  [class.is-invalid]="contactForm.get('name')?.invalid && contactForm.get('name')?.touched">
+                <div class="invalid-feedback">
+                  Please provide your full name.
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="email" class="form-label">Email Address *</label>
+                <input 
+                  type="email" 
+                  class="form-control" 
+                  id="email"
+                  formControlName="email"
+                  [class.is-invalid]="contactForm.get('email')?.invalid && contactForm.get('email')?.touched">
+                <div class="invalid-feedback">
+                  Please provide a valid email address.
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="phone" class="form-label">Phone Number</label>
+                <input 
+                  type="tel" 
+                  class="form-control" 
+                  id="phone"
+                  formControlName="phone"
+                  placeholder="+1 (555) 123-4567">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="company" class="form-label">Company</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="company"
+                  formControlName="company"
+                  placeholder="Your company name">
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="service" class="form-label">Service of Interest</label>
+              <select 
+                class="form-select" 
+                id="service"
+                formControlName="service">
+                <option value="General Inquiry">General Inquiry</option>
+                <option value="Cloud Migration">Cloud Migration</option>
+                <option value="DevOps Strategy">DevOps Strategy</option>
+                <option value="Application Development">Application Development</option>
+                <option value="Security Consulting">Security Consulting</option>
+                <option value="Data Analytics">Data Analytics</option>
+                <option value="Infrastructure Management">Infrastructure Management</option>
+                <option value="Digital Transformation">Digital Transformation</option>
+              </select>
+            </div>
+            
+            <div class="mb-3">
+              <label for="subject" class="form-label">Subject *</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="subject"
+                formControlName="subject"
+                [class.is-invalid]="contactForm.get('subject')?.invalid && contactForm.get('subject')?.touched">
+              <div class="invalid-feedback">
+                Please provide a subject.
+              </div>
+            </div>
+            
+            <div class="mb-4">
+              <label for="message" class="form-label">Message *</label>
+              <textarea 
+                class="form-control" 
+                id="message" 
+                rows="6"
+                formControlName="message"
+                placeholder="Tell us about your project or inquiry..."
+                [class.is-invalid]="contactForm.get('message')?.invalid && contactForm.get('message')?.touched"></textarea>
+              <div class="invalid-feedback">
+                Please provide your message.
+              </div>
+            </div>
+            
+            <div class="d-grid">
+              <button 
+                type="submit" 
+                class="btn btn-primary btn-lg"
+                [disabled]="contactForm.invalid || isSubmitting">
+                <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
+                {{ isSubmitting ? 'Sending...' : 'Send Message' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Contact Information -->
+  <div class="row mt-5">
+    <div class="col-md-4 text-center mb-4">
+      <div class="card border-0 h-100">
+        <div class="card-body p-4">
+          <i class="fas fa-map-marker-alt fa-2x text-primary mb-3"></i>
+          <h5>Office Address</h5>
+          <p class="text-muted">123 Business Street<br>Tech City, TC 12345</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 text-center mb-4">
+      <div class="card border-0 h-100">
+        <div class="card-body p-4">
+          <i class="fas fa-phone fa-2x text-primary mb-3"></i>
+          <h5>Phone Number</h5>
+          <p class="text-muted">+1 (555) 123-4567</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 text-center mb-4">
+      <div class="card border-0 h-100">
+        <div class="card-body p-4">
+          <i class="fas fa-envelope fa-2x text-primary mb-3"></i>
+          <h5>Email Address</h5>
+          <p class="text-muted">info&#64;itconsult.com</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

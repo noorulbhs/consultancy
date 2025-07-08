@@ -1,0 +1,23 @@
+.footer {
+  font-size: 0.95rem;
+
+  a:hover {
+    text-decoration: underline;
+    color: #0d6efd;
+  }
+
+  mat-icon {
+    font-size: 24px;
+    cursor: pointer;
+
+    &:hover {
+      color: #0d6efd;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .row {
+      text-align: center;
+    }
+  }
+}

@@ -1,0 +1,280 @@
+<div class="container-fluid">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="mb-0"><i class="fas fa-comments me-2 text-primary"></i>Testimonials Management</h4>
+    <a routerLink="/admin-testimonials/new" class="btn btn-primary">
+      <i class="fas fa-plus me-2"></i>Add New Testimonial
+    </a>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-lg-3 col-md-6">
+      <div class="card bg-primary text-white h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h3 class="mb-1">{{ testimonials.length }}</h3>
+              <p class="mb-0">Total Testimonials</p>
+            </div>
+            <i class="fas fa-comments fa-2x opacity-75"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="card bg-success text-white h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h3 class="mb-1">{{ getPublishedCount() }}</h3>
+              <p class="mb-0">Published</p>
+            </div>
+            <i class="fas fa-check-circle fa-2x opacity-75"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="card bg-warning text-white h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h3 class="mb-1">{{ getFeaturedCount() }}</h3>
+              <p class="mb-0">Featured</p>
+            </div>
+            <i class="fas fa-star fa-2x opacity-75"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+      <div class="card bg-info text-white h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h3 class="mb-1">{{ getAverageRating().toFixed(1) }}</h3>
+              <p class="mb-0">Avg Rating</p>
+            </div>
+            <i class="fas fa-star-half-alt fa-2x opacity-75"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters & Controls -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row align-items-center">
+        <div class="col-md-4">
+          <label class="form-label">Sort By:</label>
+          <select [(ngModel)]="sortedBy" (change)="sort()" class="form-select">
+            <option value="date">Date Added</option>
+            <option value="name">Client Name</option>
+            <option value="rating">Rating</option>
+            <option value="company">Company</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Filter by Status:</label>
+          <select [(ngModel)]="filterStatus" (change)="applyFilter()" class="form-select">
+            <option value="all">All Testimonials</option>
+            <option value="published">Published Only</option>
+            <option value="unpublished">Unpublished Only</option>
+            <option value="featured">Featured Only</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Search:</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            placeholder="Search by name, company..."
+            [(ngModel)]="searchTerm"
+            (input)="applyFilter()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Testimonials Grid -->
+  <div class="row g-4">
+    <div class="col-lg-6 col-xl-4" *ngFor="let testimonial of filteredTestimonials">
+      <div class="card h-100 testimonial-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <div>
+            <h6 class="mb-0">{{ testimonial.name }}</h6>
+            <small class="text-muted">{{ testimonial.designation }}</small>
+          </div>
+          <div class="d-flex gap-1">
+            <span class="badge bg-success" *ngIf="testimonial.published">Published</span>
+            <span class="badge bg-warning" *ngIf="testimonial.featured">Featured</span>
+            <span class="badge bg-secondary" *ngIf="!testimonial.published">Draft</span>
+          </div>
+        </div>
+        
+        <div class="card-body">
+          <!-- Company Info -->
+          <div class="mb-3">
+            <h6 class="text-primary mb-0">{{ testimonial.company }}</h6>
+          </div>
+          
+          <!-- Rating -->
+          <div class="mb-3">
+            <span *ngFor="let star of getStars(testimonial.rating)" class="text-warning">
+              <i class="fas fa-star"></i>
+            </span>
+            <span *ngFor="let star of getStars(5 - testimonial.rating)" class="text-muted">
+              <i class="far fa-star"></i>
+            </span>
+            <span class="ms-2 text-muted">({{ testimonial.rating }}/5)</span>
+          </div>
+          
+          <!-- Testimonial Text -->
+          <p class="text-muted mb-3">
+            {{ testimonial.message.length > 150 ? (testimonial.message | slice:0:150) + '...' : testimonial.message }}
+          </p>
+          
+          <!-- Project Info -->
+          <div class="row text-center mb-3" *ngIf="testimonial.projectType || testimonial.location">
+            <div class="col-6" *ngIf="testimonial.projectType">
+              <small class="text-muted d-block">Project</small>
+              <span class="badge bg-primary-subtle text-primary small">{{ testimonial.projectType }}</span>
+            </div>
+            <div class="col-6" *ngIf="testimonial.location">
+              <small class="text-muted d-block">Location</small>
+              <small class="text-secondary">
+                <i class="fas fa-map-marker-alt me-1"></i>{{ testimonial.location }}
+              </small>
+            </div>
+          </div>
+          
+          <!-- Tags -->
+          <div class="mb-3" *ngIf="testimonial.tags && testimonial.tags.length > 0">
+            <small class="text-muted d-block mb-1">Tags:</small>
+            <span 
+              *ngFor="let tag of testimonial.tags.slice(0, 3)" 
+              class="badge bg-light text-dark me-1 small">
+              {{ tag }}
+            </span>
+            <span *ngIf="testimonial.tags.length > 3" class="badge bg-secondary small">
+              +{{ testimonial.tags.length - 3 }} more
+            </span>
+          </div>
+          
+          <!-- Date -->
+          <small class="text-muted d-block mb-3" *ngIf="testimonial.date">
+            <i class="fas fa-calendar me-1"></i>{{ testimonial.date | date:'mediumDate' }}
+          </small>
+        </div>
+        
+        <div class="card-footer bg-transparent">
+          <div class="d-flex gap-2">
+            <button 
+              (click)="preview(testimonial)" 
+              class="btn btn-sm btn-outline-info flex-fill">
+              <i class="fas fa-eye me-1"></i>Preview
+            </button>
+            <a 
+              [routerLink]="['/admin-testimonials/edit', testimonial.id]" 
+              class="btn btn-sm btn-outline-primary">
+              <i class="fas fa-edit me-1"></i>Edit
+            </a>
+            <button 
+              (click)="delete(testimonial.id)" 
+              class="btn btn-sm btn-outline-danger">
+              <i class="fas fa-trash me-1"></i>Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="filteredTestimonials.length === 0" class="text-center py-5">
+    <i class="fas fa-comments fa-3x text-muted mb-3"></i>
+    <h3 class="text-muted">No testimonials found</h3>
+    <p class="text-muted">
+      <span *ngIf="searchTerm || filterStatus !== 'all'">Try adjusting your filters or search terms.</span>
+      <span *ngIf="!searchTerm && filterStatus === 'all'">Create your first testimonial to get started!</span>
+    </p>
+    <a routerLink="/admin-testimonials/new" class="btn btn-primary" *ngIf="!searchTerm && filterStatus === 'all'">
+      <i class="fas fa-plus me-2"></i>Add Your First Testimonial
+    </a>
+  </div>
+</div>
+
+<!-- Preview Modal -->
+<div class="modal fade" id="previewModal" tabindex="-1" *ngIf="selectedTestimonial">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="fas fa-eye me-2"></i>Testimonial Preview
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="card testimonial-preview">
+          <div class="card-body p-4 text-center">
+            <!-- Quote Icon -->
+            <div class="mb-4">
+              <i class="fas fa-quote-left fa-3x text-primary opacity-25"></i>
+            </div>
+            
+            <!-- Testimonial Content -->
+            <blockquote class="blockquote mb-4">
+              <p class="fs-5 text-dark lh-lg font-italic">{{ selectedTestimonial.message }}</p>
+            </blockquote>
+            
+            <!-- Rating -->
+            <div class="mb-4">
+              <span *ngFor="let star of getStars(selectedTestimonial.rating)" class="text-warning fs-4">
+                <i class="fas fa-star"></i>
+              </span>
+              <span *ngFor="let star of getStars(5 - selectedTestimonial.rating)" class="text-muted fs-4">
+                <i class="far fa-star"></i>
+              </span>
+            </div>
+            
+            <!-- Client Info -->
+            <div class="text-center">
+              <div>
+                <h5 class="mb-1 fw-bold">{{ selectedTestimonial.name }}</h5>
+                <p class="mb-1 text-muted">{{ selectedTestimonial.designation }}</p>
+                <small class="text-primary fw-semibold">{{ selectedTestimonial.company }}</small>
+              </div>
+            </div>
+            
+            <!-- Additional Info -->
+            <div class="mt-4 pt-3 border-top">
+              <div class="row text-center">
+                <div class="col-4" *ngIf="selectedTestimonial.projectType">
+                  <small class="text-muted d-block">Project Type</small>
+                  <span class="badge bg-primary-subtle text-primary">{{ selectedTestimonial.projectType }}</span>
+                </div>
+                <div class="col-4" *ngIf="selectedTestimonial.location">
+                  <small class="text-muted d-block">Location</small>
+                  <small class="text-secondary">
+                    <i class="fas fa-map-marker-alt me-1"></i>{{ selectedTestimonial.location }}
+                  </small>
+                </div>
+                <div class="col-4" *ngIf="selectedTestimonial.date">
+                  <small class="text-muted d-block">Date</small>
+                  <small class="text-secondary">{{ selectedTestimonial.date | date:'mediumDate' }}</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <a [routerLink]="['/admin-testimonials/edit', selectedTestimonial.id]" class="btn btn-primary" data-bs-dismiss="modal">
+          <i class="fas fa-edit me-2"></i>Edit This Testimonial
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

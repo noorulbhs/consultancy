@@ -1,0 +1,51 @@
+.card {
+  transition: all 0.2s ease;
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+}
+
+.team-card {
+  transition: all 0.3s ease;
+  border: 1px solid #dee2e6;
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 123, 255, 0.1);
+    border-color: #007bff;
+  }
+}
+
+.card-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: #f8f9fa;
+}
+
+.badge {
+  font-size: 0.7rem;
+  padding: 0.4em 0.6em;
+}
+
+.bg-success-subtle {
+  background-color: rgba(25, 135, 84, 0.1);
+}
+
+.team-preview-card {
+  border: none;
+  background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .team-card {
+    margin-bottom: 1rem;
+  }
+  
+  .card-body {
+    padding: 1rem;
+  }
+}

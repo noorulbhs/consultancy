@@ -1,0 +1,404 @@
+<div class="project-manager-container">
+  <!-- Header Section -->
+  <div class="page-header">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        <h1 class="page-title">
+          <i class="fas fa-project-diagram me-3"></i>
+          Project Manager
+        </h1>
+        <p class="page-subtitle text-muted">Manage all your projects, team members, and milestones</p>
+      </div>
+      <div class="header-actions">
+        <button class="btn btn-outline-secondary me-2" (click)="exportProjects()">
+          <i class="fas fa-download me-2"></i>
+          Export
+        </button>
+        <button class="btn btn-outline-primary me-2" (click)="toggleViewMode()">
+          <i [class]="viewMode === 'grid' ? 'fas fa-list' : 'fas fa-th-large'" class="me-2"></i>
+          {{ viewMode === 'grid' ? 'List View' : 'Grid View' }}
+        </button>
+        <button class="btn btn-primary" (click)="addNewProject()">
+          <i class="fas fa-plus me-2"></i>
+          New Project
+        </button>
+      </div>
+    </div>
+
+    <!-- Project Summary Cards -->
+    <div class="row mb-4" *ngIf="projectSummary">
+      <div class="col-lg-3 col-md-6 mb-3">
+        <div class="summary-card">
+          <div class="summary-icon bg-primary">
+            <i class="fas fa-project-diagram"></i>
+          </div>
+          <div class="summary-content">
+            <h3 class="summary-value">{{ projectSummary.totalProjects }}</h3>
+            <p class="summary-label">Total Projects</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 mb-3">
+        <div class="summary-card">
+          <div class="summary-icon bg-success">
+            <i class="fas fa-play-circle"></i>
+          </div>
+          <div class="summary-content">
+            <h3 class="summary-value">{{ projectSummary.activeProjects }}</h3>
+            <p class="summary-label">Active Projects</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 mb-3">
+        <div class="summary-card">
+          <div class="summary-icon bg-info">
+            <i class="fas fa-dollar-sign"></i>
+          </div>
+          <div class="summary-content">
+            <h3 class="summary-value">{{ formatCurrency(projectSummary.totalBudget) }}</h3>
+            <p class="summary-label">Total Budget</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 mb-3">
+        <div class="summary-card">
+          <div class="summary-icon bg-warning">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <div class="summary-content">
+            <h3 class="summary-value">{{ projectSummary.overdueMilestones }}</h3>
+            <p class="summary-label">Overdue Tasks</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters and Search -->
+  <div class="filters-section mb-4">
+    <div class="card">
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-lg-3">
+            <label class="form-label">Search Projects</label>
+            <div class="input-group">
+              <input type="text" 
+                     class="form-control" 
+                     placeholder="Search by name, client, or description..."
+                     [(ngModel)]="searchTerm"
+                     (input)="onSearch()">
+              <button class="btn btn-outline-secondary" type="button" (click)="onSearch()">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-lg-2">
+            <label class="form-label">Status</label>
+            <select class="form-select" [(ngModel)]="filters.status" (change)="onFilterChange()">
+              <option value="">All Status</option>
+              <option *ngFor="let status of statusOptions" [value]="status">
+                {{ status | titlecase }}
+              </option>
+            </select>
+          </div>
+          <div class="col-lg-2">
+            <label class="form-label">Priority</label>
+            <select class="form-select" [(ngModel)]="filters.priority" (change)="onFilterChange()">
+              <option value="">All Priorities</option>
+              <option *ngFor="let priority of priorityOptions" [value]="priority">
+                {{ priority | titlecase }}
+              </option>
+            </select>
+          </div>
+          <div class="col-lg-2">
+            <label class="form-label">Project Manager</label>
+            <input type="text" 
+                   class="form-control" 
+                   placeholder="Manager name..."
+                   [(ngModel)]="filters.projectManager"
+                   (input)="onFilterChange()">
+          </div>
+          <div class="col-lg-2">
+            <label class="form-label">Category</label>
+            <input type="text" 
+                   class="form-control" 
+                   placeholder="Category..."
+                   [(ngModel)]="filters.category"
+                   (input)="onFilterChange()">
+          </div>
+          <div class="col-lg-1 d-flex align-items-end">
+            <button class="btn btn-outline-secondary w-100" (click)="clearFilters()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="text-center py-5" *ngIf="loading">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-3 text-muted">Loading projects...</p>
+  </div>
+
+  <!-- Error State -->
+  <div class="alert alert-danger" *ngIf="error && !loading">
+    <i class="fas fa-exclamation-triangle me-2"></i>
+    {{ error }}
+  </div>
+
+  <!-- Projects List/Grid -->
+  <div *ngIf="!loading && !error">
+    
+    <!-- List View -->
+    <div class="projects-table" *ngIf="viewMode === 'list'">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="table-light">
+            <tr>
+              <th scope="col" class="sortable" (click)="onSort('name')">
+                Project Name <i [class]="getSortIcon('name')"></i>
+              </th>
+              <th scope="col">Client</th>
+              <th scope="col" class="sortable" (click)="onSort('startDate')">
+                Start Date <i [class]="getSortIcon('startDate')"></i>
+              </th>
+              <th scope="col" class="sortable" (click)="onSort('endDate')">
+                End Date <i [class]="getSortIcon('endDate')"></i>
+              </th>
+              <th scope="col">Status</th>
+              <th scope="col">Priority</th>
+              <th scope="col" class="sortable" (click)="onSort('progress')">
+                Progress <i [class]="getSortIcon('progress')"></i>
+              </th>
+              <th scope="col" class="sortable" (click)="onSort('budget')">
+                Budget <i [class]="getSortIcon('budget')"></i>
+              </th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let project of getPaginatedProjects()">
+              <td>
+                <div class="project-name-cell">
+                  <h6 class="mb-1">{{ project.name }}</h6>
+                  <small class="text-muted">{{ project.category }}</small>
+                </div>
+              </td>
+              <td>
+                <div>
+                  <div class="fw-medium">{{ project.clientName }}</div>
+                  <small class="text-muted">{{ project.clientCompany }}</small>
+                </div>
+              </td>
+              <td>{{ formatDate(project.startDate) }}</td>
+              <td>
+                <div>
+                  {{ formatDate(project.endDate) }}
+                  <div *ngIf="getDaysRemaining(project.endDate) > 0" class="small text-muted">
+                    {{ getDaysRemaining(project.endDate) }} days left
+                  </div>
+                  <div *ngIf="isOverdue(project.endDate)" class="small text-danger">
+                    <i class="fas fa-exclamation-triangle me-1"></i>
+                    Overdue
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span [class]="getStatusBadgeClass(project.status)">
+                  {{ project.status | titlecase }}
+                </span>
+              </td>
+              <td>
+                <span [class]="getPriorityBadgeClass(project.priority)">
+                  {{ project.priority | titlecase }}
+                </span>
+              </td>
+              <td>
+                <div class="progress-cell">
+                  <div class="progress" style="height: 8px;">
+                    <div class="progress-bar" 
+                         [class]="getProgressBarClass(project.progress)"
+                         [style.width.%]="project.progress">
+                    </div>
+                  </div>
+                  <small class="text-muted">{{ project.progress }}%</small>
+                </div>
+              </td>
+              <td>{{ formatCurrency(project.estimatedBudget) }}</td>
+              <td>
+                <div class="btn-group btn-group-sm">
+                  <button class="btn btn-outline-primary" (click)="viewProject(project.id!)" title="View">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button class="btn btn-outline-secondary" (click)="editProject(project.id!)" title="Edit">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="btn btn-outline-danger" (click)="deleteProject(project)" title="Delete">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Grid View -->
+    <div class="projects-grid" *ngIf="viewMode === 'grid'">
+      <div class="row g-4">
+        <div class="col-xl-4 col-lg-6" *ngFor="let project of getPaginatedProjects()">
+          <div class="project-card">
+            <div class="project-card-header">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <h5 class="project-title">{{ project.name }}</h5>
+                  <p class="project-category text-muted">{{ project.category }}</p>
+                </div>
+                <div class="dropdown">
+                  <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="dropdown">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" (click)="viewProject(project.id!)">
+                      <i class="fas fa-eye me-2"></i>View
+                    </a></li>
+                    <li><a class="dropdown-item" (click)="editProject(project.id!)">
+                      <i class="fas fa-edit me-2"></i>Edit
+                    </a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item text-danger" (click)="deleteProject(project)">
+                      <i class="fas fa-trash me-2"></i>Delete
+                    </a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            
+            <div class="project-card-body">
+              <p class="project-description">{{ project.description }}</p>
+              
+              <div class="project-meta mb-3">
+                <div class="meta-item">
+                  <i class="fas fa-user me-2"></i>
+                  <span>{{ project.clientName }}</span>
+                </div>
+                <div class="meta-item">
+                  <i class="fas fa-calendar me-2"></i>
+                  <span>{{ formatDate(project.startDate) }} - {{ formatDate(project.endDate) }}</span>
+                </div>
+                <div class="meta-item">
+                  <i class="fas fa-users me-2"></i>
+                  <span>{{ project.teamMembers.length + project.externalTeamMembers.length }} members</span>
+                </div>
+              </div>
+
+              <div class="project-badges mb-3">
+                <span [class]="getStatusBadgeClass(project.status)">
+                  {{ project.status | titlecase }}
+                </span>
+                <span [class]="getPriorityBadgeClass(project.priority)">
+                  {{ project.priority | titlecase }}
+                </span>
+              </div>
+
+              <div class="project-progress mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <small class="text-muted">Progress</small>
+                  <small class="fw-medium">{{ project.progress }}%</small>
+                </div>
+                <div class="progress" style="height: 8px;">
+                  <div class="progress-bar" 
+                       [class]="getProgressBarClass(project.progress)"
+                       [style.width.%]="project.progress">
+                  </div>
+                </div>
+              </div>
+
+              <div class="project-budget">
+                <div class="d-flex justify-content-between">
+                  <span class="text-muted">Budget:</span>
+                  <span class="fw-medium">{{ formatCurrency(project.estimatedBudget) }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="project-card-footer">
+              <div class="d-flex justify-content-between align-items-center">
+                <small class="text-muted">
+                  <i class="fas fa-user-tie me-1"></i>
+                  {{ project.projectManager }}
+                </small>
+                <div class="project-technologies">
+                  <span class="tech-badge" *ngFor="let tech of project.technologies.slice(0, 2)">
+                    {{ tech }}
+                  </span>
+                  <span class="tech-badge-more" *ngIf="project.technologies.length > 2">
+                    +{{ project.technologies.length - 2 }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-section mt-4" *ngIf="getTotalPages() > 1">
+      <nav aria-label="Projects pagination">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <button class="page-link" (click)="changePage(currentPage - 1)">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+          </li>
+          
+          <li class="page-item" 
+              *ngFor="let page of [].constructor(getTotalPages()); let i = index"
+              [class.active]="currentPage === i + 1">
+            <button class="page-link" (click)="changePage(i + 1)">
+              {{ i + 1 }}
+            </button>
+          </li>
+          
+          <li class="page-item" [class.disabled]="currentPage === getTotalPages()">
+            <button class="page-link" (click)="changePage(currentPage + 1)">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </li>
+        </ul>
+      </nav>
+      
+      <div class="pagination-info text-center mt-2">
+        <small class="text-muted">
+          Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to 
+          {{ getDisplayedItemsCount() }} of 
+          {{ filteredProjects.length }} projects
+        </small>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state text-center py-5" *ngIf="filteredProjects.length === 0">
+      <i class="fas fa-project-diagram fa-3x text-muted mb-3"></i>
+      <h4 class="text-muted">No Projects Found</h4>
+      <p class="text-muted">
+        <span *ngIf="searchTerm || filters.status || filters.priority">
+          Try adjusting your search criteria or filters.
+        </span>
+        <span *ngIf="!searchTerm && !filters.status && !filters.priority">
+          Get started by creating your first project.
+        </span>
+      </p>
+      <a routerLink="/admin-projects/new" class="btn btn-primary" *ngIf="!searchTerm && !filters.status && !filters.priority">
+        <i class="fas fa-plus me-2"></i>
+        Create First Project
+      </a>
+    </div>
+  </div>
+</div>

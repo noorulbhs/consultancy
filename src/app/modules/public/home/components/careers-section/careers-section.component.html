@@ -1,0 +1,103 @@
+<section class="careers-section py-5" *ngIf="isVisible && (featuredJobs.length > 0 || totalJobs > 0)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center mb-5">
+        <h2 class="section-title">Join Our Team</h2>
+        <p class="section-subtitle">Discover exciting career opportunities and grow with us</p>
+        <div class="stats-bar">
+          <span class="stat-item">
+            <strong>{{ totalJobs }}</strong> Open Positions
+          </span>
+          <span class="stat-item">
+            <strong>Remote</strong> Friendly
+          </span>
+          <span class="stat-item">
+            <strong>Global</strong> Opportunities
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Featured Jobs -->
+    <div class="row g-4" *ngIf="featuredJobs.length > 0">
+      <div class="col-lg-4 col-md-6" *ngFor="let job of featuredJobs">
+        <div class="job-card h-100">
+          <div class="job-header">
+            <div class="job-badge" [class.featured-badge]="job.featured">
+              {{ job.featured ? 'Featured' : job.type }}
+            </div>
+            <div class="job-posted">{{ formatDate(job.postedDate) }}</div>
+          </div>
+          
+          <div class="job-content">
+            <h3 class="job-title">
+              <a [routerLink]="['/careers', job.id]" class="title-link">
+                {{ job.title }}
+              </a>
+            </h3>
+            
+            <div class="job-meta">
+              <span class="job-department">
+                <i class="fas fa-building me-2"></i>
+                {{ job.department }}
+              </span>
+              <span class="job-location">
+                <i class="fas fa-map-marker-alt me-2"></i>
+                {{ job.location }}
+              </span>
+            </div>
+            
+            <p class="job-description">{{ getExcerpt(job.description) }}</p>
+            
+            <div class="job-requirements" *ngIf="job.requirements && job.requirements.length > 0">
+              <span class="requirement-tag" *ngFor="let req of job.requirements.slice(0, 3)">
+                {{ req }}
+              </span>
+            </div>
+            
+            <div class="job-footer">
+              <div class="job-salary">{{ formatSalary(job) }}</div>
+              <a [routerLink]="['/careers', job.id]" class="apply-btn">
+                View Details
+                <i class="fas fa-arrow-right ms-2"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- No Jobs Available -->
+    <div class="row" *ngIf="featuredJobs.length === 0 && totalJobs === 0">
+      <div class="col-12 text-center">
+        <div class="no-jobs-message">
+          <i class="fas fa-briefcase fa-3x text-muted mb-3"></i>
+          <h4>No Open Positions</h4>
+          <p class="text-muted">We don't have any open positions at the moment, but we're always looking for talented individuals.</p>
+          <a routerLink="/contact" class="btn btn-outline-primary">
+            Send Us Your Resume
+          </a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Call to Action -->
+    <div class="row mt-5" *ngIf="totalJobs > 0">
+      <div class="col-12 text-center">
+        <div class="careers-cta">
+          <h4>Ready to Start Your Journey?</h4>
+          <p class="text-muted mb-4">Join our team and help us build the future of technology</p>
+          <div class="cta-buttons">
+            <a routerLink="/careers" class="btn btn-primary btn-lg me-3">
+              View All Positions
+              <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+            <a routerLink="/about" class="btn btn-outline-secondary btn-lg">
+              Learn About Us
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

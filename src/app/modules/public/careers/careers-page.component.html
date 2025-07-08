@@ -1,0 +1,167 @@
+<div class="container py-5">
+  <div class="row">
+    <div class="col-12 text-center mb-5">
+      <h1 class="display-4 fw-bold text-primary">Careers</h1>
+      <p class="lead text-muted">Join our team and build the future of technology</p>
+    </div>
+  </div>
+  
+  <div class="row mb-5">
+    <div class="col-lg-8 mx-auto text-center">
+      <h2 class="h3 fw-bold mb-4">Why Work With Us?</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="p-3">
+            <i class="fas fa-rocket fa-2x text-primary mb-3"></i>
+            <h5>Innovation</h5>
+            <p class="text-muted">Work on cutting-edge projects with latest technologies</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="p-3">
+            <i class="fas fa-users fa-2x text-primary mb-3"></i>
+            <h5>Team Culture</h5>
+            <p class="text-muted">Collaborative environment with talented professionals</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="p-3">
+            <i class="fas fa-chart-line fa-2x text-primary mb-3"></i>
+            <h5>Growth</h5>
+            <p class="text-muted">Continuous learning and career development opportunities</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 mb-4">
+      <h2 class="h3 fw-bold text-center">Current Openings</h2>
+    </div>
+  </div>
+  
+  <div class="row g-4">
+    <div class="col-lg-6" *ngFor="let job of jobs">
+      <div class="card h-100 shadow-sm border-0" *ngIf="job.isOpen">
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <span class="badge bg-primary me-2">{{job.department}}</span>
+              <span class="badge bg-secondary">{{job.type}}</span>
+            </div>
+            <span class="badge bg-success" *ngIf="job.openings">{{job.openings}} openings</span>
+          </div>
+          
+          <h5 class="card-title fw-bold mb-3">{{job.title}}</h5>
+          
+          <div class="job-details mb-3">
+            <p class="mb-2 text-muted">
+              <i class="fas fa-map-marker-alt me-2 text-primary"></i>{{job.location}}
+            </p>
+            <p class="mb-2 text-muted" *ngIf="job.experience">
+              <i class="fas fa-clock me-2 text-primary"></i>{{job.experience}}
+            </p>
+            <p class="mb-2 text-muted" *ngIf="job.salary">
+              <i class="fas fa-rupee-sign me-2 text-primary"></i>{{job.salary}}
+            </p>
+            <p class="mb-2 text-muted" *ngIf="job.remoteWork">
+              <i class="fas fa-laptop me-2 text-primary"></i>{{job.remoteWork}}
+            </p>
+          </div>
+
+          <p class="card-text text-muted mb-3">{{getJobExcerpt(job.description)}}</p>
+          
+          <div *ngIf="job.skills && job.skills.length > 0" class="mb-3">
+            <h6 class="small fw-bold text-uppercase text-muted mb-2">Key Skills</h6>
+            <div class="d-flex flex-wrap gap-1">
+              <span class="badge bg-light text-dark border" *ngFor="let skill of job.skills.slice(0, 4)">{{skill}}</span>
+              <span class="badge bg-light text-muted border" *ngIf="job.skills.length > 4">+{{job.skills.length - 4}} more</span>
+            </div>
+          </div>
+          
+          <div *ngIf="job.benefits && job.benefits.length > 0" class="mb-3">
+            <h6 class="small fw-bold text-uppercase text-muted mb-2">Key Benefits</h6>
+            <div class="d-flex flex-wrap gap-1">
+              <span class="badge bg-outline-primary" *ngFor="let benefit of job.benefits.slice(0, 3)">{{benefit}}</span>
+              <span class="badge bg-outline-secondary" *ngIf="job.benefits.length > 3">+{{job.benefits.length - 3}} more</span>
+            </div>
+          </div>
+          
+          <div class="d-flex justify-content-between align-items-center">
+            <button class="btn btn-primary" (click)="viewJobDetails(job)">View Details</button>
+            <button class="btn btn-outline-primary">Apply Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="openJobs.length === 0" class="text-center py-5">
+    <h3 class="text-muted">No current openings</h3>
+    <p class="text-muted">We're always looking for talented individuals. Send us your resume!</p>
+    <button class="btn btn-outline-primary">Send Resume</button>
+  </div>
+</div>
+
+<!-- Job Details Modal -->
+<div class="modal fade" [class.show]="showJobModal" [style.display]="showJobModal ? 'block' : 'none'" 
+     tabindex="-1" role="dialog" *ngIf="selectedJob">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{{selectedJob.title}}</h5>
+        <button type="button" class="btn-close" (click)="closeJobModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-4">
+          <div class="d-flex flex-wrap gap-2 mb-3">
+            <span class="badge bg-primary">{{selectedJob.department}}</span>
+            <span class="badge bg-secondary">{{selectedJob.type}}</span>
+            <span class="badge bg-success" *ngIf="selectedJob.openings">{{selectedJob.openings}} openings</span>
+          </div>
+          
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <h6 class="text-muted mb-1">Location</h6>
+              <p class="mb-0">{{selectedJob.location}}</p>
+            </div>
+            <div class="col-md-6" *ngIf="selectedJob.experience">
+              <h6 class="text-muted mb-1">Experience</h6>
+              <p class="mb-0">{{selectedJob.experience}}</p>
+            </div>
+            <div class="col-md-6" *ngIf="selectedJob.salary">
+              <h6 class="text-muted mb-1">Salary</h6>
+              <p class="mb-0">{{selectedJob.salary}}</p>
+            </div>
+            <div class="col-md-6" *ngIf="selectedJob.remoteWork">
+              <h6 class="text-muted mb-1">Work Mode</h6>
+              <p class="mb-0">{{selectedJob.remoteWork}}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="job-description" [innerHTML]="selectedJob.description"></div>
+
+        <div *ngIf="selectedJob.skills && selectedJob.skills.length > 0" class="mt-4">
+          <h6 class="fw-bold">Required Skills</h6>
+          <div class="d-flex flex-wrap gap-2">
+            <span class="badge bg-light text-dark border" *ngFor="let skill of selectedJob.skills">{{skill}}</span>
+          </div>
+        </div>
+
+        <div *ngIf="selectedJob.benefits && selectedJob.benefits.length > 0" class="mt-4">
+          <h6 class="fw-bold">Benefits</h6>
+          <div class="d-flex flex-wrap gap-2">
+            <span class="badge bg-outline-primary" *ngFor="let benefit of selectedJob.benefits">{{benefit}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeJobModal()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="applyForJob(selectedJob)">Apply Now</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade" [class.show]="showJobModal" *ngIf="showJobModal"></div>

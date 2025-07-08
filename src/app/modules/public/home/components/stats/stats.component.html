@@ -1,0 +1,22 @@
+<section class="stats-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center mb-5">
+        <h2 class="section-title">Our Track Record</h2>
+        <p class="section-subtitle">Numbers that speak for our expertise and commitment to excellence</p>
+      </div>
+    </div>
+    
+    <div class="row g-4">
+      <div class="col-lg-3 col-md-6" *ngFor="let stat of stats">
+        <div class="stat-card text-center">
+          <div class="stat-icon">
+            <i [class]="stat.icon"></i>
+          </div>
+          <div class="stat-number">{{ stat.number }}</div>
+          <div class="stat-label">{{ stat.label }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

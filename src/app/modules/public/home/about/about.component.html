@@ -1,0 +1,170 @@
+<div class="container my-5">
+
+  <!-- Company Story -->
+  <section class="mb-5">
+    <h2 class="mb-3">Our Story</h2>
+    <div [innerHTML]="storyContent"></div>
+  </section>
+
+<section class="row text-center mb-5">
+  <div class="col-md-6 mb-4">
+    <div class="p-4 border rounded bg-light h-100 d-flex flex-column justify-content-center">
+      <h4 class="text-primary mb-3">Our Mission</h4>
+      <div class="mb-0" [innerHTML]="missionContent"></div>
+    </div>
+  </div>
+  <div class="col-md-6 mb-4">
+    <div class="p-4 border rounded bg-light h-100 d-flex flex-column justify-content-center">
+      <h4 class="text-primary mb-3">Our Vision</h4>
+      <div class="mb-0" [innerHTML]="visionContent"></div>
+    </div>
+  </div>
+</section>
+
+
+  <!-- Team Section -->
+  <section class="mb-5">
+    <div class="text-center mb-5">
+      <h2 class="display-6 fw-bold text-primary mb-3">Meet Our Expert Team</h2>
+      <p class="lead text-muted mx-auto" style="max-width: 600px;">
+        Our diverse team of technology experts brings together years of experience and passion for innovation
+      </p>
+      <div class="mx-auto bg-primary" style="width: 60px; height: 4px; border-radius: 2px;"></div>
+    </div>
+
+    <!-- Featured Team Members -->
+    <div class="mb-5" *ngIf="featuredTeam.length > 0">
+      <h3 class="text-center mb-4 text-secondary">Leadership Team</h3>
+      <div class="row g-4">
+        <div class="col-lg-4 col-md-6" *ngFor="let member of featuredTeam">
+          <div class="card team-card h-100 border-0 shadow-sm">
+            <div class="card-body text-center p-4">
+              <!-- Featured Badge -->
+              <div class="mb-3">
+                <span class="badge bg-primary rounded-pill">
+                  <i class="fas fa-star me-1"></i>Featured
+                </span>
+              </div>
+              
+              <!-- Basic Info -->
+              <h5 class="fw-bold mb-1">{{ member.name }}</h5>
+              <p class="text-primary fw-semibold mb-2">{{ member.role }}</p>
+              <p class="text-muted small mb-3">{{ member.department }}</p>
+              
+              <!-- Bio -->
+              <p class="text-muted small mb-3" *ngIf="member.bio">
+                {{ member.bio.length > 120 ? (member.bio | slice:0:120) + '...' : member.bio }}
+              </p>
+              
+              <!-- Experience & Location -->
+              <div class="row text-center mb-3">
+                <div class="col-6" *ngIf="member.experience">
+                  <small class="text-muted d-block">Experience</small>
+                  <span class="fw-bold text-success">{{ member.experience }}</span>
+                </div>
+                <div class="col-6" *ngIf="member.location">
+                  <small class="text-muted d-block">Location</small>
+                  <small class="text-secondary">
+                    <i class="fas fa-map-marker-alt me-1"></i>{{ member.location }}
+                  </small>
+                </div>
+              </div>
+              
+              <!-- Top Skills -->
+              <div class="mb-3" *ngIf="member.skills && member.skills.length > 0">
+                <small class="text-muted d-block mb-2">Expertise</small>
+                <span 
+                  *ngFor="let skill of member.skills.slice(0, 3)" 
+                  class="badge bg-light text-dark me-1 mb-1 small">
+                  {{ skill }}
+                </span>
+                <span *ngIf="member.skills.length > 3" class="badge bg-secondary small">
+                  +{{ member.skills.length - 3 }}
+                </span>
+              </div>
+              
+              <!-- Social Links -->
+              <div class="d-flex justify-content-center gap-2">
+                <a [href]="member.linkedin" target="_blank" class="btn btn-sm btn-outline-primary social-btn" *ngIf="member.linkedin && member.linkedin.trim()" title="LinkedIn">
+                  <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+                  <span class="visually-hidden">LinkedIn</span>
+                </a>
+                <a [href]="member.twitter" target="_blank" class="btn btn-sm btn-outline-info social-btn" *ngIf="member.twitter && member.twitter.trim()" title="Twitter">
+                  <i class="fab fa-twitter" aria-hidden="true"></i>
+                  <span class="visually-hidden">Twitter</span>
+                </a>
+                <a [href]="member.github" target="_blank" class="btn btn-sm btn-outline-dark social-btn" *ngIf="member.github && member.github.trim()" title="GitHub">
+                  <i class="fab fa-github" aria-hidden="true"></i>
+                  <span class="visually-hidden">GitHub</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- All Team Members -->
+    <div *ngIf="team.length > featuredTeam.length">
+      <h3 class="text-center mb-4 text-secondary">Our Team</h3>
+      <div class="row g-4">
+        <div class="col-lg-3 col-md-4 col-sm-6" *ngFor="let member of team">
+          <div class="card team-mini-card h-100 border-0 shadow-sm" *ngIf="!member.featured">
+            <div class="card-body text-center p-3">
+              <!-- Basic Info -->
+              <h6 class="fw-bold mb-1">{{ member.name }}</h6>
+              <p class="text-primary small fw-semibold mb-1">{{ member.role }}</p>
+              <p class="text-muted extra-small mb-2">{{ member.department }}</p>
+              
+              <!-- Experience -->
+              <div class="mb-2" *ngIf="member.experience">
+                <span class="badge bg-success-subtle text-success small">{{ member.experience }}</span>
+              </div>
+              
+              <!-- Skills -->
+              <div class="mb-2" *ngIf="member.skills && member.skills.length > 0">
+                <span 
+                  *ngFor="let skill of member.skills.slice(0, 2)" 
+                  class="badge bg-light text-dark me-1 extra-small">
+                  {{ skill }}
+                </span>
+              </div>
+              
+              <!-- Social Links -->
+              <div class="d-flex justify-content-center gap-1">
+                <a [href]="member.linkedin" target="_blank" class="btn btn-sm btn-outline-primary" *ngIf="member.linkedin && member.linkedin.trim()" title="LinkedIn">
+                  <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a [href]="member.github" target="_blank" class="btn btn-sm btn-outline-dark" *ngIf="member.github && member.github.trim()" title="GitHub">
+                  <i class="fab fa-github"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Team Stats -->
+    <div class="row mt-5 pt-4 border-top">
+      <div class="col-md-3 col-6 text-center mb-3">
+        <h3 class="text-primary fw-bold">{{ team.length }}+</h3>
+        <p class="text-muted mb-0">Expert Team Members</p>
+      </div>
+      <div class="col-md-3 col-6 text-center mb-3">
+        <h3 class="text-primary fw-bold">{{ getAverageExperience() }}+</h3>
+        <p class="text-muted mb-0">Years Average Experience</p>
+      </div>
+      <div class="col-md-3 col-6 text-center mb-3">
+        <h3 class="text-primary fw-bold">{{ getTotalSkills() }}+</h3>
+        <p class="text-muted mb-0">Combined Skills</p>
+      </div>
+      <div class="col-md-3 col-6 text-center mb-3">
+        <h3 class="text-primary fw-bold">{{ getDepartmentCount() }}</h3>
+        <p class="text-muted mb-0">Departments</p>
+      </div>
+    </div>
+
+  </section>
+
+</div>

@@ -1,0 +1,38 @@
+<section class="cta-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <div class="cta-content">
+          <h2 class="cta-title">{{ ctaData.title }}</h2>
+          <p class="cta-subtitle">{{ ctaData.subtitle }}</p>
+          
+          <ul class="cta-features">
+            <li *ngFor="let feature of ctaData.features">
+              <i class="fas fa-check-circle"></i>
+              {{ feature }}
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="col-lg-4">
+        <div class="cta-actions">
+          <a [routerLink]="ctaData.primaryAction.link" class="btn btn-primary btn-lg cta-btn-primary">
+            {{ ctaData.primaryAction.text }}
+            <i class="fas fa-arrow-right ms-2"></i>
+          </a>
+          <a [routerLink]="ctaData.secondaryAction.link" class="btn btn-outline-light btn-lg cta-btn-secondary">
+            {{ ctaData.secondaryAction.text }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Background decorative elements -->
+  <div class="cta-bg-elements">
+    <div class="bg-circle bg-circle-1"></div>
+    <div class="bg-circle bg-circle-2"></div>
+    <div class="bg-circle bg-circle-3"></div>
+  </div>
+</section>

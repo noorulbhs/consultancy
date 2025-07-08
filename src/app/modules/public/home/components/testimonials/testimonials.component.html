@@ -1,0 +1,164 @@
+<section class="testimonials-section bg-light py-5">
+  <div class="container">
+    <!-- Section Header -->
+    <div class="text-center mb-5">
+      <h2 class="display-5 fw-bold text-primary mb-3">What Our Clients Say</h2>
+      <p class="lead text-muted">Discover why businesses trust us with their digital transformation</p>
+      <div class="mx-auto" style="width: 60px; height: 4px; background: linear-gradient(45deg, #007bff, #6610f2);"></div>
+    </div>
+
+    <!-- Featured Testimonials Carousel -->
+    <div class="row mb-5">
+      <div class="col-12">
+        <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="8000">
+          <div class="carousel-indicators mb-4">
+            <button 
+              *ngFor="let testimonial of featuredTestimonials; let i = index"
+              type="button" 
+              data-bs-target="#testimonialCarousel" 
+              [attr.data-bs-slide-to]="i"
+              [class.active]="i === 0"
+              [attr.aria-label]="'Slide ' + (i + 1)">
+            </button>
+          </div>
+          
+          <div class="carousel-inner">
+            <div 
+              class="carousel-item"
+              *ngFor="let testimonial of featuredTestimonials; let i = index"
+              [class.active]="i === 0">
+              
+              <div class="row justify-content-center">
+                <div class="col-lg-8 col-xl-6">
+                  <div class="card border-0 shadow-lg h-100 testimonial-card">
+                    <div class="card-body p-5 text-center">
+                      <!-- Quote Icon -->
+                      <div class="mb-4">
+                        <i class="fas fa-quote-left fa-3x text-primary opacity-25"></i>
+                      </div>
+                      
+                      <!-- Testimonial Content -->
+                      <blockquote class="blockquote mb-4">
+                        <p class="fs-5 text-dark lh-lg font-italic">{{ testimonial.message }}</p>
+                      </blockquote>
+                      
+                      <!-- Rating -->
+                      <div class="mb-4">
+                        <span *ngFor="let star of getStars(testimonial.rating)" class="text-warning fs-4">
+                          <i class="fas fa-star"></i>
+                        </span>
+                        <span *ngFor="let star of getStars(5 - testimonial.rating)" class="text-muted fs-4">
+                          <i class="far fa-star"></i>
+                        </span>
+                      </div>
+                      
+                      <!-- Client Info -->
+                      <div class="text-center">
+                        <div>
+                          <h5 class="mb-1 fw-bold">{{ testimonial.name }}</h5>
+                          <p class="mb-1 text-muted">{{ testimonial.designation }}</p>
+                          <small class="text-primary fw-semibold">{{ testimonial.company }}</small>
+                        </div>
+                      </div>
+                      
+                      <!-- Project Type & Location -->
+                      <div class="mt-4 pt-3 border-top">
+                        <div class="row text-center">
+                          <div class="col-6" *ngIf="testimonial.projectType">
+                            <small class="text-muted d-block">Project Type</small>
+                            <span class="badge bg-primary-subtle text-primary">{{ testimonial.projectType }}</span>
+                          </div>
+                          <div class="col-6" *ngIf="testimonial.location">
+                            <small class="text-muted d-block">Location</small>
+                            <small class="text-secondary">
+                              <i class="fas fa-map-marker-alt me-1"></i>{{ testimonial.location }}
+                            </small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Carousel Controls -->
+          <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+            <div class="bg-primary rounded-circle p-3">
+              <i class="fas fa-chevron-left text-white"></i>
+            </div>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+            <div class="bg-primary rounded-circle p-3">
+              <i class="fas fa-chevron-right text-white"></i>
+            </div>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- All Testimonials Grid -->
+    <div class="row" *ngIf="showMoreStories">
+      <div class="col-12">
+        <h3 class="text-center mb-4">More Client Success Stories</h3>
+        <div class="row g-4">
+          <div class="col-lg-4 col-md-6" *ngFor="let testimonial of testimonials.slice(0, 6)">
+            <div class="card h-100 testimonial-mini-card border-0 shadow-sm">
+              <div class="card-body p-4">
+                <!-- Mini Quote -->
+                <div class="mb-3">
+                  <i class="fas fa-quote-left text-primary opacity-50"></i>
+                </div>
+                
+                <!-- Testimonial Text -->
+                <p class="text-muted mb-3 small">
+                  {{ testimonial.message.length > 120 ? (testimonial.message | slice:0:120) + '...' : testimonial.message }}
+                </p>
+                
+                <!-- Rating -->
+                <div class="mb-3">
+                  <span *ngFor="let star of getStars(testimonial.rating)" class="text-warning small">
+                    <i class="fas fa-star"></i>
+                  </span>
+                </div>
+                
+                <!-- Client Info -->
+                <div class="text-center">
+                  <div>
+                    <h6 class="mb-0 fw-bold">{{ testimonial.name }}</h6>
+                    <small class="text-muted">{{ testimonial.designation }}</small>
+                    <br>
+                    <small class="text-primary">{{ testimonial.company }}</small>
+                  </div>
+                </div>
+                
+                <!-- Tags -->
+                <div class="mt-3" *ngIf="testimonial.tags && testimonial.tags.length > 0">
+                  <span 
+                    *ngFor="let tag of testimonial.tags.slice(0, 2)" 
+                    class="badge bg-light text-dark me-1 small">
+                    {{ tag }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="text-center mt-5 pt-4">
+      <div class="bg-primary text-white rounded-3 p-5">
+        <h3 class="mb-3">Ready to Join Our Success Stories?</h3>
+        <p class="mb-4 opacity-75">Let's discuss how we can help transform your business with our proven expertise.</p>
+        <a routerLink="/contact" class="btn btn-light btn-lg">
+          <i class="fas fa-comment-dots me-2"></i>Start Your Project
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,127 @@
+<div class="container-fluid py-5">
+  <!-- Hero Section -->
+  <div class="container">
+    <div class="row text-center mb-5">
+      <div class="col-12">
+        <h1 class="display-4 fw-bold text-primary mb-3">About Us</h1>
+        <p class="lead text-muted">Learn more about our company, mission, vision, and the amazing team behind our success.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mission & Vision Section -->
+  <div class="container mb-5">
+    <div class="row g-4">
+      <!-- Our Mission -->
+      <div class="col-lg-6">
+        <div class="card h-100 border-0 shadow-lg">
+          <div class="card-body p-4">
+            <div class="text-center mb-4">
+              <mat-icon class="display-1 text-primary">flag</mat-icon>
+              <h3 class="fw-bold mt-3">Our Mission</h3>
+            </div>
+            <p class="text-muted">
+              To empower businesses with cutting-edge technology solutions and expert consulting services 
+              that drive digital transformation, enhance operational efficiency, and accelerate growth. 
+              We are committed to delivering innovative, scalable, and reliable IT solutions that help 
+              our clients stay ahead in today's competitive market.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Our Vision -->
+      <div class="col-lg-6">
+        <div class="card h-100 border-0 shadow-lg">
+          <div class="card-body p-4">
+            <div class="text-center mb-4">
+              <mat-icon class="display-1 text-primary">visibility</mat-icon>
+              <h3 class="fw-bold mt-3">Our Vision</h3>
+            </div>
+            <p class="text-muted">
+              To be the leading IT consultancy firm that transforms businesses through innovative technology 
+              solutions and strategic guidance. We envision a future where every organization, regardless of 
+              size, has access to world-class technology expertise that enables them to achieve their full 
+              potential and create lasting value for their stakeholders.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Company Story Section -->
+  <div class="container mb-5">
+    <div class="row">
+      <div class="col-12">
+        <div class="card border-0 shadow-lg">
+          <div class="card-body p-5">
+            <h3 class="fw-bold text-center mb-4">Our Story</h3>
+            <div class="row">
+              <div class="col-lg-8 mx-auto">
+                <p class="text-muted mb-4">
+                  Founded with a passion for technology and a commitment to excellence, our IT consultancy 
+                  has been at the forefront of digital innovation. We started as a small team of technology 
+                  enthusiasts who believed that every business deserves access to high-quality IT solutions.
+                </p>
+                <p class="text-muted mb-4">
+                  Over the years, we have grown into a trusted partner for businesses across various industries, 
+                  helping them navigate the complex world of technology and achieve their digital transformation goals. 
+                  Our success is built on the foundation of strong relationships, technical expertise, and an 
+                  unwavering commitment to client satisfaction.
+                </p>
+                <p class="text-muted">
+                  Today, we continue to evolve and adapt to the ever-changing technology landscape, ensuring 
+                  that our clients always have access to the latest innovations and best practices in the industry.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Our Team Section -->
+  <div class="container">
+    <div class="row text-center mb-4">
+      <div class="col-12">
+        <h3 class="fw-bold">Meet Our Team</h3>
+        <p class="text-muted">The talented professionals who make it all possible</p>
+      </div>
+    </div>
+    
+    <div class="row g-4" *ngIf="team.length > 0">
+      <div class="col-lg-4 col-md-6" *ngFor="let member of team">
+        <div class="card border-0 shadow-lg h-100">
+          <div class="card-body text-center p-4">
+            <div class="mb-3">
+              <img 
+                [src]="member.photoUrl || 'assets/images/default-avatar.jpg'" 
+                [alt]="member.name"
+                class="rounded-circle img-fluid"
+                style="width: 120px; height: 120px; object-fit: cover;">
+            </div>
+            <h5 class="fw-bold mb-2">{{ member.name }}</h5>
+            <p class="text-primary mb-3">{{ member.role }}</p>
+            <a 
+              [href]="member.linkedin" 
+              target="_blank" 
+              class="btn btn-outline-primary btn-sm"
+              *ngIf="member.linkedin">
+              <mat-icon class="me-1" style="font-size: 16px;">link</mat-icon>
+              LinkedIn
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="row" *ngIf="team.length === 0">
+      <div class="col-12 text-center">
+        <p class="text-muted">Our amazing team information will be available soon!</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,312 @@
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4>Contact Enquiries</h4>
+    <div class="d-flex gap-2 align-items-center">
+      <button class="btn btn-outline-primary btn-sm" (click)="refreshEnquiries()">
+        <i class="fas fa-sync-alt me-1"></i>Refresh
+      </button>
+      <span class="badge bg-primary">{{ enquiries.length }} Total Enquiries</span>
+    </div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="card bg-success text-white">
+        <div class="card-body">
+          <h5 class="card-title">Read Enquiries</h5>
+          <h3>{{ readCount }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card bg-warning text-white">
+        <div class="card-body">
+          <h5 class="card-title">Unread Enquiries</h5>
+          <h3>{{ unreadCount }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>Name</th>
+          <th>Company</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Service</th>
+          <th>Subject</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let enquiry of enquiries" 
+            [class]="enquiry.isRead ? '' : 'table-warning'" 
+            [class.quote-row]="isQuoteEnquiry(enquiry)">
+          <td>
+            <strong>{{ enquiry.name }}</strong>
+            <br>
+            <small class="text-muted" *ngIf="!enquiry.isRead">
+              <i class="fas fa-star text-warning"></i> New
+            </small>
+          </td>
+          <td>{{ enquiry.company || 'N/A' }}</td>
+          <td>
+            <a [href]="'mailto:' + enquiry.email" class="text-decoration-none">
+              {{ enquiry.email }}
+            </a>
+          </td>
+          <td>
+            <a [href]="'tel:' + enquiry.phone" class="text-decoration-none" *ngIf="enquiry.phone">
+              {{ enquiry.phone }}
+            </a>
+            <span *ngIf="!enquiry.phone" class="text-muted">N/A</span>
+          </td>
+          <td>
+            <span class="badge bg-info">{{ enquiry.service || 'General' }}</span>
+            <span *ngIf="isQuoteEnquiry(enquiry)" class="badge bg-warning text-dark ms-1">
+              <i class="fas fa-calculator me-1"></i>Quote
+            </span>
+          </td>
+          <td>
+            {{ enquiry.subject }}
+            <div *ngIf="isQuoteEnquiry(enquiry)" class="mt-1">
+              <span *ngIf="parseQuoteMessage(enquiry.message).isUrgent" class="badge bg-danger me-1">
+                <i class="fas fa-exclamation-triangle me-1"></i>Urgent
+              </span>
+              <span *ngIf="parseQuoteMessage(enquiry.message).ongoingSupport" class="badge bg-secondary">
+                <i class="fas fa-tools me-1"></i>Support
+              </span>
+            </div>
+          </td>
+          <td>{{ enquiry.date | date:'mediumDate' }}</td>
+          <td>
+            <span [class]="enquiry.isRead ? 'badge bg-success' : 'badge bg-danger'">
+              {{ enquiry.isRead ? 'Read' : 'Unread' }}
+            </span>
+          </td>
+          <td>
+            <div class="btn-group btn-group-sm" role="group">
+              <button 
+                class="btn btn-outline-primary" 
+                (click)="viewDetails(enquiry)"
+                title="View Details">
+                <i class="fas fa-eye"></i>
+              </button>
+              <button 
+                class="btn btn-outline-secondary" 
+                (click)="toggleStatus(enquiry.id)"
+                title="Toggle Status">
+                <i class="fas" [class]="enquiry.isRead ? 'fa-envelope' : 'fa-envelope-open'"></i>
+              </button>
+              <button 
+                class="btn btn-outline-danger" 
+                (click)="delete(enquiry.id)"
+                title="Delete">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="enquiries.length === 0" class="text-center py-5">
+    <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+    <h5 class="text-muted">No enquiries found</h5>
+    <p class="text-muted">New contact form submissions will appear here.</p>
+  </div>
+
+  <!-- Details Modal -->
+  <div class="modal fade" id="detailsModal" tabindex="-1" *ngIf="selectedEnquiry">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header" [class.bg-warning]="isQuoteEnquiry(selectedEnquiry)" [class.text-dark]="isQuoteEnquiry(selectedEnquiry)">
+          <div>
+            <h5 class="modal-title mb-0">
+              <i class="fas" [class.fa-calculator]="isQuoteEnquiry(selectedEnquiry)" [class.fa-envelope]="!isQuoteEnquiry(selectedEnquiry)"></i>
+              {{ isQuoteEnquiry(selectedEnquiry) ? 'Quote Request Details' : 'Enquiry Details' }}
+              <span *ngIf="isQuoteEnquiry(selectedEnquiry) && parseQuoteMessage(selectedEnquiry.message).isUrgent" class="badge bg-danger ms-2">URGENT</span>
+            </h5>
+            <small *ngIf="isQuoteEnquiry(selectedEnquiry)" class="text-muted">
+              Reference: {{ parseQuoteMessage(selectedEnquiry.message).quoteId }}
+            </small>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        
+        <!-- Regular Enquiry Display -->
+        <div class="modal-body" *ngIf="!isQuoteEnquiry(selectedEnquiry)">
+          <div class="row">
+            <div class="col-md-6">
+              <h6 class="fw-bold">Contact Information</h6>
+              <p><strong>Name:</strong> {{ selectedEnquiry.name }}</p>
+              <p><strong>Email:</strong> 
+                <a [href]="'mailto:' + selectedEnquiry.email">{{ selectedEnquiry.email }}</a>
+              </p>
+              <p *ngIf="selectedEnquiry.phone"><strong>Phone:</strong> 
+                <a [href]="'tel:' + selectedEnquiry.phone">{{ selectedEnquiry.phone }}</a>
+              </p>
+              <p *ngIf="selectedEnquiry.company"><strong>Company:</strong> {{ selectedEnquiry.company }}</p>
+            </div>
+            <div class="col-md-6">
+              <h6 class="fw-bold">Enquiry Information</h6>
+              <p><strong>Subject:</strong> {{ selectedEnquiry.subject }}</p>
+              <p><strong>Service:</strong> 
+                <span class="badge bg-info">{{ selectedEnquiry.service || 'General' }}</span>
+              </p>
+              <p><strong>Date:</strong> {{ selectedEnquiry.date | date:'full' }}</p>
+              <p><strong>Status:</strong> 
+                <span [class]="selectedEnquiry.isRead ? 'badge bg-success' : 'badge bg-danger'">
+                  {{ selectedEnquiry.isRead ? 'Read' : 'Unread' }}
+                </span>
+              </p>
+            </div>
+          </div>
+          <hr>
+          <h6 class="fw-bold">Message</h6>
+          <div class="border rounded p-3 bg-light">
+            <p class="mb-0" style="white-space: pre-wrap;">{{ selectedEnquiry.message }}</p>
+          </div>
+        </div>
+        
+        <!-- Quote Enquiry Display -->
+        <div class="modal-body" *ngIf="isQuoteEnquiry(selectedEnquiry)">
+          <div class="row">
+            <!-- Client Information Card -->
+            <div class="col-md-6 mb-4">
+              <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                  <h6 class="mb-0"><i class="fas fa-user me-2"></i>Client Information</h6>
+                </div>
+                <div class="card-body">
+                  <p><strong>Name:</strong> {{ selectedEnquiry.name }}</p>
+                  <p><strong>Email:</strong> 
+                    <a [href]="'mailto:' + selectedEnquiry.email">{{ selectedEnquiry.email }}</a>
+                  </p>
+                  <p *ngIf="selectedEnquiry.phone"><strong>Phone:</strong> 
+                    <a [href]="'tel:' + selectedEnquiry.phone">{{ selectedEnquiry.phone }}</a>
+                  </p>
+                  <p *ngIf="selectedEnquiry.company"><strong>Company:</strong> {{ selectedEnquiry.company }}</p>
+                  <p><strong>Submission Date:</strong> {{ selectedEnquiry.date | date:'full' }}</p>
+                  <p><strong>Status:</strong> 
+                    <span [class]="selectedEnquiry.isRead ? 'badge bg-success' : 'badge bg-danger'">
+                      {{ selectedEnquiry.isRead ? 'Read' : 'Unread' }}
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Project Overview Card -->
+            <div class="col-md-6 mb-4">
+              <div class="card h-100">
+                <div class="card-header bg-info text-white">
+                  <h6 class="mb-0"><i class="fas fa-project-diagram me-2"></i>Project Overview</h6>
+                </div>
+                <div class="card-body">
+                  <p><strong>Project Type:</strong> {{ parseQuoteMessage(selectedEnquiry.message).projectType }}</p>
+                  <p><strong>Timeline:</strong> {{ parseQuoteMessage(selectedEnquiry.message).timeline }}</p>
+                  <p><strong>Budget Range:</strong> {{ parseQuoteMessage(selectedEnquiry.message).budget }}</p>
+                  <p *ngIf="parseQuoteMessage(selectedEnquiry.message).ongoingSupport">
+                    <span class="badge bg-secondary"><i class="fas fa-tools me-1"></i>Ongoing Support Required</span>
+                  </p>
+                  <p *ngIf="parseQuoteMessage(selectedEnquiry.message).isUrgent">
+                    <span class="badge bg-danger"><i class="fas fa-exclamation-triangle me-1"></i>Urgent Project</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <!-- Service Information Card -->
+            <div class="col-md-6 mb-4" *ngIf="parseQuoteMessage(selectedEnquiry.message).selectedService">
+              <div class="card h-100">
+                <div class="card-header bg-success text-white">
+                  <h6 class="mb-0"><i class="fas fa-cogs me-2"></i>Selected Service</h6>
+                </div>
+                <div class="card-body">
+                  <p><strong>Service:</strong> {{ parseQuoteMessage(selectedEnquiry.message).selectedService }}</p>
+                  <p><strong>Category:</strong> {{ parseQuoteMessage(selectedEnquiry.message).serviceCategory }}</p>
+                  <p><strong>Base Price:</strong> {{ parseQuoteMessage(selectedEnquiry.message).basePrice }}</p>
+                  <p><strong>Duration:</strong> {{ parseQuoteMessage(selectedEnquiry.message).duration }}</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Quick Actions Card -->
+            <div class="col-md-6 mb-4">
+              <div class="card h-100">
+                <div class="card-header bg-warning text-dark">
+                  <h6 class="mb-0"><i class="fas fa-bolt me-2"></i>Quick Actions</h6>
+                </div>
+                <div class="card-body d-flex flex-column">
+                  <a class="btn btn-primary mb-2" [href]="'mailto:' + selectedEnquiry.email">
+                    <i class="fas fa-envelope me-2"></i>Send Email Response
+                  </a>
+                  <a class="btn btn-success mb-2" *ngIf="selectedEnquiry.phone" [href]="'tel:' + selectedEnquiry.phone">
+                    <i class="fas fa-phone me-2"></i>Call Client
+                  </a>
+                  <button class="btn btn-info mb-2" (click)="markAsRead(selectedEnquiry.id)" *ngIf="!selectedEnquiry.isRead">
+                    <i class="fas fa-check me-2"></i>Mark as Read
+                  </button>
+                  <div class="mt-auto">
+                    <small class="text-muted">
+                      <strong>Quote ID:</strong> {{ parseQuoteMessage(selectedEnquiry.message).quoteId }}
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Project Details Section -->
+          <div class="row">
+            <div class="col-12 mb-4">
+              <div class="card">
+                <div class="card-header bg-dark text-white">
+                  <h6 class="mb-0"><i class="fas fa-file-alt me-2"></i>Project Details</h6>
+                </div>
+                <div class="card-body">
+                  <p style="white-space: pre-wrap;">{{ parseQuoteMessage(selectedEnquiry.message).projectDetails }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Additional Requirements Section -->
+          <div class="row" *ngIf="parseQuoteMessage(selectedEnquiry.message).additionalRequirements">
+            <div class="col-12 mb-4">
+              <div class="card">
+                <div class="card-header bg-secondary text-white">
+                  <h6 class="mb-0"><i class="fas fa-plus-circle me-2"></i>Additional Requirements</h6>
+                </div>
+                <div class="card-body">
+                  <p style="white-space: pre-wrap;">{{ parseQuoteMessage(selectedEnquiry.message).additionalRequirements }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="markAsRead(selectedEnquiry.id)" *ngIf="!selectedEnquiry.isRead">
+            <i class="fas fa-check me-2"></i>Mark as Read
+          </button>
+          <a class="btn btn-success" [href]="'mailto:' + selectedEnquiry.email">
+            <i class="fas fa-reply me-2"></i>Reply via Email
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

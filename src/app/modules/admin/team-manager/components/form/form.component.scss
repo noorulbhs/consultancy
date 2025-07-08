@@ -1,0 +1,351 @@
+// Team Member Form Styles
+.container-fluid {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+// Card Styling
+.card {
+  border: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+  
+  .card-header {
+    border: none;
+    padding: 1rem 1.5rem;
+    
+    h5 {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    
+    &.bg-primary {
+      background: linear-gradient(135deg, #007bff 0%, #0056b3 100%) !important;
+    }
+    
+    &.bg-success {
+      background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%) !important;
+    }
+    
+    &.bg-info {
+      background: linear-gradient(135deg, #17a2b8 0%, #117a8b 100%) !important;
+    }
+    
+    &.bg-warning {
+      background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%) !important;
+    }
+    
+    &.bg-secondary {
+      background: linear-gradient(135deg, #6c757d 0%, #545b62 100%) !important;
+    }
+    
+    &.bg-dark {
+      background: linear-gradient(135deg, #343a40 0%, #23272b 100%) !important;
+    }
+  }
+  
+  .card-body {
+    padding: 1.5rem;
+  }
+}
+
+// Form Styling
+.form-label {
+  color: #495057;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  
+  &.fw-bold {
+    font-weight: 600;
+  }
+}
+
+.form-control, .form-select {
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  
+  &:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.1);
+  }
+  
+  &.is-invalid {
+    border-color: #dc3545;
+    
+    &:focus {
+      border-color: #dc3545;
+      box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.1);
+    }
+  }
+}
+
+.form-text {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-top: 0.25rem;
+}
+
+.invalid-feedback {
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+// Form Check Styling
+.form-check {
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 2px solid #e9ecef;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    border-color: #007bff;
+    background: #f0f8ff;
+  }
+  
+  .form-check-input {
+    margin-top: 0.125rem;
+    
+    &:checked {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+  }
+  
+  .form-check-label {
+    margin-left: 0.5rem;
+    
+    &.fw-bold {
+      font-weight: 600;
+    }
+  }
+}
+
+// Button Styling
+.btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  
+  &.btn-primary {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    border: none;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+    }
+    
+    &:disabled {
+      opacity: 0.6;
+      transform: none;
+      box-shadow: none;
+    }
+  }
+  
+  &.btn-outline-secondary {
+    border: 2px solid #6c757d;
+    color: #6c757d;
+    
+    &:hover {
+      background: #6c757d;
+      transform: translateY(-2px);
+    }
+  }
+  
+  &.btn-outline-info {
+    border: 2px solid #17a2b8;
+    color: #17a2b8;
+    
+    &:hover {
+      background: #17a2b8;
+      transform: translateY(-2px);
+    }
+  }
+}
+
+// Live Preview Styles
+.team-member-card {
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  
+  .member-photo-container {
+    position: relative;
+    text-align: center;
+    padding: 1.5rem 1.5rem 0;
+    
+    .member-photo {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #e9ecef;
+      transition: all 0.3s ease;
+    }
+    
+    .member-status {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: #fff;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      
+      i {
+        font-size: 0.9rem;
+      }
+    }
+  }
+  
+  .member-info {
+    .member-name {
+      font-weight: 600;
+      color: #333;
+      font-size: 1.1rem;
+    }
+    
+    .member-role {
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+    
+    .member-department {
+      font-size: 0.85rem;
+    }
+    
+    .member-bio {
+      color: #666;
+      line-height: 1.5;
+    }
+    
+    .skills-tags {
+      .badge {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 12px;
+      }
+    }
+    
+    .member-social {
+      a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #f8f9fa;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        i {
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .container-fluid {
+    padding: 0.5rem;
+  }
+  
+  .card {
+    margin-bottom: 1rem;
+    
+    .card-body {
+      padding: 1rem;
+    }
+  }
+  
+  .row {
+    margin: 0;
+    
+    [class*="col-"] {
+      padding: 0.25rem;
+    }
+  }
+  
+  .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+
+// Animation for form sections
+.card {
+  animation: slideInUp 0.5s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Focus states for better accessibility
+.form-control:focus,
+.form-select:focus,
+.btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+
+// Loading states
+.btn:disabled {
+  cursor: not-allowed;
+  
+  &::after {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 0.5rem;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Error state styling
+.is-invalid {
+  animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}

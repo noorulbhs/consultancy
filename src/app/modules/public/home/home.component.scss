@@ -1,0 +1,39 @@
+.home-page {
+  min-height: 100vh;
+  margin: 0; // Remove any default margin
+  padding: 0; // Remove any default padding
+  
+  // Ensure proper spacing between sections
+  section {
+    position: relative;
+  }
+  
+  // Smooth scrolling behavior
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  // Add visual separation between sections
+  app-servicesprovided,
+  app-why-choose-us,
+  app-stats,
+  app-featured-team,
+  app-testimonials,
+  app-cta {
+    display: block;
+    position: relative;
+  }
+  
+  // Add some breathing room
+  app-servicesprovided::after,
+  app-why-choose-us::after,
+  app-featured-team::after {
+    content: '';
+    display: block;
+    height: 2rem;
+  }
+}
+
+main {
+  padding-bottom: 60px;
+}

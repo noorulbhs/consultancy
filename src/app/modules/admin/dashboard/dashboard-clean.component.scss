@@ -1,0 +1,987 @@
+// ====================================
+// ADMIN DASHBOARD STYLES - IMPROVED
+// ====================================
+
+.dashboard-container {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+  padding: 1.5rem;
+  
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+// ====================================
+// HEADER SECTION
+// ====================================
+.dashboard-header {
+  margin-bottom: 2rem;
+  
+  .header-content {
+    .welcome-section {
+      .dashboard-title {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        
+        .title-gradient {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+        
+        @media (max-width: 768px) {
+          font-size: 1.5rem;
+        }
+      }
+      
+      .dashboard-subtitle {
+        color: #6c757d;
+        font-size: 1rem;
+        margin-bottom: 0;
+        
+        @media (max-width: 768px) {
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+  
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    
+    .time-widget {
+      .time-display {
+        background: white;
+        padding: 0.75rem 1rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        text-align: center;
+        
+        .current-date {
+          font-size: 0.8rem;
+          color: #6c757d;
+          margin-bottom: 0.2rem;
+        }
+        
+        .current-time {
+          font-size: 1rem;
+          font-weight: 600;
+          color: #2c3e50;
+        }
+      }
+    }
+    
+    .action-buttons {
+      display: flex;
+      gap: 0.5rem;
+      
+      .btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        background: white;
+        color: #6c757d;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+          color: #667eea;
+        }
+        
+        .notification-badge {
+          position: absolute;
+          top: -5px;
+          right: -5px;
+          background: #dc3545;
+          color: white;
+          font-size: 0.7rem;
+          padding: 0.2rem 0.4rem;
+          border-radius: 50%;
+          min-width: 18px;
+          height: 18px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+  }
+}
+
+// ====================================
+// SECTION HEADERS
+// ====================================
+.section-header {
+  .section-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.3rem;
+    
+    @media (max-width: 768px) {
+      font-size: 1.2rem;
+    }
+  }
+  
+  .section-subtitle {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 0;
+  }
+}
+
+// ====================================
+// STATISTICS CARDS
+// ====================================
+.stats-section {
+  .stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.2rem;
+    height: 100%;
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    
+    &.clickable {
+      cursor: pointer;
+      
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      }
+    }
+    
+    .stat-card-inner {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      
+      .stat-icon-container {
+        margin-right: 1rem;
+        
+        .stat-icon {
+          width: 50px;
+          height: 50px;
+          border-radius: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.2rem;
+          color: white;
+        }
+      }
+      
+      .stat-content {
+        flex: 1;
+        
+        .stat-value {
+          font-size: 1.8rem;
+          font-weight: 700;
+          line-height: 1;
+          margin-bottom: 0.3rem;
+        }
+        
+        .stat-title {
+          font-size: 0.85rem;
+          font-weight: 500;
+          color: #6c757d;
+          margin-bottom: 0.5rem;
+        }
+        
+        .stat-change {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          
+          .change-indicator {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.2rem 0.5rem;
+            border-radius: 20px;
+            
+            &.positive {
+              background: #d4edda;
+              color: #155724;
+            }
+            
+            &.negative {
+              background: #f8d7da;
+              color: #721c24;
+            }
+            
+            &.neutral {
+              background: #e2e3e5;
+              color: #383d41;
+            }
+            
+            i {
+              margin-right: 0.2rem;
+            }
+          }
+          
+          .change-label {
+            font-size: 0.7rem;
+            color: #6c757d;
+          }
+        }
+      }
+      
+      .stat-decoration {
+        color: #dee2e6;
+        font-size: 1rem;
+      }
+    }
+  }
+}
+
+// ====================================
+// SECTION CARDS
+// ====================================
+.section-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  }
+  
+  .section-card-header {
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid #f1f3f4;
+    background: #fafbfc;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    .header-content {
+      .section-card-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        
+        i {
+          color: #667eea;
+        }
+      }
+      
+      .section-card-subtitle {
+        font-size: 0.8rem;
+        color: #6c757d;
+        margin-bottom: 0;
+      }
+    }
+    
+    .header-badge {
+      .activity-count {
+        background: #667eea;
+        color: white;
+        padding: 0.3rem 0.6rem;
+        border-radius: 15px;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+    }
+  }
+  
+  .section-card-body {
+    padding: 1.5rem;
+  }
+}
+
+// ====================================
+// QUICK ACTIONS
+// ====================================
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  
+  .quick-action-item {
+    background: white;
+    padding: 1.2rem;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      
+      .quick-action-icon {
+        transform: scale(1.1);
+      }
+    }
+    
+    .quick-action-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.8rem;
+      color: white;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+    
+    .quick-action-title {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #2c3e50;
+      line-height: 1.3;
+    }
+  }
+}
+
+// ====================================
+// ACTIVITIES
+// ====================================
+.activities-list {
+  .activity-item {
+    display: flex;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f1f3f4;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: #f8f9fa;
+      margin: 0 -1rem;
+      padding: 1rem;
+      border-radius: 8px;
+    }
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    .activity-timeline-marker {
+      margin-right: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      
+      .activity-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        color: white;
+        margin-bottom: 0.5rem;
+      }
+      
+      .timeline-line {
+        width: 2px;
+        height: 30px;
+        background: #e9ecef;
+      }
+    }
+    
+    .activity-content {
+      flex: 1;
+      
+      .activity-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        
+        .activity-title {
+          font-size: 0.9rem;
+          font-weight: 600;
+          color: #2c3e50;
+          margin-bottom: 0;
+        }
+        
+        .activity-status {
+          font-size: 0.7rem;
+          padding: 0.2rem 0.5rem;
+          border-radius: 10px;
+          font-weight: 500;
+          
+          &.status-success {
+            background: #d4edda;
+            color: #155724;
+          }
+          
+          &.status-warning {
+            background: #fff3cd;
+            color: #856404;
+          }
+          
+          &.status-info {
+            background: #d1ecf1;
+            color: #0c5460;
+          }
+          
+          &.status-primary {
+            background: #cce5ff;
+            color: #004085;
+          }
+        }
+      }
+      
+      .activity-description {
+        font-size: 0.8rem;
+        color: #6c757d;
+        line-height: 1.4;
+        margin-bottom: 0.5rem;
+      }
+      
+      .activity-meta {
+        display: flex;
+        gap: 1rem;
+        
+        .activity-user,
+        .activity-time {
+          display: flex;
+          align-items: center;
+          gap: 0.3rem;
+          font-size: 0.7rem;
+          color: #adb5bd;
+          
+          i {
+            font-size: 0.6rem;
+          }
+        }
+      }
+    }
+  }
+  
+  .activities-footer {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #f1f3f4;
+    
+    .btn-view-all {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      color: #6c757d;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        background: #667eea;
+        color: white;
+        border-color: #667eea;
+      }
+      
+      i {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+}
+
+// ====================================
+// PERFORMANCE METRICS
+// ====================================
+.metrics-list {
+  .metric-item {
+    padding: 1rem 0;
+    border-bottom: 1px solid #f1f3f4;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    .metric-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.8rem;
+      
+      .metric-icon {
+        width: 35px;
+        height: 35px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        color: white;
+        margin-right: 0.8rem;
+      }
+      
+      .metric-info {
+        flex: 1;
+        
+        .metric-title {
+          font-size: 0.85rem;
+          font-weight: 600;
+          color: #2c3e50;
+          margin-bottom: 0.2rem;
+        }
+        
+        .metric-target {
+          font-size: 0.7rem;
+          color: #6c757d;
+        }
+      }
+      
+      .metric-trend {
+        color: #28a745;
+        font-size: 0.8rem;
+      }
+    }
+    
+    .metric-progress {
+      .progress-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        
+        .current-value {
+          font-size: 0.9rem;
+          font-weight: 600;
+        }
+        
+        .progress-percentage {
+          font-size: 0.8rem;
+          color: #6c757d;
+        }
+      }
+      
+      .progress-bar-container {
+        height: 6px;
+        background: #f1f3f4;
+        border-radius: 3px;
+        overflow: hidden;
+        
+        .progress-bar {
+          height: 100%;
+          border-radius: 3px;
+          transition: width 0.3s ease;
+        }
+      }
+    }
+  }
+}
+
+// ====================================
+// CHARTS
+// ====================================
+.chart-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  
+  .chart-header {
+    padding: 1rem 1.2rem;
+    background: #fafbfc;
+    border-bottom: 1px solid #f1f3f4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    .chart-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      
+      i {
+        color: #667eea;
+      }
+    }
+    
+    .chart-controls {
+      .btn-chart-control {
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        border: none;
+        background: #f8f9fa;
+        color: #6c757d;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        
+        &:hover {
+          background: #667eea;
+          color: white;
+        }
+      }
+    }
+  }
+  
+  .chart-body {
+    padding: 1.5rem;
+    
+    .chart-placeholder {
+      text-align: center;
+      padding: 2rem;
+      
+      .chart-icon {
+        width: 60px;
+        height: 60px;
+        background: #f8f9fa;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        color: #6c757d;
+        font-size: 1.5rem;
+      }
+      
+      h4 {
+        font-size: 1rem;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+      }
+      
+      p {
+        color: #6c757d;
+        font-size: 0.8rem;
+        margin-bottom: 1rem;
+      }
+      
+      .chart-data-preview {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        
+        .data-point {
+          background: #e9ecef;
+          padding: 0.3rem 0.6rem;
+          border-radius: 15px;
+          font-size: 0.7rem;
+          color: #6c757d;
+        }
+      }
+    }
+  }
+}
+
+// ====================================
+// PROJECTS
+// ====================================
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+  
+  .project-card {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: white;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .project-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 1rem;
+      
+      .project-info {
+        .project-name {
+          font-size: 0.9rem;
+          font-weight: 600;
+          color: #2c3e50;
+          margin-bottom: 0.2rem;
+        }
+        
+        .project-client {
+          font-size: 0.75rem;
+          color: #6c757d;
+          margin-bottom: 0;
+        }
+      }
+      
+      .project-status {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+      }
+    }
+    
+    .project-progress {
+      margin-bottom: 1rem;
+      
+      .progress-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.5rem;
+        
+        .progress-label {
+          font-size: 0.75rem;
+          color: #6c757d;
+        }
+        
+        .progress-value {
+          font-size: 0.75rem;
+          font-weight: 600;
+          color: #2c3e50;
+        }
+      }
+      
+      .progress-bar-container {
+        height: 6px;
+        background: #e9ecef;
+        border-radius: 3px;
+        overflow: hidden;
+        
+        .progress-bar {
+          height: 100%;
+          border-radius: 3px;
+          transition: width 0.3s ease;
+        }
+      }
+    }
+    
+    .project-footer {
+      display: flex;
+      justify-content: space-between;
+      
+      .project-deadline,
+      .project-team {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-size: 0.7rem;
+        color: #6c757d;
+        
+        i {
+          font-size: 0.6rem;
+        }
+      }
+    }
+  }
+}
+
+// ====================================
+// HEALTH & CLIENT METRICS
+// ====================================
+.health-metrics {
+  .health-metric {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #f1f3f4;
+    
+    &:last-child {
+      border-bottom: none;
+    }
+    
+    &.primary {
+      .metric-icon {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      }
+    }
+    
+    .metric-icon {
+      width: 35px;
+      height: 35px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #6c757d 0%, #adb5bd 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.9rem;
+      margin-right: 0.8rem;
+    }
+    
+    .metric-info {
+      flex: 1;
+      
+      .metric-value {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.2rem;
+      }
+      
+      .metric-label {
+        font-size: 0.7rem;
+        color: #6c757d;
+      }
+    }
+  }
+  
+  .health-stats {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #f1f3f4;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    
+    .stat-item {
+      text-align: center;
+      
+      .stat-label {
+        font-size: 0.65rem;
+        color: #6c757d;
+        margin-bottom: 0.2rem;
+      }
+      
+      .stat-value {
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+.client-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  
+  .client-metric {
+    text-align: center;
+    
+    .metric-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+      
+      &.primary {
+        color: #667eea;
+      }
+      
+      &.success {
+        color: #28a745;
+      }
+      
+      &.info {
+        color: #17a2b8;
+      }
+      
+      &.warning {
+        color: #ffc107;
+      }
+    }
+    
+    .metric-label {
+      font-size: 0.7rem;
+      color: #6c757d;
+      font-weight: 500;
+    }
+  }
+}
+
+// ====================================
+// RESPONSIVE DESIGN
+// ====================================
+@media (max-width: 1200px) {
+  .quick-actions-grid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+  
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-header {
+    .header-actions {
+      flex-direction: column;
+      gap: 0.5rem;
+      
+      .time-widget .time-display {
+        padding: 0.5rem 0.8rem;
+      }
+    }
+  }
+  
+  .stats-section .stat-card .stat-card-inner {
+    flex-direction: column;
+    text-align: center;
+    
+    .stat-icon-container {
+      margin-right: 0;
+      margin-bottom: 0.8rem;
+    }
+  }
+  
+  .quick-actions-grid {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  }
+  
+  .section-card .section-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .activity-item {
+    .activity-timeline-marker {
+      margin-right: 0.5rem;
+      
+      .activity-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 0.8rem;
+      }
+    }
+  }
+  
+  .client-metrics {
+    grid-template-columns: 1fr;
+  }
+  
+  .health-stats {
+    grid-template-columns: 1fr;
+    text-align: left;
+    
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .chart-card .chart-body .chart-placeholder {
+    padding: 1rem;
+    
+    .chart-data-preview {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}

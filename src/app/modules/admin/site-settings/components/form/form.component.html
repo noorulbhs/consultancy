@@ -1,0 +1,517 @@
+<div class="settings-container">
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="mb-1">Site Settings</h2>
+      <p class="text-muted mb-0">Manage your website configuration and content</p>
+    </div>
+    <div class="d-flex gap-2">
+      <button type="button" class="btn btn-outline-secondary" (click)="onReset()" [disabled]="loading">
+        <i class="fas fa-undo me-2"></i>Reset to Default
+      </button>
+      <button type="button" class="btn btn-outline-info" (click)="validateForm()" [disabled]="loading">
+        <i class="fas fa-check-circle me-2"></i>Validate Form
+      </button>
+      <button type="submit" form="settingsForm" class="btn btn-primary" [disabled]="loading || form.invalid">
+        <i class="fas fa-save me-2"></i>
+        <span *ngIf="loading">Saving...</span>
+        <span *ngIf="!loading">Save Settings</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Success/Error Messages -->
+  <div *ngIf="message" class="alert" [ngClass]="{'alert-success': messageType === 'success', 'alert-danger': messageType === 'error'}" role="alert">
+    <i class="fas" [ngClass]="{'fa-check-circle': messageType === 'success', 'fa-exclamation-triangle': messageType === 'error'}"></i>
+    {{ message }}
+  </div>
+
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Settings Form -->
+  <div *ngIf="!loading" class="row">
+    <!-- Sidebar Navigation -->
+    <div class="col-lg-3 col-md-4 mb-4">
+      <div class="nav nav-pills flex-column settings-nav" role="tablist">
+        <button *ngFor="let tab of tabs" 
+                type="button" 
+                class="nav-link text-start mb-2" 
+                [class.active]="activeTab === tab.id"
+                (click)="setActiveTab(tab.id)">
+          <i [class]="tab.icon + ' me-2'"></i>
+          {{ tab.label }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Form Content -->
+    <div class="col-lg-9 col-md-8">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" id="settingsForm" class="settings-form">
+        
+        <!-- Company Information Tab -->
+        <div *ngIf="activeTab === 'company'" class="tab-content">
+          <h4 class="mb-4">Company Information</h4>
+          
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Company Name <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" formControlName="companyName" 
+                       [class.is-invalid]="isFieldInvalid('companyName')">
+                <div class="invalid-feedback">{{ getFieldError('companyName') }}</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Tagline <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" formControlName="tagline" 
+                       [class.is-invalid]="isFieldInvalid('tagline')">
+                <div class="invalid-feedback">{{ getFieldError('tagline') }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Company Description <span class="text-danger">*</span></label>
+            <textarea class="form-control" rows="3" formControlName="description" 
+                      [class.is-invalid]="isFieldInvalid('description')"></textarea>
+            <div class="invalid-feedback">{{ getFieldError('description') }}</div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Logo URL <span class="text-danger">*</span></label>
+                <input type="url" class="form-control" formControlName="logoUrl" 
+                       [class.is-invalid]="isFieldInvalid('logoUrl')">
+                <div class="invalid-feedback">{{ getFieldError('logoUrl') }}</div>
+                <div *ngIf="logoPreview" class="mt-2">
+                  <img [src]="logoPreview" alt="Logo Preview" class="img-thumbnail" style="max-height: 60px;">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Favicon URL</label>
+                <input type="url" class="form-control" formControlName="faviconUrl">
+                <div *ngIf="faviconPreview" class="mt-2">
+                  <img [src]="faviconPreview" alt="Favicon Preview" class="img-thumbnail" style="max-height: 32px;">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Details Tab -->
+        <div *ngIf="activeTab === 'contact'" class="tab-content">
+          <h4 class="mb-4">Contact Details</h4>
+          
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Primary Email <span class="text-danger">*</span></label>
+                <input type="email" class="form-control" formControlName="email" 
+                       [class.is-invalid]="isFieldInvalid('email')">
+                <div class="invalid-feedback">{{ getFieldError('email') }}</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Primary Phone <span class="text-danger">*</span></label>
+                <input type="tel" class="form-control" formControlName="phone" 
+                       [class.is-invalid]="isFieldInvalid('phone')">
+                <div class="invalid-feedback">{{ getFieldError('phone') }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Alternate Phone</label>
+            <input type="tel" class="form-control" formControlName="alternatePhone">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Address <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" formControlName="address" 
+                   [class.is-invalid]="isFieldInvalid('address')">
+            <div class="invalid-feedback">{{ getFieldError('address') }}</div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-3">
+              <div class="mb-3">
+                <label class="form-label">City <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" formControlName="city" 
+                       [class.is-invalid]="isFieldInvalid('city')">
+                <div class="invalid-feedback">{{ getFieldError('city') }}</div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="mb-3">
+                <label class="form-label">State <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" formControlName="state" 
+                       [class.is-invalid]="isFieldInvalid('state')">
+                <div class="invalid-feedback">{{ getFieldError('state') }}</div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="mb-3">
+                <label class="form-label">Country <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" formControlName="country" 
+                       [class.is-invalid]="isFieldInvalid('country')">
+                <div class="invalid-feedback">{{ getFieldError('country') }}</div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="mb-3">
+                <label class="form-label">Zip Code <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" formControlName="zipCode" 
+                       [class.is-invalid]="isFieldInvalid('zipCode')">
+                <div class="invalid-feedback">{{ getFieldError('zipCode') }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Business Hours -->
+          <h5 class="mt-4 mb-3">Business Hours</h5>
+          <div formGroupName="businessHours" class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Monday</label>
+                <input type="text" class="form-control" formControlName="monday">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Tuesday</label>
+                <input type="text" class="form-control" formControlName="tuesday">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Wednesday</label>
+                <input type="text" class="form-control" formControlName="wednesday">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Thursday</label>
+                <input type="text" class="form-control" formControlName="thursday">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Friday</label>
+                <input type="text" class="form-control" formControlName="friday">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Saturday</label>
+                <input type="text" class="form-control" formControlName="saturday">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Sunday</label>
+                <input type="text" class="form-control" formControlName="sunday">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Social Media Tab -->
+        <div *ngIf="activeTab === 'social'" class="tab-content">
+          <h4 class="mb-4">Social Media Links</h4>
+          
+          <div formGroupName="social" class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label"><i class="fab fa-linkedin text-primary me-2"></i>LinkedIn</label>
+                <input type="url" class="form-control" formControlName="linkedin" 
+                       placeholder="https://linkedin.com/company/your-company">
+              </div>
+              <div class="mb-3">
+                <label class="form-label"><i class="fab fa-twitter text-info me-2"></i>Twitter</label>
+                <input type="url" class="form-control" formControlName="twitter" 
+                       placeholder="https://twitter.com/your-company">
+              </div>
+              <div class="mb-3">
+                <label class="form-label"><i class="fab fa-facebook text-primary me-2"></i>Facebook</label>
+                <input type="url" class="form-control" formControlName="facebook" 
+                       placeholder="https://facebook.com/your-company">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label"><i class="fab fa-instagram text-danger me-2"></i>Instagram</label>
+                <input type="url" class="form-control" formControlName="instagram" 
+                       placeholder="https://instagram.com/your-company">
+              </div>
+              <div class="mb-3">
+                <label class="form-label"><i class="fab fa-youtube text-danger me-2"></i>YouTube</label>
+                <input type="url" class="form-control" formControlName="youtube" 
+                       placeholder="https://youtube.com/@your-company">
+              </div>
+              <div class="mb-3">
+                <label class="form-label"><i class="fab fa-github text-dark me-2"></i>GitHub</label>
+                <input type="url" class="form-control" formControlName="github" 
+                       placeholder="https://github.com/your-company">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- General Settings Tab -->
+        <div *ngIf="activeTab === 'general'" class="tab-content">
+          <h4 class="mb-4">General Settings</h4>
+          
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Theme</label>
+                <select class="form-select" formControlName="theme">
+                  <option value="light">Light</option>
+                  <option value="dark">Dark</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" formControlName="maintenanceMode" id="maintenanceMode">
+                  <label class="form-check-label" for="maintenanceMode">
+                    Maintenance Mode
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Maintenance Message</label>
+            <textarea class="form-control" rows="3" formControlName="maintenanceMessage"></textarea>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Primary Color</label>
+                <input type="color" class="form-control form-control-color" formControlName="primaryColor">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label">Secondary Color</label>
+                <input type="color" class="form-control form-control-color" formControlName="secondaryColor">
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Form Settings -->
+          <h5 class="mt-4 mb-3">Contact Form Settings</h5>
+          <div formGroupName="contactForm">
+            <div class="mb-3">
+              <label class="form-label">Recipient Email <span class="text-danger">*</span></label>
+              <input type="email" class="form-control" formControlName="recipientEmail" 
+                     [class.is-invalid]="isFieldInvalid('contactForm.recipientEmail')">
+              <div class="invalid-feedback">{{ getFieldError('contactForm.recipientEmail') }}</div>
+            </div>
+
+            <div class="mb-3">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" formControlName="autoReplyEnabled" id="autoReplyEnabled">
+                <label class="form-check-label" for="autoReplyEnabled">
+                  Enable Auto Reply
+                </label>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Auto Reply Subject</label>
+              <input type="text" class="form-control" formControlName="autoReplySubject">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Auto Reply Message</label>
+              <textarea class="form-control" rows="3" formControlName="autoReplyMessage"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- SEO Settings Tab -->
+        <div *ngIf="activeTab === 'seo'" class="tab-content">
+          <h4 class="mb-4">SEO Settings</h4>
+          
+          <div formGroupName="seo">
+            <div class="mb-3">
+              <label class="form-label">Meta Title <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="metaTitle" 
+                     [class.is-invalid]="isFieldInvalid('seo.metaTitle')">
+              <div class="invalid-feedback">{{ getFieldError('seo.metaTitle') }}</div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Meta Description <span class="text-danger">*</span></label>
+              <textarea class="form-control" rows="3" formControlName="metaDescription" 
+                        [class.is-invalid]="isFieldInvalid('seo.metaDescription')"></textarea>
+              <div class="invalid-feedback">{{ getFieldError('seo.metaDescription') }}</div>
+            </div>
+
+            <!-- Keywords -->
+            <div class="mb-3">
+              <label class="form-label">SEO Keywords</label>
+              <div formArrayName="keywords">
+                <div *ngFor="let keyword of keywords.controls; let i = index" class="d-flex mb-2">
+                  <input type="text" class="form-control" [formControlName]="i" placeholder="Enter keyword">
+                  <button type="button" class="btn btn-outline-danger ms-2" (click)="removeKeyword(i)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+              <button type="button" class="btn btn-outline-primary btn-sm" (click)="addKeyword()">
+                <i class="fas fa-plus me-2"></i>Add Keyword
+              </button>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Google Analytics ID</label>
+                  <input type="text" class="form-control" formControlName="googleAnalyticsId" 
+                         placeholder="GA-XXXXXXXXX">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Facebook Pixel ID</label>
+                  <input type="text" class="form-control" formControlName="facebookPixelId" 
+                         placeholder="FB-XXXXXXXXX">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer Settings Tab -->
+        <div *ngIf="activeTab === 'footer'" class="tab-content">
+          <h4 class="mb-4">Footer Settings</h4>
+          
+          <div formGroupName="footer">
+            <div class="mb-4">
+              <label class="form-label">Copyright Text <span class="text-danger">*</span></label>
+              <input type="text" class="form-control" formControlName="copyrightText" 
+                     [class.is-invalid]="isFieldInvalid('footer.copyrightText')">
+              <div class="invalid-feedback">{{ getFieldError('footer.copyrightText') }}</div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="mb-4">
+              <h5>Quick Links</h5>
+              <div formArrayName="quickLinks">
+                <div *ngFor="let link of getFooterLinks('quickLinks').controls; let i = index" 
+                     [formGroupName]="i" class="row mb-2">
+                  <div class="col-md-5">
+                    <input type="text" class="form-control" formControlName="title" placeholder="Link Title">
+                  </div>
+                  <div class="col-md-5">
+                    <input type="text" class="form-control" formControlName="url" placeholder="Link URL">
+                  </div>
+                  <div class="col-md-2">
+                    <button type="button" class="btn btn-outline-danger" (click)="removeFooterLink('quickLinks', i)">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="btn btn-outline-primary btn-sm" (click)="addFooterLink('quickLinks')">
+                <i class="fas fa-plus me-2"></i>Add Quick Link
+              </button>
+            </div>
+
+            <!-- Services Links -->
+            <div class="mb-4">
+              <h5>Services Links</h5>
+              <div formArrayName="services">
+                <div *ngFor="let link of getFooterLinks('services').controls; let i = index" 
+                     [formGroupName]="i" class="row mb-2">
+                  <div class="col-md-5">
+                    <input type="text" class="form-control" formControlName="title" placeholder="Service Title">
+                  </div>
+                  <div class="col-md-5">
+                    <input type="text" class="form-control" formControlName="url" placeholder="Service URL">
+                  </div>
+                  <div class="col-md-2">
+                    <button type="button" class="btn btn-outline-danger" (click)="removeFooterLink('services', i)">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="btn btn-outline-primary btn-sm" (click)="addFooterLink('services')">
+                <i class="fas fa-plus me-2"></i>Add Service Link
+              </button>
+            </div>
+
+            <!-- About Links -->
+            <div class="mb-4">
+              <h5>About Links</h5>
+              <div formArrayName="aboutLinks">
+                <div *ngFor="let link of getFooterLinks('aboutLinks').controls; let i = index" 
+                     [formGroupName]="i" class="row mb-2">
+                  <div class="col-md-5">
+                    <input type="text" class="form-control" formControlName="title" placeholder="About Title">
+                  </div>
+                  <div class="col-md-5">
+                    <input type="text" class="form-control" formControlName="url" placeholder="About URL">
+                  </div>
+                  <div class="col-md-2">
+                    <button type="button" class="btn btn-outline-danger" (click)="removeFooterLink('aboutLinks', i)">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <button type="button" class="btn btn-outline-primary btn-sm" (click)="addFooterLink('aboutLinks')">
+                <i class="fas fa-plus me-2"></i>Add About Link
+              </button>
+            </div>
+          </div>
+
+          <!-- Footer Preview -->
+          <div class="mt-4">
+            <h5>Footer Preview</h5>
+            <div class="border rounded p-3 bg-light">
+              <div class="row">
+                <div class="col-md-4">
+                  <h6>Quick Links</h6>
+                  <ul class="list-unstyled">
+                    <li *ngFor="let link of getFooterLinks('quickLinks').controls" class="mb-1">
+                      <small class="text-muted">• {{ link.get('title')?.value || 'Link Title' }}</small>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-md-4">
+                  <h6>Services</h6>
+                  <ul class="list-unstyled">
+                    <li *ngFor="let link of getFooterLinks('services').controls" class="mb-1">
+                      <small class="text-muted">• {{ link.get('title')?.value || 'Service Title' }}</small>
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-md-4">
+                  <h6>About</h6>
+                  <ul class="list-unstyled">
+                    <li *ngFor="let link of getFooterLinks('aboutLinks').controls" class="mb-1">
+                      <small class="text-muted">• {{ link.get('title')?.value || 'About Title' }}</small>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <hr>
+              <div class="text-center">
+                <small class="text-muted">{{ form.get('footer.copyrightText')?.value || 'Copyright text will appear here' }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

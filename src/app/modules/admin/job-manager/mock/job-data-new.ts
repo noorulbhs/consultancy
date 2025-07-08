@@ -1,0 +1,140 @@
+export const JOB_DATA = [
+  {
+    id: 1,
+    title: 'Senior Angular Developer',
+    location: 'Bangalore, India',
+    type: 'Full Time',
+    department: 'Engineering',
+    experience: '5-8 years',
+    salary: '₹15,00,000 - ₹25,00,000 per annum',
+    postedDate: '2025-07-01',
+    applicationDeadline: '2025-07-31',
+    openings: 3,
+    remoteWork: 'Hybrid (3 days office, 2 days remote)',
+    description: '<h4>About the Role</h4><p>We are seeking a passionate Senior Angular Developer to join our dynamic development team. You will be working on cutting-edge web applications that serve thousands of users globally, using the latest Angular technologies and best practices.</p><h4>Key Responsibilities</h4><ul><li>Develop and maintain complex Angular applications using Angular 15+ and TypeScript</li><li>Collaborate with UX/UI designers to implement responsive, user-friendly interfaces</li><li>Write clean, maintainable, and well-documented code following industry standards</li><li>Participate in code reviews and mentor junior developers</li><li>Optimize application performance and ensure cross-browser compatibility</li><li>Work with RESTful APIs and integrate with backend services</li><li>Implement automated testing using Jasmine, Karma, and Cypress</li></ul><h4>Required Skills</h4><ul><li>5+ years of experience with Angular (Angular 2+)</li><li>Strong proficiency in TypeScript, JavaScript, HTML5, and CSS3</li><li>Experience with RxJS and reactive programming</li><li>Knowledge of state management (NgRx, Akita)</li><li>Familiarity with modern build tools (Webpack, Angular CLI)</li><li>Experience with version control systems (Git)</li><li>Understanding of Agile/Scrum methodologies</li></ul><h4>Nice to Have</h4><ul><li>Experience with Node.js and Express</li><li>Knowledge of cloud platforms (AWS, Azure, GCP)</li><li>Familiarity with Docker and containerization</li><li>Experience with CI/CD pipelines</li></ul><h4>Benefits Package</h4><ul><li><strong>Health & Wellness:</strong> Medical, dental, and vision insurance for you and your family</li><li><strong>Financial:</strong> Performance bonus up to 30% of annual salary, ESOP options</li><li><strong>Time Off:</strong> 25 days paid vacation + 12 public holidays + 5 personal days</li><li><strong>Professional Development:</strong> ₹50,000 annual learning budget + conference attendance</li><li><strong>Work-Life Balance:</strong> Flexible hours, work from home allowance</li><li><strong>Perks:</strong> Free meals, gym membership, travel allowance</li></ul><h4>Interview Process</h4><ol><li>Application Review (2-3 days)</li><li>Technical Assessment (1 hour online coding test)</li><li>Technical Interview (1 hour with senior developer)</li><li>System Design Round (45 minutes)</li><li>HR Discussion (30 minutes)</li><li>Offer & Negotiation</li></ol>',
+    isOpen: true,
+    skills: ['Angular', 'TypeScript', 'JavaScript', 'RxJS', 'NgRx', 'HTML/CSS', 'Git'],
+    benefits: [
+      'Health Insurance',
+      'Performance Bonus',
+      'Flexible Hours',
+      'Learning Budget',
+      'ESOP'
+    ]
+  },
+  {
+    id: 2,
+    title: 'Cloud Solutions Architect',
+    location: 'Remote / Hyderabad',
+    type: 'Full Time',
+    department: 'Cloud Services',
+    experience: '7-12 years',
+    salary: '₹25,00,000 - ₹40,00,000 per annum',
+    postedDate: '2025-06-28',
+    applicationDeadline: '2025-08-15',
+    openings: 2,
+    remoteWork: 'Fully Remote with quarterly office visits',
+    description: '<h4>About the Role</h4><p>Join our Cloud Services team as a Solutions Architect and help enterprises transform their IT infrastructure. You will design and implement scalable, secure cloud solutions that drive business growth and operational efficiency.</p><h4>Key Responsibilities</h4><ul><li>Design end-to-end cloud solutions on AWS, Azure, and Google Cloud Platform</li><li>Lead cloud migration projects from assessment to implementation</li><li>Develop cloud adoption strategies and best practices</li><li>Collaborate with clients to understand business requirements and technical constraints</li><li>Create detailed architectural documentation and technical specifications</li><li>Mentor development teams on cloud-native design patterns</li><li>Stay updated with latest cloud services and emerging technologies</li></ul><h4>Required Skills</h4><ul><li>7+ years of experience in IT architecture and cloud computing</li><li>Deep expertise in at least two major cloud platforms (AWS, Azure, GCP)</li><li>Strong understanding of cloud security, networking, and compliance</li><li>Experience with Infrastructure as Code (Terraform, CloudFormation)</li><li>Knowledge of containerization (Docker, Kubernetes)</li><li>Experience with microservices architecture and serverless computing</li><li>Excellent communication and client-facing skills</li></ul><h4>Preferred Qualifications</h4><ul><li>Cloud certifications (AWS Solutions Architect, Azure Solutions Architect)</li><li>Experience with DevOps and CI/CD pipelines</li><li>Knowledge of enterprise integration patterns</li><li>Experience with big data and analytics platforms</li></ul><h4>Compensation & Benefits</h4><ul><li><strong>Base Salary:</strong> ₹25,00,000 - ₹40,00,000 based on experience</li><li><strong>Variable Pay:</strong> Up to 40% of base salary based on performance</li><li><strong>Stock Options:</strong> Equity participation in company growth</li><li><strong>Certification Bonus:</strong> ₹25,000 for each relevant cloud certification</li><li><strong>Client Success Bonus:</strong> Additional rewards for successful project delivery</li><li><strong>Remote Work Stipend:</strong> ₹2,000/month for home office setup</li><li><strong>Travel Allowance:</strong> Business class travel for client meetings</li><li><strong>Insurance:</strong> Premium health coverage + life insurance</li></ul><h4>Career Growth</h4><ul><li>Clear path to Principal Architect or Engineering Manager roles</li><li>Opportunity to lead your own cloud practice</li><li>Speaking opportunities at conferences and tech events</li><li>Mentorship programs and leadership training</li></ul>',
+    isOpen: true,
+    skills: ['AWS', 'Azure', 'GCP', 'Terraform', 'Kubernetes', 'Docker', 'Microservices'],
+    benefits: [
+      'Stock Options',
+      'Remote Work',
+      'Certification Bonus',
+      'Premium Insurance',
+      'Business Class Travel'
+    ]
+  },
+  {
+    id: 3,
+    title: 'DevOps Engineer',
+    location: 'Mumbai, India',
+    type: 'Full Time',
+    department: 'Engineering',
+    experience: '3-6 years',
+    salary: '₹12,00,000 - ₹20,00,000 per annum',
+    postedDate: '2025-06-25',
+    applicationDeadline: '2025-07-25',
+    openings: 4,
+    remoteWork: 'Hybrid (2 days office, 3 days remote)',
+    description: '<h4>About the Role</h4><p>We are looking for a skilled DevOps Engineer to join our infrastructure team. You will be responsible for automating deployment processes, managing cloud infrastructure, and ensuring high availability of our applications.</p><h4>Key Responsibilities</h4><ul><li>Design and implement CI/CD pipelines using Jenkins, GitLab CI, or GitHub Actions</li><li>Manage containerized applications using Docker and Kubernetes</li><li>Monitor system performance and implement automated alerting</li><li>Automate infrastructure provisioning using Terraform and Ansible</li><li>Implement security best practices and compliance requirements</li><li>Collaborate with development teams to optimize deployment strategies</li><li>Troubleshoot production issues and implement preventive measures</li></ul><h4>Technical Requirements</h4><ul><li>3+ years of experience in DevOps or Site Reliability Engineering</li><li>Strong experience with Linux/Unix systems administration</li><li>Proficiency in scripting languages (Python, Bash, PowerShell)</li><li>Experience with cloud platforms (AWS, Azure, or GCP)</li><li>Knowledge of containerization and orchestration (Docker, Kubernetes)</li><li>Experience with infrastructure as code tools (Terraform, Ansible)</li><li>Understanding of networking, security, and monitoring concepts</li></ul><h4>Bonus Skills</h4><ul><li>Experience with service mesh technologies (Istio, Linkerd)</li><li>Knowledge of observability tools (Prometheus, Grafana, ELK stack)</li><li>Experience with database administration and optimization</li><li>Familiarity with compliance frameworks (SOC2, ISO 27001)</li></ul><h4>Comprehensive Benefits</h4><ul><li><strong>Salary:</strong> ₹12,00,000 - ₹20,00,000 + performance incentives</li><li><strong>Health Benefits:</strong> Medical insurance covering family members</li><li><strong>Skill Development:</strong> ₹40,000 annual certification budget</li><li><strong>Equipment:</strong> Latest MacBook Pro or high-end laptop of choice</li><li><strong>Wellness:</strong> Mental health support and wellness programs</li><li><strong>Flexibility:</strong> Choose your working hours within core time</li><li><strong>Team Events:</strong> Regular team outings and tech talks</li></ul><h4>Growth Opportunities</h4><ul><li>Technical lead roles within 2-3 years</li><li>Opportunity to work with cutting-edge technologies</li><li>Cross-functional collaboration with product and engineering teams</li><li>Internal training programs and knowledge sharing sessions</li></ul>',
+    isOpen: true,
+    skills: ['DevOps', 'AWS', 'Docker', 'Kubernetes', 'Terraform', 'Python', 'Jenkins'],
+    benefits: [
+      'Medical Insurance',
+      'Equipment Allowance',
+      'Certification Budget',
+      'Flexible Hours',
+      'Wellness Programs'
+    ]
+  },
+  {
+    id: 4,
+    title: 'Full Stack Developer (React + Node.js)',
+    location: 'Pune, India',
+    type: 'Full Time',
+    department: 'Engineering',
+    experience: '2-5 years',
+    salary: '₹8,00,000 - ₹15,00,000 per annum',
+    postedDate: '2025-07-02',
+    applicationDeadline: '2025-08-01',
+    openings: 5,
+    remoteWork: 'Office-based with remote Fridays',
+    description: '<h4>About the Role</h4><p>Join our product development team as a Full Stack Developer and help build innovative web applications. You will work on both frontend and backend development, creating seamless user experiences and robust server-side solutions.</p><h4>Key Responsibilities</h4><ul><li>Develop responsive web applications using React.js and modern JavaScript</li><li>Build RESTful APIs and backend services using Node.js and Express</li><li>Work with databases (MongoDB, PostgreSQL) for data management</li><li>Implement authentication and authorization mechanisms</li><li>Collaborate with designers to implement pixel-perfect UI components</li><li>Write unit and integration tests to ensure code quality</li><li>Participate in agile development processes and sprint planning</li></ul><h4>Required Skills</h4><ul><li>2+ years of experience with React.js and modern JavaScript (ES6+)</li><li>Strong proficiency in Node.js and Express.js</li><li>Experience with database design and optimization</li><li>Knowledge of RESTful API design and development</li><li>Familiarity with version control (Git) and agile methodologies</li><li>Understanding of responsive design and cross-browser compatibility</li><li>Good problem-solving skills and attention to detail</li></ul><h4>Nice to Have</h4><ul><li>Experience with TypeScript and modern React features (Hooks, Context)</li><li>Knowledge of state management libraries (Redux, Zustand)</li><li>Experience with cloud services (AWS, Firebase)</li><li>Understanding of testing frameworks (Jest, React Testing Library)</li></ul><h4>What We Offer</h4><ul><li><strong>Competitive Salary:</strong> ₹8,00,000 - ₹15,00,000 based on experience</li><li><strong>Performance Bonus:</strong> Quarterly bonuses based on delivery and quality</li><li><strong>Learning & Development:</strong> Access to online courses and tech conferences</li><li><strong>Health Coverage:</strong> Comprehensive medical insurance</li><li><strong>Work Environment:</strong> Modern office with latest development tools</li><li><strong>Team Culture:</strong> Fun team events and hackathons</li><li><strong>Career Growth:</strong> Clear progression to senior and lead roles</li></ul><h4>Application Process</h4><ol><li>Online application and portfolio review</li><li>Coding challenge (React + Node.js project)</li><li>Technical interview (system design and coding)</li><li>Cultural fit interview with team leads</li><li>Final discussion with hiring manager</li></ol>',
+    isOpen: true,
+    skills: ['React', 'Node.js', 'JavaScript', 'MongoDB', 'Express', 'Git', 'REST APIs'],
+    benefits: [
+      'Performance Bonus',
+      'Health Coverage',
+      'Learning Budget',
+      'Team Events',
+      'Career Growth'
+    ]
+  },
+  {
+    id: 5,
+    title: 'UI/UX Designer',
+    location: 'Delhi NCR',
+    type: 'Full Time',
+    department: 'Design',
+    experience: '3-6 years',
+    salary: '₹8,00,000 - ₹16,00,000 per annum',
+    postedDate: '2025-06-30',
+    applicationDeadline: '2025-07-30',
+    openings: 2,
+    remoteWork: 'Hybrid (3 days office, 2 days remote)',
+    description: '<h4>About the Role</h4><p>We are seeking a creative UI/UX Designer to join our design team. You will be responsible for creating intuitive and engaging user experiences for our web and mobile applications, working closely with product managers and developers.</p><h4>Key Responsibilities</h4><ul><li>Create user-centered designs through research, wireframing, and prototyping</li><li>Develop user personas, journey maps, and user stories</li><li>Design responsive web interfaces and mobile app interfaces</li><li>Conduct usability testing and iterate based on feedback</li><li>Collaborate with developers to ensure design implementation quality</li><li>Maintain and evolve design systems and style guides</li><li>Present design concepts to stakeholders and clients</li></ul><h4>Required Skills</h4><ul><li>3+ years of experience in UI/UX design</li><li>Proficiency in design tools (Figma, Sketch, Adobe Creative Suite)</li><li>Strong understanding of user-centered design principles</li><li>Experience with prototyping tools (InVision, Principle, Framer)</li><li>Knowledge of HTML/CSS and responsive design principles</li><li>Experience conducting user research and usability testing</li><li>Strong portfolio demonstrating design process and outcomes</li></ul><h4>Preferred Skills</h4><ul><li>Experience with design systems and component libraries</li><li>Knowledge of accessibility standards (WCAG)</li><li>Basic understanding of front-end development</li><li>Experience with animation and micro-interactions</li></ul><h4>Benefits</h4><ul><li><strong>Salary:</strong> ₹8,00,000 - ₹16,00,000 based on experience</li><li><strong>Creative Environment:</strong> Collaborative and innovative work culture</li><li><strong>Professional Development:</strong> Design conference attendance and workshops</li><li><strong>Equipment:</strong> Latest design tools and equipment</li><li><strong>Flexibility:</strong> Hybrid working arrangements</li><li><strong>Health & Wellness:</strong> Comprehensive health benefits</li></ul>',
+    isOpen: true,
+    skills: ['UI/UX Design', 'Figma', 'Sketch', 'Prototyping', 'User Research', 'HTML/CSS'],
+    benefits: [
+      'Creative Environment',
+      'Conference Attendance',
+      'Latest Equipment',
+      'Flexible Work',
+      'Health Benefits'
+    ]
+  },
+  {
+    id: 6,
+    title: 'Data Scientist',
+    location: 'Bangalore / Remote',
+    type: 'Full Time',
+    department: 'Analytics',
+    experience: '3-7 years',
+    salary: '₹12,00,000 - ₹22,00,000 per annum',
+    postedDate: '2025-06-20',
+    applicationDeadline: '2025-07-20',
+    openings: 3,
+    remoteWork: 'Fully Remote',
+    description: '<h4>About the Role</h4><p>Join our Analytics team as a Data Scientist and help turn data into actionable insights. You will work on machine learning projects, build predictive models, and collaborate with cross-functional teams to drive data-driven decision making.</p><h4>Key Responsibilities</h4><ul><li>Develop and deploy machine learning models for business applications</li><li>Analyze large datasets to identify trends and patterns</li><li>Create data visualizations and dashboards for stakeholders</li><li>Collaborate with engineering teams to productionize ML models</li><li>Design and execute A/B tests and experiments</li><li>Present findings and recommendations to business leaders</li><li>Stay updated with latest ML/AI technologies and methodologies</li></ul><h4>Required Skills</h4><ul><li>3+ years of experience in data science or machine learning</li><li>Strong proficiency in Python and data science libraries (pandas, scikit-learn, TensorFlow)</li><li>Experience with SQL and database systems</li><li>Knowledge of statistical analysis and hypothesis testing</li><li>Experience with data visualization tools (Matplotlib, Seaborn, Plotly)</li><li>Understanding of machine learning algorithms and techniques</li><li>Strong problem-solving and analytical thinking skills</li></ul><h4>Preferred Skills</h4><ul><li>Experience with cloud ML platforms (AWS SageMaker, Azure ML)</li><li>Knowledge of deep learning and neural networks</li><li>Experience with big data technologies (Spark, Hadoop)</li><li>Familiarity with MLOps and model deployment</li></ul><h4>What We Offer</h4><ul><li><strong>Salary:</strong> ₹12,00,000 - ₹22,00,000 based on experience</li><li><strong>Innovation:</strong> Opportunity to work on cutting-edge AI/ML projects</li><li><strong>Tools & Tech:</strong> Access to latest tools and technologies</li><li><strong>Growth:</strong> Conference attendance and research publication support</li><li><strong>Equity:</strong> Competitive salary and equity participation</li><li><strong>Flexibility:</strong> Fully remote work arrangements</li></ul>',
+    isOpen: false,
+    skills: ['Python', 'Machine Learning', 'SQL', 'TensorFlow', 'Data Visualization', 'Statistics'],
+    benefits: [
+      'Cutting-edge Projects',
+      'Latest Tools',
+      'Conference Support',
+      'Equity Participation',
+      'Remote Work'
+    ]
+  }
+];

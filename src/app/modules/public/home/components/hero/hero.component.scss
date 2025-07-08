@@ -1,0 +1,23 @@
+.hero-section {
+  padding: 60px 20px 80px; // Reduced top padding
+  background: linear-gradient(to right, #f8f9fa, #e8f0fe);
+  text-align: center;
+
+  @media (max-width: 768px) {
+    padding: 40px 10px 60px; // Reduced mobile padding
+  }
+}
+
+h1 {
+  color: #0d6efd;
+}
+
+.btn-primary {
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #0a58ca;
+    transform: scale(1.05);
+  }
+}

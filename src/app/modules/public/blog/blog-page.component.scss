@@ -1,0 +1,124 @@
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+}
+
+.featured-card {
+  border: 2px solid #ffc107 !important;
+}
+
+.blog-content {
+  line-height: 1.8;
+}
+
+.blog-content h3 {
+  color: #0d6efd;
+  margin: 2rem 0 1rem 0;
+}
+
+.blog-content h4 {
+  margin: 1.5rem 0 1rem 0;
+}
+
+.blog-content h6 {
+  color: #495057;
+  font-weight: 600;
+}
+
+.blog-content .lead {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #6c757d;
+}
+
+.blog-content .alert {
+  border-radius: 8px;
+  border: none;
+}
+
+.blog-content .badge {
+  font-size: 0.75rem;
+}
+
+.blog-content .table {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.blog-content .bg-light {
+  background-color: #f8f9fa !important;
+  border-radius: 8px;
+}
+
+.blog-content .border {
+  border-color: #dee2e6 !important;
+  border-radius: 8px;
+}
+
+.blog-content .text-primary {
+  color: #0d6efd !important;
+}
+
+.blog-content .text-success {
+  color: #198754 !important;
+}
+
+.blog-content .text-warning {
+  color: #ffc107 !important;
+}
+
+.blog-content .text-info {
+  color: #0dcaf0 !important;
+}
+
+.blog-content .text-danger {
+  color: #dc3545 !important;
+}
+
+.blog-intro {
+  padding: 2rem 0;
+  border-bottom: 1px solid #dee2e6;
+  margin-bottom: 2rem;
+}
+
+.blog-section {
+  margin-bottom: 3rem;
+}
+
+.strategy-card, .step, .pitfall-card {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.example-box {
+  border-left: 4px solid #0d6efd;
+}
+
+.blog-conclusion {
+  margin: 3rem 0;
+}
+
+.blog-cta {
+  padding: 2rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 12px;
+}
+
+@media (max-width: 768px) {
+  .modal-xl {
+    max-width: 95%;
+  }
+  
+  .blog-content h1 {
+    font-size: 1.75rem;
+  }
+  
+  .blog-content .lead {
+    font-size: 1rem;
+  }
+}

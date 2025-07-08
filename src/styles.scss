@@ -1,1 +1,97 @@
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.dev/guide/theming
+@use '@angular/material' as mat;
+@use 'bootstrap/scss/bootstrap';
+
+html {
+  scroll-behavior: smooth;
+  
+  @include mat.theme((
+    color: (
+      theme-type: light,
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Admin Layout Fixes */
+.admin-form-container {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.admin-form-container .card {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.admin-form-container .container {
+  max-width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+/* Ensure forms don't break layout */
+.form-control, .form-select, .form-check-input {
+  max-width: 100%;
+}
+
+/* Admin table responsiveness */
+.table-responsive {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* Admin card responsiveness */
+.admin-card {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* Modal fixes */
+.modal-xl {
+  max-width: 95%;
+}
+
+@media (max-width: 768px) {
+  .admin-form-container .col-md-8,
+  .admin-form-container .col-md-4 {
+    max-width: 100%;
+  }
+}
+
+/* Font Awesome icon fixes */
+.fab, .fas, .far {
+  font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands" !important;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.fab {
+  font-weight: 400;
+}
+
+/* Social media button enhancements */
+.btn i {
+  display: inline-block;
+  width: auto;
+  height: auto;
+  line-height: 1;
+}
+
+/* Ensure icons are visible */
+.btn-outline-primary i,
+.btn-outline-info i,
+.btn-outline-dark i {
+  font-size: 14px !important;
+  line-height: 1 !important;
+}

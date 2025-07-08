@@ -1,0 +1,77 @@
+<section class="featured-blogs-section py-5" *ngIf="isVisible && featuredBlogs.length > 0">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto text-center mb-5">
+        <h2 class="section-title">Latest Blog Posts</h2>
+        <p class="section-subtitle">Stay updated with our latest insights, tips, and industry trends</p>
+      </div>
+    </div>
+    
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6" *ngFor="let blog of featuredBlogs">
+        <article class="blog-card h-100">
+          <div class="blog-image">
+            <img 
+              [src]="blog.image || 'https://via.placeholder.com/400x250/007bff/ffffff?text=Blog+Post'" 
+              [alt]="blog.title"
+              class="img-fluid">
+            <div class="blog-overlay">
+              <div class="blog-category">
+                <span class="category-badge">{{ blog.category }}</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="blog-content">
+            <div class="blog-meta">
+              <span class="blog-date">
+                <i class="fas fa-calendar-alt me-2"></i>
+                {{ formatDate(blog.publishedDate) }}
+              </span>
+              <span class="blog-author" *ngIf="blog.author">
+                <i class="fas fa-user me-2"></i>
+                {{ blog.author }}
+              </span>
+            </div>
+            
+            <h3 class="blog-title">
+              <a [routerLink]="['/blog', blog.id]" class="title-link">
+                {{ blog.title }}
+              </a>
+            </h3>
+            
+            <p class="blog-excerpt">{{ getExcerpt(blog.content) }}</p>
+            
+            <div class="blog-tags" *ngIf="blog.tags && blog.tags.length > 0">
+              <span class="tag" *ngFor="let tag of blog.tags.slice(0, 3)">
+                {{ tag }}
+              </span>
+            </div>
+            
+            <div class="blog-footer">
+              <a [routerLink]="['/blog', blog.id]" class="read-more-btn">
+                Read More
+                <i class="fas fa-arrow-right ms-2"></i>
+              </a>
+              <div class="blog-stats" *ngIf="blog.readTime">
+                <span class="read-time">
+                  <i class="fas fa-clock me-1"></i>
+                  {{ blog.readTime }} min read
+                </span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+    
+    <div class="row mt-5">
+      <div class="col-12 text-center">
+        <a routerLink="/blog" class="btn btn-outline-primary btn-lg">
+          View All Blog Posts
+          <i class="fas fa-arrow-right ms-2"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

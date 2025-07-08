@@ -1,0 +1,416 @@
+<div class="services-hero bg-gradient-primary text-white py-5 mb-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <h1 class="display-3 fw-bold mb-3">Our Services</h1>
+        <p class="lead mb-4">Comprehensive IT consulting solutions that drive innovation and growth for your business</p>
+        <div class="row g-3">
+          <div class="col-auto">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-check-circle me-2"></i>
+              <span>Expert Consultants</span>
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-check-circle me-2"></i>
+              <span>Proven Results</span>
+            </div>
+          </div>
+          <div class="col-auto">
+            <div class="d-flex align-items-center">
+              <i class="fas fa-check-circle me-2"></i>
+              <span>24/7 Support</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4 text-center">
+        <i class="fas fa-rocket fa-6x opacity-75"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container py-5">
+  <!-- Service Categories Filter -->
+  <div class="row mb-5">
+    <div class="col-12 text-center">
+      <h2 class="mb-4">Choose Your Service Category</h2>
+      <div class="category-filters">
+        <button 
+          class="btn me-2 mb-2" 
+          [class.btn-primary]="selectedCategory === 'all'"
+          [class.btn-outline-primary]="selectedCategory !== 'all'"
+          (click)="filterByCategory('all')">
+          All Services
+        </button>
+        <button 
+          *ngFor="let category of getUniqueCategories()" 
+          class="btn me-2 mb-2"
+          [class.btn-primary]="selectedCategory === category"
+          [class.btn-outline-primary]="selectedCategory !== category"
+          (click)="filterByCategory(category)">
+          {{category}}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- All Services Grid -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <h3 class="text-center mb-4">
+        <span *ngIf="selectedCategory === 'all'">All Services</span>
+        <span *ngIf="selectedCategory !== 'all'">{{selectedCategory}} Services</span>
+      </h3>
+    </div>
+  </div>
+  
+  <div class="row g-4">
+    <div class="col-lg-6" *ngFor="let service of filteredServices">
+      <div class="service-card h-100 border-0 shadow-sm">
+        <div class="card-body p-4">
+          <div class="row">
+            <div class="col-3 text-center">
+              <div class="service-icon-wrapper">
+                <i class="fas fa-{{service.icon}} fa-3x text-primary"></i>
+              </div>
+            </div>
+            <div class="col-9">
+              <h5 class="fw-bold mb-2">{{service.title}}</h5>
+              <p class="text-muted mb-3">{{service.description}}</p>
+              
+              <div class="d-flex flex-wrap gap-1 mb-3">
+                <span class="badge bg-light text-dark">{{service.category}}</span>
+                <span class="badge bg-success">{{service.price}}</span>
+              </div>
+              
+              <div class="mb-3">
+                <small class="text-muted">
+                  <i class="fas fa-users me-1"></i>For: {{service.clientTypes.join(', ')}}
+                </small>
+              </div>
+              
+              <div class="d-flex gap-2">
+                <button class="btn btn-outline-primary btn-sm flex-fill" (click)="openServiceModal(service)">
+                  <i class="fas fa-info-circle me-1"></i>Details
+                </button>
+                <button class="btn btn-primary btn-sm flex-fill" (click)="requestQuote(service)">
+                  <i class="fas fa-envelope me-1"></i>Get Quote
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Call to Action Section -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <div class="cta-section bg-light rounded p-5 text-center">
+        <h3 class="mb-3">Ready to Transform Your Business?</h3>
+        <p class="lead text-muted mb-4">Get a free consultation to discuss your specific needs and how we can help.</p>
+        <div class="row justify-content-center">
+          <div class="col-auto">
+            <button class="btn btn-primary btn-lg" (click)="navigateToContact()">
+              <i class="fas fa-phone me-2"></i>Schedule Consultation
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Service Details Modal -->
+<div class="modal fade" id="serviceModal" tabindex="-1" aria-labelledby="serviceModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl modal-dialog-scrollable">
+    <div class="modal-content" *ngIf="selectedService">
+      <div class="modal-header bg-primary text-white">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-{{selectedService.icon}} fa-2x me-3"></i>
+          <div>
+            <h4 class="modal-title mb-0">{{selectedService.title}}</h4>
+            <small>{{selectedService.category}}</small>
+          </div>
+        </div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0">
+        <div class="service-detail-header bg-light p-4">
+          <div class="row">
+            <div class="col-md-8">
+              <p class="lead">{{selectedService.detailedDescription}}</p>
+            </div>
+            <div class="col-md-4">
+              <div class="service-info-card bg-white p-3 rounded shadow-sm">
+                <h6 class="fw-bold mb-3">Service Details</h6>
+                <div class="mb-2">
+                  <strong>Price:</strong> <span class="text-success">{{selectedService.price}}</span>
+                </div>
+                <div class="mb-2">
+                  <strong>Duration:</strong> {{selectedService.duration}}
+                </div>
+                <div class="mb-2">
+                  <strong>Client Types:</strong> {{selectedService.clientTypes.join(', ')}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="p-4">
+          <div class="row">
+            <div class="col-md-6">
+              <h5><i class="fas fa-star text-primary me-2"></i>Key Features</h5>
+              <ul class="list-unstyled">
+                <li *ngFor="let feature of selectedService.features" class="mb-2">
+                  <i class="fas fa-check text-success me-2"></i>{{feature}}
+                </li>
+              </ul>
+              
+              <h5 class="mt-4"><i class="fas fa-tools text-primary me-2"></i>Technologies</h5>
+              <div class="d-flex flex-wrap gap-2">
+                <span class="badge bg-secondary" *ngFor="let tech of selectedService.technologies">{{tech}}</span>
+              </div>
+            </div>
+            
+            <div class="col-md-6">
+              <h5><i class="fas fa-clipboard-list text-primary me-2"></i>Deliverables</h5>
+              <ul class="list-unstyled">
+                <li *ngFor="let deliverable of selectedService.deliverables" class="mb-2">
+                  <i class="fas fa-file-alt text-info me-2"></i>{{deliverable}}
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="case-study-section mt-4 p-4 bg-light rounded">
+            <h5><i class="fas fa-trophy text-warning me-2"></i>Success Story</h5>
+            <div class="row">
+              <div class="col-md-6">
+                <h6>Client: {{selectedService.caseStudy.client}}</h6>
+                <p><strong>Challenge:</strong> {{selectedService.caseStudy.challenge}}</p>
+                <p><strong>Solution:</strong> {{selectedService.caseStudy.solution}}</p>
+              </div>
+              <div class="col-md-6">
+                <div class="results-card bg-success text-white p-3 rounded">
+                  <h6><i class="fas fa-chart-line me-2"></i>Results</h6>
+                  <p class="mb-0">{{selectedService.caseStudy.results}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" (click)="requestQuote(selectedService)">
+          <i class="fas fa-envelope me-2"></i>Request Quote
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Quote Request Modal -->
+<div class="modal fade" id="quoteModal" tabindex="-1" aria-labelledby="quoteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="quoteModalLabel">
+          <i class="fas fa-calculator me-2"></i>Request Quote
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form [formGroup]="quoteForm" (ngSubmit)="submitQuote()">
+        <div class="modal-body" [class.loading]="isSubmittingQuote">
+          <!-- Success Message -->
+          <div *ngIf="showQuoteSuccess" class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            <strong>Success!</strong> {{ quoteSuccessMessage }}
+            <button type="button" class="btn-close" (click)="dismissQuoteSuccess()"></button>
+          </div>
+          
+          <!-- Error Message -->
+          <div *ngIf="showQuoteError" class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            <strong>Error!</strong> {{ quoteErrorMessage }}
+            <button type="button" class="btn-close" (click)="dismissQuoteError()"></button>
+          </div>
+
+          <div class="row mb-4" *ngIf="selectedService">
+            <div class="col-12">
+              <div class="alert alert-info">
+                <strong>Service:</strong> {{selectedService.title}}<br>
+                <strong>Category:</strong> {{selectedService.category}}<br>
+                <strong>Base Price:</strong> {{selectedService.price}}
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="clientName" class="form-label fw-bold">Full Name *</label>
+                <input formControlName="clientName" type="text" class="form-control" 
+                       [class.is-invalid]="isQuoteFieldInvalid('clientName')" 
+                       id="clientName" placeholder="Your full name" />
+                <div *ngIf="isQuoteFieldInvalid('clientName')" class="invalid-feedback">
+                  Name is required (minimum 2 characters)
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="clientEmail" class="form-label fw-bold">Email Address *</label>
+                <input formControlName="clientEmail" type="email" class="form-control" 
+                       [class.is-invalid]="isQuoteFieldInvalid('clientEmail')" 
+                       id="clientEmail" placeholder="your.email@company.com" />
+                <div *ngIf="isQuoteFieldInvalid('clientEmail')" class="invalid-feedback">
+                  Valid email is required
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="clientPhone" class="form-label fw-bold">Phone Number</label>
+                <input formControlName="clientPhone" type="tel" class="form-control" 
+                       id="clientPhone" placeholder="+1 234 567 8900" />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="company" class="form-label fw-bold">Company Name</label>
+                <input formControlName="company" type="text" class="form-control" 
+                       id="company" placeholder="Your company name" />
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="projectType" class="form-label fw-bold">Project Type *</label>
+            <select formControlName="projectType" class="form-select" 
+                    [class.is-invalid]="isQuoteFieldInvalid('projectType')" 
+                    id="projectType">
+              <option value="">Select Project Type</option>
+              <option value="new-development">New Development</option>
+              <option value="redesign">Redesign/Modernization</option>
+              <option value="maintenance">Maintenance & Support</option>
+              <option value="consultation">Consultation Only</option>
+              <option value="migration">System Migration</option>
+              <option value="integration">Third-party Integration</option>
+              <option value="custom">Custom Solution</option>
+            </select>
+            <div *ngIf="isQuoteFieldInvalid('projectType')" class="invalid-feedback">
+              Project type is required
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="projectDetails" class="form-label fw-bold">Project Details *</label>
+            <textarea formControlName="projectDetails" class="form-control" 
+                      [class.is-invalid]="isQuoteFieldInvalid('projectDetails')" 
+                      id="projectDetails" rows="4" 
+                      placeholder="Describe your project requirements, goals, features needed, technical specifications, timeline, etc."></textarea>
+            <div class="form-text">Please provide as much detail as possible to get an accurate quote</div>
+            <div *ngIf="isQuoteFieldInvalid('projectDetails')" class="invalid-feedback">
+              Project details are required (minimum 50 characters)
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="timeline" class="form-label fw-bold">Expected Timeline *</label>
+                <select formControlName="timeline" class="form-select" 
+                        [class.is-invalid]="isQuoteFieldInvalid('timeline')" 
+                        id="timeline">
+                  <option value="">Select Timeline</option>
+                  <option value="asap">ASAP (Rush)</option>
+                  <option value="1-2-weeks">1-2 Weeks</option>
+                  <option value="3-4-weeks">3-4 Weeks</option>
+                  <option value="1-2-months">1-2 Months</option>
+                  <option value="3-6-months">3-6 Months</option>
+                  <option value="6-months-plus">6+ Months</option>
+                  <option value="flexible">Flexible</option>
+                </select>
+                <div *ngIf="isQuoteFieldInvalid('timeline')" class="invalid-feedback">
+                  Timeline is required
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="budget" class="form-label fw-bold">Budget Range (USD) *</label>
+                <select formControlName="budget" class="form-select" 
+                        [class.is-invalid]="isQuoteFieldInvalid('budget')" 
+                        id="budget">
+                  <option value="">Select Budget Range</option>
+                  <option value="under-5k">Under $5,000</option>
+                  <option value="5k-10k">$5,000 - $10,000</option>
+                  <option value="10k-25k">$10,000 - $25,000</option>
+                  <option value="25k-50k">$25,000 - $50,000</option>
+                  <option value="50k-100k">$50,000 - $100,000</option>
+                  <option value="100k-plus">$100,000+</option>
+                  <option value="custom">Custom/Discuss</option>
+                </select>
+                <div *ngIf="isQuoteFieldInvalid('budget')" class="invalid-feedback">
+                  Budget range is required
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="additionalRequirements" class="form-label fw-bold">Additional Requirements</label>
+            <textarea formControlName="additionalRequirements" class="form-control" 
+                      id="additionalRequirements" rows="3" 
+                      placeholder="Any specific technologies, integrations, compliance requirements, or special considerations..."></textarea>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" formControlName="urgentProject" id="urgentProject">
+                <label class="form-check-label fw-bold" for="urgentProject">
+                  Urgent Project (Rush Job)
+                </label>
+                <div class="form-text">May affect pricing</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" formControlName="ongoingSupport" id="ongoingSupport">
+                <label class="form-check-label fw-bold" for="ongoingSupport">
+                  Require Ongoing Support
+                </label>
+                <div class="form-text">Post-launch maintenance</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-warning">
+            <small><strong>Note:</strong> This is a preliminary quote request. Final pricing will be determined after detailed discussion and requirement analysis.</small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" [disabled]="isSubmittingQuote">
+            <i class="fas fa-times me-2"></i>Cancel
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="quoteForm.invalid || isSubmittingQuote">
+            <span *ngIf="isSubmittingQuote" class="spinner-border spinner-border-sm me-2"></span>
+            <i *ngIf="!isSubmittingQuote" class="fas fa-paper-plane me-2"></i>
+            {{ isSubmittingQuote ? 'Submitting...' : 'Submit Quote Request' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
