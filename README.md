@@ -6,8 +6,8 @@ A comprehensive IT consultancy platform built with Angular 18, featuring a moder
 
 - **Public Website:** [http://localhost:4200](http://localhost:4200)
 - **Admin Dashboard:** [http://localhost:4200/admin](http://localhost:4200/admin)
-- **Admin Credentials:** `admin@consultancy.com` / `admin123`
 
+  
 ## 📋 Table of Contents
 
 - [Features](#features)
