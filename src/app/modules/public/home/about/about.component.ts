@@ -55,7 +55,7 @@ export class AboutComponent implements OnInit {
 
   // Fallback content if static pages are not available
   getDefaultStoryContent(): string {
-    return `<p>At ITConsult, we empower businesses with cutting-edge IT solutions. Our journey began with a vision to solve complex technical challenges for startups and enterprises alike.</p>
+    return `<p>At Altrevo, we empower businesses with cutting-edge technology solutions. Our journey began with a vision to solve complex technical challenges for startups and enterprises alike.</p>
     <p>With a dedicated team of developers, architects, and designers, we provide scalable, secure, and modern tech solutions.</p>`;
   }
 
@@ -64,7 +64,7 @@ export class AboutComponent implements OnInit {
   }
 
   getDefaultVisionContent(): string {
-    return `<p>To become a global leader in IT consultancy by continuously innovating and delivering value.</p>`;
+    return `<p>To become a global leader in technology consultancy by continuously innovating and delivering value.</p>`;
   }
 
   getInitials(name: string): string {

@@ -1,59 +1,268 @@
+// ================================
+// CAREERS PAGE DARK THEME OVERRIDES
+// ================================
+
+// Container styling for dark theme
+.container {
+  color: var(--public-text-primary);
+  
+  // Title overrides
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--public-text-primary) !important;
+  }
+  
+  // Text color overrides
+  .text-muted {
+    color: var(--public-text-muted) !important;
+  }
+  
+  .text-primary {
+    color: var(--public-primary-light) !important;
+  }
+  
+  .lead {
+    color: var(--public-text-muted) !important;
+  }
+}
+
+// Card dark theme
 .card {
+  background: var(--public-bg-card) !important;
+  border: 1px solid var(--public-border-primary) !important;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--public-shadow-xl) !important;
+    background: var(--public-bg-card-hover) !important;
+  }
+  
+  .card-body {
+    color: var(--public-text-primary);
+    
+    h4, h5, h6 {
+      color: var(--public-text-primary) !important;
+    }
+    
+    p {
+      color: var(--public-text-muted) !important;
+    }
+    
+    .text-muted {
+      color: var(--public-text-muted) !important;
+    }
+    
+    .card-title {
+      color: var(--public-text-primary) !important;
+    }
+    
+    .card-text {
+      color: var(--public-text-muted) !important;
+    }
+  }
+  
+  .card-header {
+    background: var(--public-bg-secondary) !important;
+    border-bottom: 1px solid var(--public-border-primary) !important;
+    color: var(--public-text-primary);
+  }
+  
+  .card-footer {
+    background: var(--public-bg-secondary) !important;
+    border-top: 1px solid var(--public-border-primary) !important;
+    color: var(--public-text-primary);
+    
+    .text-muted {
+      color: var(--public-text-muted) !important;
+    }
+  }
 }
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
-}
-
+// Badge dark theme
 .badge {
   font-size: 0.75rem;
+  
+  &.bg-primary {
+    background: var(--public-primary) !important;
+    color: white !important;
+  }
+  
+  &.bg-secondary {
+    background: var(--public-secondary) !important;
+    color: white !important;
+  }
+  
+  &.bg-success {
+    background: var(--public-success) !important;
+    color: white !important;
+  }
+  
+  &.bg-danger {
+    background: var(--public-danger) !important;
+    color: white !important;
+  }
+  
+  &.bg-warning {
+    background: var(--public-warning) !important;
+    color: white !important;
+  }
+  
+  &.bg-info {
+    background: var(--public-info) !important;
+    color: white !important;
+  }
+  
+  &.bg-outline-primary {
+    color: var(--public-primary-light) !important;
+    border: 1px solid var(--public-primary) !important;
+    background: transparent !important;
+  }
+  
+  &.bg-outline-secondary {
+    color: var(--public-text-secondary) !important;
+    border: 1px solid var(--public-border-secondary) !important;
+    background: transparent !important;
+  }
 }
 
-.bg-outline-primary {
-  color: #0d6efd;
-  border: 1px solid #0d6efd;
-  background: transparent;
+// Job details styling
+.job-details {
+  p {
+    font-size: 0.9rem;
+    color: var(--public-text-muted) !important;
+  }
 }
 
-.bg-outline-secondary {
-  color: #6c757d;
-  border: 1px solid #6c757d;
-  background: transparent;
+// Modal dark theme
+.modal {
+  &.show {
+    background: rgba(0, 0, 0, 0.7) !important;
+  }
+  
+  .modal-content {
+    background: var(--public-bg-card) !important;
+    border: 1px solid var(--public-border-primary) !important;
+    color: var(--public-text-primary);
+    
+    .modal-header {
+      border-bottom: 1px solid var(--public-border-primary) !important;
+      
+      .modal-title {
+        color: var(--public-text-primary) !important;
+      }
+      
+      .btn-close {
+        filter: invert(1) !important;
+      }
+    }
+    
+    .modal-body {
+      color: var(--public-text-primary);
+      
+      .form-label {
+        color: var(--public-text-primary) !important;
+      }
+      
+      .form-control,
+      .form-select {
+        background: var(--public-bg-secondary) !important;
+        border: 1px solid var(--public-border-primary) !important;
+        color: var(--public-text-primary) !important;
+        
+        &::placeholder {
+          color: var(--public-text-muted) !important;
+        }
+        
+        &:focus {
+          background: var(--public-bg-secondary) !important;
+          border-color: var(--public-primary) !important;
+          box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25) !important;
+          color: var(--public-text-primary) !important;
+        }
+      }
+    }
+    
+    .modal-footer {
+      border-top: 1px solid var(--public-border-primary) !important;
+    }
+  }
 }
 
-.job-details p {
-  font-size: 0.9rem;
+// Modal backdrop
+.modal-backdrop {
+  &.show {
+    opacity: 0.7 !important;
+  }
 }
 
-.modal.show {
-  background: rgba(0,0,0,0.5);
-}
-
-.modal-backdrop.show {
-  opacity: 0.5;
-}
-
+// Job description styling
 .job-description {
   line-height: 1.6;
+  color: var(--public-text-primary);
+  
+  h4 {
+    color: var(--public-primary-light) !important;
+    font-size: 1.1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  p {
+    color: var(--public-text-secondary) !important;
+  }
+  
+  ul {
+    padding-left: 1.2rem;
+    
+    li {
+      color: var(--public-text-secondary) !important;
+      margin-bottom: 0.3rem;
+    }
+  }
+  
+  ol {
+    padding-left: 1.2rem;
+    
+    li {
+      color: var(--public-text-secondary) !important;
+      margin-bottom: 0.3rem;
+    }
+  }
+  
+  strong {
+    color: var(--public-text-primary) !important;
+  }
+  
+  em {
+    color: var(--public-text-secondary) !important;
+  }
 }
 
-.job-description h4 {
-  color: #0d6efd;
-  font-size: 1.1rem;
-  margin-top: 1.5rem;
-  margin-bottom: 0.75rem;
-}
-
-.job-description ul {
-  padding-left: 1.2rem;
-}
-
-.job-description li {
-  margin-bottom: 0.5rem;
-}
-
-.fas {
-  color: #0d6efd;
+// Alert messages for careers page
+.alert {
+  border: 1px solid var(--public-border-primary) !important;
+  
+  &.alert-success {
+    background: rgba(16, 185, 129, 0.1) !important;
+    border-color: var(--public-success) !important;
+    color: var(--public-success) !important;
+  }
+  
+  &.alert-danger {
+    background: rgba(239, 68, 68, 0.1) !important;
+    border-color: var(--public-danger) !important;
+    color: var(--public-danger) !important;
+  }
+  
+  &.alert-warning {
+    background: rgba(245, 158, 11, 0.1) !important;
+    border-color: var(--public-warning) !important;
+    color: var(--public-warning) !important;
+  }
+  
+  &.alert-info {
+    background: rgba(59, 130, 246, 0.1) !important;
+    border-color: var(--public-info) !important;
+    color: var(--public-info) !important;
+  }
 }

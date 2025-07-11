@@ -5,7 +5,6 @@ import { AboutComponent } from './about/about.component';
 import { WhyChooseUsComponent } from './components/why-choose-us/why-choose-us.component';
 import { StatsComponent } from './components/stats/stats.component';
 import { FeaturedTeamComponent } from './components/featured-team/featured-team.component';
-import { CtaComponent } from './components/cta/cta.component';
 import { CommonModule } from '@angular/common';
 import { FeatureToggleService } from '../../admin/services/feature-toggle.service';
 
@@ -18,8 +17,7 @@ import { FeatureToggleService } from '../../admin/services/feature-toggle.servic
     WhyChooseUsComponent,
     StatsComponent,
     FeaturedTeamComponent,
-    TestimonialsComponent,
-    CtaComponent
+    TestimonialsComponent
   ],
   templateUrl:"./home.component.html",
 })
@@ -29,7 +27,6 @@ export class HomeComponent implements OnInit {
   showFeaturedTeam = true;
   showTestimonials = true;
   showWhyChooseUs = true;
-  showCta = true;
 
   constructor(private featureToggleService: FeatureToggleService) {}
 
@@ -44,8 +41,6 @@ export class HomeComponent implements OnInit {
       this.showFeaturedTeam = this.featureToggleService.isFeatureEnabled('featured-team-section');
       this.showTestimonials = this.featureToggleService.isFeatureEnabled('testimonials-section');
       this.showWhyChooseUs = this.featureToggleService.isFeatureEnabled('why-choose-us-section');
-      this.showCta = this.featureToggleService.isFeatureEnabled('cta-section');
-      // Note: testimonials-more-stories is handled within the testimonials component itself
     });
   }
 }

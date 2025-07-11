@@ -18,7 +18,7 @@
               <i class="fas fa-map-marker-alt fa-lg text-primary me-3"></i>
               <div>
                 <h6 class="mb-0">Address</h6>
-                <p class="text-muted mb-0">123 Business Street<br>Tech City, TC 12345</p>
+                <p class="text-muted mb-0">{{ siteSettings.address }}<br>{{ siteSettings.city }}, {{ siteSettings.state }}, {{ siteSettings.country }} {{ siteSettings.zipCode }}</p>
               </div>
             </div>
             
@@ -26,7 +26,7 @@
               <i class="fas fa-phone fa-lg text-primary me-3"></i>
               <div>
                 <h6 class="mb-0">Phone</h6>
-                <p class="text-muted mb-0">+1 (555) 123-4567</p>
+                <p class="text-muted mb-0">{{ siteSettings.phone }}</p>
               </div>
             </div>
             
@@ -34,15 +34,7 @@
               <i class="fas fa-envelope fa-lg text-primary me-3"></i>
               <div>
                 <h6 class="mb-0">Email</h6>
-                <p class="text-muted mb-0">info&#64;itconsult.com</p>
-              </div>
-            </div>
-            
-            <div class="d-flex align-items-center">
-              <i class="fas fa-clock fa-lg text-primary me-3"></i>
-              <div>
-                <h6 class="mb-0">Business Hours</h6>
-                <p class="text-muted mb-0">Mon - Fri: 9:00 AM - 6:00 PM</p>
+                <p class="text-muted mb-0">{{ siteSettings.email }}</p>
               </div>
             </div>
           </div>
@@ -50,9 +42,15 @@
           <div>
             <h6 class="fw-bold mb-3">Follow Us</h6>
             <div class="d-flex gap-3">
-              <a href="#" class="text-primary"><i class="fab fa-linkedin fa-2x"></i></a>
-              <a href="#" class="text-primary"><i class="fab fa-twitter fa-2x"></i></a>
-              <a href="#" class="text-primary"><i class="fab fa-facebook fa-2x"></i></a>
+              <a [href]="siteSettings.social.linkedin" target="_blank" class="text-primary" *ngIf="siteSettings.social.linkedin">
+                <i class="fab fa-linkedin fa-2x"></i>
+              </a>
+              <a [href]="siteSettings.social.facebook" target="_blank" class="text-primary" *ngIf="siteSettings.social.facebook">
+                <i class="fab fa-facebook fa-2x"></i>
+              </a>
+              <a [href]="siteSettings.social.instagram" target="_blank" class="text-primary" *ngIf="siteSettings.social.instagram">
+                <i class="fab fa-instagram fa-2x"></i>
+              </a>
             </div>
           </div>
         </div>
@@ -115,11 +113,9 @@
                   name="subject"
                   required>
                   <option value="">Select a subject</option>
-                  <option value="general">General Inquiry</option>
-                  <option value="consultation">Free Consultation</option>
-                  <option value="support">Technical Support</option>
-                  <option value="partnership">Partnership</option>
-                  <option value="career">Career Opportunities</option>
+                  <option *ngFor="let option of subjectOptions" [value]="option.value">
+                    {{ option.label }}
+                  </option>
                 </select>
               </div>
               <div class="col-md-6 mb-3">
@@ -129,12 +125,9 @@
                   [(ngModel)]="formData.service"
                   name="service">
                   <option value="">Select a service</option>
-                  <option value="Cloud Migration">Cloud Migration</option>
-                  <option value="DevOps Strategy">DevOps Strategy</option>
-                  <option value="Application Development">Application Development</option>
-                  <option value="Data Analytics">Data Analytics</option>
-                  <option value="Cybersecurity">Cybersecurity</option>
-                  <option value="IT Strategy">IT Strategy</option>
+                  <option *ngFor="let option of serviceOptions" [value]="option.value">
+                    {{ option.label }}
+                  </option>
                 </select>
               </div>
             </div>

@@ -1,5 +1,6 @@
 export interface SiteSettings {
   id?: string;
+  version?: string;
   // Company Information
   companyName: string;
   tagline: string;
@@ -70,6 +71,16 @@ export interface SiteSettings {
     autoReplyEnabled: boolean;
     autoReplySubject: string;
     autoReplyMessage: string;
+    subjectOptions: Array<{
+      value: string;
+      label: string;
+      enabled: boolean;
+    }>;
+    serviceOptions: Array<{
+      value: string;
+      label: string;
+      enabled: boolean;
+    }>;
   };
   
   // General Settings
@@ -79,6 +90,58 @@ export interface SiteSettings {
   primaryColor: string;
   secondaryColor: string;
   
+  // Homepage Statistics
+  statistics: {
+    projectsCompleted: {
+      number: string;
+      label: string;
+      icon: string;
+      enabled: boolean;
+    };
+    happyClients: {
+      number: string;
+      label: string;
+      icon: string;
+      enabled: boolean;
+    };
+    yearsExperience: {
+      number: string;
+      label: string;
+      icon: string;
+      enabled: boolean;
+    };
+    support: {
+      number: string;
+      label: string;
+      icon: string;
+      enabled: boolean;
+    };
+    clientSatisfaction: {
+      number: string;
+      label: string;
+      icon: string;
+      enabled: boolean;
+    };
+    averageRating: {
+      number: string;
+      label: string;
+      icon: string;
+      enabled: boolean;
+    };
+    teamMembers: {
+      number: string;
+      label: string;
+      icon: string;
+      enabled: boolean;
+    };
+    successRate: {
+      number: string;
+      label: string;
+      icon: string;
+      enabled: boolean;
+    };
+  };
+  
   // Last Updated
   lastUpdated: Date;
   updatedBy: string;
@@ -86,16 +149,17 @@ export interface SiteSettings {
 
 export const SITE_SETTINGS: SiteSettings = {
   id: 'main-settings',
+  version: '2.0', // Added version for cache busting
   
   // Company Information
-  companyName: 'TechNova IT Solutions',
+  companyName: 'Altrevo Tech Solutions',
   tagline: 'Innovative Technology Solutions for Modern Business',
-  description: 'Leading IT consultancy providing cutting-edge technology solutions, digital transformation, and innovation services to businesses worldwide.',
-  logoUrl: 'https://via.placeholder.com/200x60/007bff/ffffff?text=TechNova',
-  faviconUrl: 'https://via.placeholder.com/32x32/007bff/ffffff?text=T',
+  description: 'Leading technology consultancy providing cutting-edge solutions, digital transformation, and innovation services to businesses worldwide.',
+  logoUrl: 'altrevo-logo.png',
+  faviconUrl: 'altrevo-favicon.png',
   
   // Contact Information
-  email: 'contact@technova.com',
+  email: 'contact@altrevo.com',
   phone: '+1 (555) 123-4567',
   alternatePhone: '+1 (555) 123-4568',
   address: '123 Innovation Drive, Suite 100',
@@ -117,26 +181,23 @@ export const SITE_SETTINGS: SiteSettings = {
   
   // Social Media
   social: {
-    linkedin: 'https://linkedin.com/company/technova-solutions',
-    twitter: 'https://twitter.com/technovasolutions',
-    facebook: 'https://facebook.com/technovasolutions',
-    instagram: 'https://instagram.com/technovasolutions',
-    youtube: 'https://youtube.com/@technovasolutions',
-    github: 'https://github.com/technova-solutions'
+    linkedin: 'https://linkedin.com/company/altrevo-tech-solutions',
+    facebook: 'https://facebook.com/altrevotechsolutions',
+    instagram: 'https://instagram.com/altrevotechsolutions'
   },
   
   // SEO Settings
   seo: {
-    metaTitle: 'TechNova IT Solutions - Leading Technology Consultancy',
-    metaDescription: 'Transform your business with TechNova\'s expert IT consulting, digital transformation, cloud solutions, and innovative technology services.',
-    keywords: ['IT consulting', 'digital transformation', 'cloud solutions', 'software development', 'technology consulting', 'enterprise solutions'],
+    metaTitle: 'Altrevo Tech Solutions - Leading Technology Consultancy',
+    metaDescription: 'Transform your business with Altrevo\'s expert technology consulting, digital transformation, cloud solutions, and innovative technology services.',
+    keywords: ['technology consulting', 'digital transformation', 'cloud solutions', 'software development', 'technology consulting', 'enterprise solutions'],
     googleAnalyticsId: 'GA-XXXXXXXX',
     facebookPixelId: 'FB-XXXXXXXX'
   },
   
   // Footer Settings
   footer: {
-    copyrightText: '© 2024 TechNova IT Solutions. All rights reserved.',
+    copyrightText: '© 2024 Altrevo Tech Solutions. All rights reserved.',
     quickLinks: [
       { title: 'Privacy Policy', url: '/privacy-policy' },
       { title: 'Terms of Service', url: '/terms-of-service' },
@@ -161,10 +222,27 @@ export const SITE_SETTINGS: SiteSettings = {
   
   // Contact Form Settings
   contactForm: {
-    recipientEmail: 'inquiries@technova.com',
+    recipientEmail: 'inquiries@altrevo.com',
     autoReplyEnabled: true,
-    autoReplySubject: 'Thank you for contacting TechNova IT Solutions',
-    autoReplyMessage: 'Thank you for reaching out to us. We have received your message and will get back to you within 24 hours.'
+    autoReplySubject: 'Thank you for contacting Altrevo Tech Solutions',
+    autoReplyMessage: 'Thank you for reaching out to us. We have received your message and will get back to you within 24 hours.',
+    subjectOptions: [
+      { value: 'general', label: 'General Inquiry', enabled: true },
+      { value: 'consultation', label: 'Free Consultation', enabled: true },
+      { value: 'support', label: 'Technical Support', enabled: true },
+      { value: 'partnership', label: 'Partnership', enabled: true },
+      { value: 'career', label: 'Career Opportunities', enabled: true }
+    ],
+    serviceOptions: [
+      { value: 'Cloud Migration', label: 'Cloud Migration', enabled: true },
+      { value: 'DevOps Strategy', label: 'DevOps Strategy', enabled: true },
+      { value: 'Application Development', label: 'Application Development', enabled: true },
+      { value: 'Data Analytics', label: 'Data Analytics', enabled: true },
+      { value: 'Cybersecurity', label: 'Cybersecurity', enabled: true },
+      { value: 'IT Strategy', label: 'IT Strategy', enabled: true },
+      { value: 'Digital Transformation', label: 'Digital Transformation', enabled: true },
+      { value: 'AI & Machine Learning', label: 'AI & Machine Learning', enabled: true }
+    ]
   },
   
   // General Settings
@@ -173,6 +251,58 @@ export const SITE_SETTINGS: SiteSettings = {
   theme: 'light',
   primaryColor: '#007bff',
   secondaryColor: '#6c757d',
+  
+  // Homepage Statistics
+  statistics: {
+    projectsCompleted: {
+      number: '150+',
+      label: 'Projects Completed',
+      icon: 'fas fa-project-diagram',
+      enabled: true
+    },
+    happyClients: {
+      number: '50+',
+      label: 'Happy Clients',
+      icon: 'fas fa-users',
+      enabled: true
+    },
+    yearsExperience: {
+      number: '10+',
+      label: 'Years Experience',
+      icon: 'fas fa-calendar-alt',
+      enabled: true
+    },
+    support: {
+      number: '24/7',
+      label: 'Support Available',
+      icon: 'fas fa-headset',
+      enabled: false
+    },
+    clientSatisfaction: {
+      number: '98%',
+      label: 'Client Satisfaction',
+      icon: 'fas fa-smile',
+      enabled: false
+    },
+    averageRating: {
+      number: '4.9/5',
+      label: 'Average Rating',
+      icon: 'fas fa-star',
+      enabled: false
+    },
+    teamMembers: {
+      number: '25+',
+      label: 'Expert Team Members',
+      icon: 'fas fa-user-tie',
+      enabled: true
+    },
+    successRate: {
+      number: '95%',
+      label: 'Project Success Rate',
+      icon: 'fas fa-trophy',
+      enabled: false
+    }
+  },
   
   // Last Updated
   lastUpdated: new Date('2024-01-15'),

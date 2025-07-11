@@ -15,7 +15,6 @@ export const SERVICE_DATA = [
       '24/7 Cloud Support'
     ],
     technologies: ['AWS', 'Azure', 'Google Cloud', 'Kubernetes', 'Docker', 'Terraform'],
-    price: 'From $5,000',
     duration: '4-12 weeks',
     deliverables: [
       'Cloud Migration Roadmap',
@@ -24,7 +23,6 @@ export const SERVICE_DATA = [
       'Performance Monitoring Dashboard',
       'Documentation & Training'
     ],
-    clientTypes: ['Enterprise', 'SMB', 'Startups'],
     caseStudy: {
       client: 'TechCorp Solutions',
       challenge: 'Legacy infrastructure causing 40% downtime',
@@ -50,7 +48,6 @@ export const SERVICE_DATA = [
       'Release Management'
     ],
     technologies: ['Jenkins', 'GitLab CI', 'Docker', 'Kubernetes', 'Ansible', 'Prometheus'],
-    price: 'From $8,000',
     duration: '6-16 weeks',
     deliverables: [
       'Automated Deployment Pipeline',
@@ -59,7 +56,6 @@ export const SERVICE_DATA = [
       'Testing Framework',
       'DevOps Documentation'
     ],
-    clientTypes: ['Enterprise', 'Tech Companies'],
     caseStudy: {
       client: 'InnovateLabs',
       challenge: 'Manual deployments taking 2 days',
@@ -85,7 +81,6 @@ export const SERVICE_DATA = [
       'Performance Optimization'
     ],
     technologies: ['React', 'Angular', 'Node.js', 'Python', 'Java', 'React Native'],
-    price: 'From $10,000',
     duration: '8-24 weeks',
     deliverables: [
       'Custom Application',
@@ -94,7 +89,6 @@ export const SERVICE_DATA = [
       'Admin Dashboard',
       'Source Code & Documentation'
     ],
-    clientTypes: ['All Industries'],
     caseStudy: {
       client: 'RetailMax',
       challenge: 'Outdated e-commerce platform',
@@ -120,7 +114,6 @@ export const SERVICE_DATA = [
       '24/7 Security Monitoring'
     ],
     technologies: ['SIEM Tools', 'Firewall Solutions', 'Endpoint Protection', 'IAM Systems'],
-    price: 'From $7,500',
     duration: '4-12 weeks',
     deliverables: [
       'Security Assessment Report',
@@ -129,7 +122,6 @@ export const SERVICE_DATA = [
       'Incident Response Plan',
       'Compliance Documentation'
     ],
-    clientTypes: ['Enterprise', 'Healthcare', 'Finance'],
     caseStudy: {
       client: 'SecureBank',
       challenge: 'Meeting compliance requirements',
@@ -155,7 +147,6 @@ export const SERVICE_DATA = [
       'AI-Powered Insights'
     ],
     technologies: ['Python', 'R', 'TensorFlow', 'Power BI', 'Tableau', 'Apache Spark'],
-    price: 'From $12,000',
     duration: '8-20 weeks',
     deliverables: [
       'Data Analytics Platform',
@@ -164,7 +155,6 @@ export const SERVICE_DATA = [
       'Automated Reports',
       'AI Integration Framework'
     ],
-    clientTypes: ['Enterprise', 'E-commerce', 'Manufacturing'],
     caseStudy: {
       client: 'DataDriven Corp',
       challenge: 'Lack of data insights for decision making',
@@ -190,7 +180,6 @@ export const SERVICE_DATA = [
       'Performance Measurement'
     ],
     technologies: ['Various based on needs'],
-    price: 'From $15,000',
     duration: '12-36 weeks',
     deliverables: [
       'Digital Transformation Roadmap',
@@ -199,7 +188,6 @@ export const SERVICE_DATA = [
       'Training Materials',
       'Performance Metrics Dashboard'
     ],
-    clientTypes: ['Enterprise', 'Government'],
     caseStudy: {
       client: 'LegacyCorp',
       challenge: 'Outdated business processes',

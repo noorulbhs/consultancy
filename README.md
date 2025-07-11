@@ -1,6 +1,6 @@
-# IT Consultancy - Full Stack Angular Application
+# Altrevo Tech Solutions - Full Stack Angular Application
 
-A comprehensive IT consultancy platform built with Angular 18, featuring a modern public website and a powerful admin dashboard for content management.
+A comprehensive technology consultancy platform built with Angular 18, featuring a modern public website and a powerful admin dashboard for content management.
 
 ## 🚀 Live Demo
 

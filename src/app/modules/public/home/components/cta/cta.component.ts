@@ -12,19 +12,14 @@ import { RouterModule } from '@angular/router';
 export class CtaComponent {
   ctaData = {
     title: 'Ready to Transform Your Business?',
-    subtitle: 'Let\'s discuss how our expert IT consultancy services can help you achieve your goals and drive digital transformation.',
+    subtitle: 'Let\'s discuss how our expert technology consultancy services can help you achieve your goals and drive digital transformation with cutting-edge solutions.',
     primaryAction: {
-      text: 'Get Free Consultation',
+      text: 'Get Consultation',
       link: '/contact'
     },
     secondaryAction: {
       text: 'View Our Services',
       link: '/services'
-    },
-    features: [
-      'Free consultation call',
-      'Custom solution design',
-      'Expert team support'
-    ]
+    }
   };
 }

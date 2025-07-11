@@ -1,101 +1,246 @@
+// Stats Section Dark Theme
 .stats-section {
-  background: #2c3e50;
-  color: white;
-  padding: 4rem 0;
+  background: var(--public-bg-secondary);
+  color: var(--public-text-primary);
+  padding: 5rem 0;
+  position: relative;
+  overflow: hidden;
   
-  .section-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 1rem;
+  // Background pattern
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      radial-gradient(circle at 25% 25%, rgba(99, 102, 241, 0.05) 0%, transparent 70%),
+      radial-gradient(circle at 75% 75%, rgba(139, 92, 246, 0.05) 0%, transparent 70%);
+    z-index: 1;
+  }
+  
+  .container {
     position: relative;
+    z-index: 2;
+  }
+  
+  .section-header {
+    text-align: center;
+    margin-bottom: 4rem;
     
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80px;
-      height: 4px;
-      background: linear-gradient(45deg, #f39c12, #e67e22);
-      border-radius: 2px;
+    .section-title {
+      font-size: 2.75rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      position: relative;
+      color: var(--public-text-primary);
+      
+      .highlight {
+        background: var(--public-gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 4px;
+        background: var(--public-gradient-primary);
+        border-radius: 2px;
+      }
+    }
+    
+    .section-subtitle {
+      font-size: 1.2rem;
+      color: var(--public-text-secondary);
+      margin: 0;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
     }
   }
   
-  .section-subtitle {
-    font-size: 1.1rem;
-    opacity: 0.8;
-    margin-bottom: 0;
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
   }
   
   .stat-card {
-    padding: 2rem 1rem;
-    transition: transform 0.3s ease;
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid var(--public-border-primary);
+    border-radius: var(--public-border-radius-lg);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    transition: var(--public-transition);
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--public-gradient-primary);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
     
     &:hover {
       transform: translateY(-10px);
+      background: rgba(30, 41, 59, 0.9);
+      border-color: var(--public-primary);
+      box-shadow: var(--public-shadow-xl);
+      
+      &::before {
+        transform: scaleX(1);
+      }
+      
+      .stat-icon {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: var(--public-shadow-lg);
+      }
+      
+      .stat-number {
+        transform: scale(1.05);
+      }
     }
   }
   
   .stat-icon {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(45deg, #f39c12, #e67e22);
+    width: 90px;
+    height: 90px;
+    background: var(--public-gradient-primary);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 1.5rem;
-    transition: all 0.3s ease;
+    margin: 0 auto 2rem;
+    transition: var(--public-transition);
+    box-shadow: var(--public-shadow-md);
+    position: relative;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: var(--public-gradient-secondary);
+      border-radius: 50%;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
     
     i {
-      font-size: 2rem;
+      font-size: 2.2rem;
       color: white;
+      z-index: 2;
     }
   }
   
   .stat-number {
-    font-size: 3rem;
-    font-weight: 700;
-    color: #f39c12;
+    font-size: 3.5rem;
+    font-weight: 800;
+    background: var(--public-gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: 0.5rem;
     line-height: 1;
+    transition: var(--public-transition);
+    display: block;
   }
   
   .stat-label {
     font-size: 1.1rem;
-    font-weight: 500;
-    opacity: 0.9;
+    font-weight: 600;
+    color: var(--public-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0;
+  }
+  
+  .stat-description {
+    font-size: 0.9rem;
+    color: var(--public-text-muted);
+    margin-top: 0.5rem;
+    line-height: 1.4;
   }
 }
 
+// Responsive Design
 @media (max-width: 768px) {
   .stats-section {
-    padding: 3rem 0;
+    padding: 4rem 0;
     
-    .section-title {
-      font-size: 2rem;
+    .section-header {
+      margin-bottom: 3rem;
+      
+      .section-title {
+        font-size: 2.25rem;
+      }
+      
+      .section-subtitle {
+        font-size: 1.1rem;
+      }
+    }
+    
+    .stats-grid {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .stat-card {
+      padding: 2rem 1rem;
+    }
+    
+    .stat-icon {
+      width: 70px;
+      height: 70px;
+      
+      i {
+        font-size: 1.8rem;
+      }
+    }
+    
+    .stat-number {
+      font-size: 2.8rem;
+    }
+    
+    .stat-label {
+      font-size: 1rem;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .stats-section {
+    .stats-grid {
+      grid-template-columns: 1fr;
+      max-width: 300px;
     }
     
     .stat-card {
       padding: 1.5rem 1rem;
     }
     
-    .stat-icon {
-      width: 60px;
-      height: 60px;
-      
-      i {
-        font-size: 1.5rem;
-      }
-    }
-    
     .stat-number {
       font-size: 2.5rem;
-    }
-    
-    .stat-label {
-      font-size: 1rem;
     }
   }
 }

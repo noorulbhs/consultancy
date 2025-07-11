@@ -1,10 +1,11 @@
 .featured-team-section {
-  background: #f8f9fa;
+  background: var(--public-bg-secondary);
+  color: var(--public-text-primary);
   
   .section-title {
     font-size: 2.5rem;
     font-weight: 700;
-    color: #2c3e50;
+    color: var(--public-text-primary);
     margin-bottom: 1rem;
     position: relative;
     
@@ -16,28 +17,30 @@
       transform: translateX(-50%);
       width: 80px;
       height: 4px;
-      background: linear-gradient(45deg, #007bff, #0056b3);
+      background: var(--public-gradient-primary);
       border-radius: 2px;
     }
   }
   
   .section-subtitle {
     font-size: 1.1rem;
-    color: #6c757d;
+    color: var(--public-text-secondary);
     margin-bottom: 0;
   }
   
   .team-card {
-    background: white;
+    background: var(--public-bg-card);
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--public-shadow-lg);
     transition: all 0.3s ease;
     height: 100%;
+    border: 1px solid var(--public-border-primary);
     
     &:hover {
       transform: translateY(-10px);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      box-shadow: var(--public-shadow-xl);
+      background: var(--public-bg-card-hover);
     }
   }
   
@@ -59,7 +62,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 123, 255, 0.9);
+      background: rgba(99, 102, 241, 0.9);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -80,12 +83,12 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #007bff;
+      color: var(--public-primary);
       text-decoration: none;
       transition: all 0.3s ease;
       
       &:hover {
-        background: #007bff;
+        background: var(--public-primary);
         color: white;
         transform: scale(1.1);
       }
@@ -110,18 +113,18 @@
   .team-name {
     font-size: 1.5rem;
     font-weight: 600;
-    color: #2c3e50;
+    color: var(--public-text-primary);
     margin-bottom: 0.5rem;
   }
   
   .team-position {
-    color: #007bff;
+    color: var(--public-primary-light);
     font-weight: 500;
     margin-bottom: 1rem;
   }
   
   .team-bio {
-    color: #6c757d;
+    color: var(--public-text-secondary);
     line-height: 1.6;
     margin-bottom: 1.5rem;
   }
@@ -134,12 +137,13 @@
   }
   
   .skill-tag {
-    background: #e9ecef;
-    color: #495057;
+    background: var(--public-bg-tertiary);
+    color: var(--public-text-primary);
     padding: 0.25rem 0.75rem;
     border-radius: 20px;
     font-size: 0.875rem;
     font-weight: 500;
+    border: 1px solid var(--public-border-primary);
   }
 
   // Social links in team content (without overlay)

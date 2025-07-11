@@ -1,3 +1,122 @@
+// ================================
+// ABOUT PAGE DARK THEME OVERRIDES
+// ================================
+
+// Container styling for dark theme
+.container {
+  color: var(--public-text-primary);
+  
+  // Title overrides
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--public-text-primary) !important;
+    
+    &.text-primary {
+      color: var(--public-primary-light) !important;
+    }
+  }
+  
+  // Lead text override
+  .lead {
+    color: var(--public-text-muted) !important;
+  }
+  
+  // Text color overrides
+  .text-muted {
+    color: var(--public-text-muted) !important;
+  }
+  
+  .text-primary {
+    color: var(--public-primary-light) !important;
+  }
+  
+  // Card overrides for about page
+  .card {
+    background: var(--public-bg-card) !important;
+    border: 1px solid var(--public-border-primary) !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--public-shadow-xl) !important;
+      background: var(--public-bg-card-hover) !important;
+    }
+    
+    .card-body {
+      color: var(--public-text-primary);
+      
+      h2, h3, h4, h5, h6 {
+        color: var(--public-text-primary) !important;
+        
+        &.text-primary {
+          color: var(--public-primary-light) !important;
+        }
+      }
+      
+      p {
+        color: var(--public-text-muted) !important;
+      }
+      
+      .text-muted {
+        color: var(--public-text-muted) !important;
+      }
+    }
+    
+    .card-title {
+      color: var(--public-text-primary) !important;
+    }
+  }
+  
+  // Team member cards
+  .col-md-6.col-lg-4 {
+    .card {
+      .card-body {
+        h5 {
+          color: var(--public-text-primary) !important;
+        }
+        
+        .text-muted {
+          color: var(--public-text-muted) !important;
+        }
+        
+        .badge {
+          &.bg-success {
+            background: var(--public-success) !important;
+            color: white !important;
+          }
+        }
+        
+        // Social links
+        .d-flex.justify-content-center {
+          a {
+            color: var(--public-primary-light) !important;
+            transition: var(--public-transition);
+            
+            &:hover {
+              color: var(--public-primary) !important;
+              transform: translateY(-2px);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Mission and Vision cards specific styling
+.row.mb-5 {
+  .col-lg-6 {
+    .card {
+      .card-body {
+        h2 {
+          &.text-primary {
+            color: var(--public-primary-light) !important;
+          }
+        }
+      }
+    }
+  }
+}
+
 .card {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }

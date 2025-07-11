@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TestimonialService, Testimonial } from '../../../../admin/testimonial-manager/services/testimonial.service';
-import { FeatureToggleService } from '../../../../admin/services/feature-toggle.service';
 
 @Component({
   selector: 'app-testimonials',
@@ -15,11 +14,9 @@ export class TestimonialsComponent implements OnInit {
   testimonials: Testimonial[] = [];
   featuredTestimonials: Testimonial[] = [];
   currentSlide = 0;
-  showMoreStories = true;
 
   constructor(
-    private testimonialService: TestimonialService,
-    private featureToggleService: FeatureToggleService
+    private testimonialService: TestimonialService
   ) {}
 
   ngOnInit(): void {
@@ -28,17 +25,17 @@ export class TestimonialsComponent implements OnInit {
       this.featuredTestimonials = this.testimonials.filter((t: Testimonial) => t.featured);
     });
 
-    // Load feature toggle state
-    this.featureToggleService.getFeatures().subscribe(() => {
-      this.showMoreStories = this.featureToggleService.isFeatureEnabled('testimonials-more-stories');
-    });
+    // Auto-slide every 6 seconds
+    setInterval(() => {
+      this.nextSlide();
+    }, 6000);
   }
 
   nextSlide(): void {
     this.currentSlide = (this.currentSlide + 1) % this.featuredTestimonials.length;
   }
 
-  prevSlide(): void {
+  previousSlide(): void {
     this.currentSlide = this.currentSlide === 0 ? this.featuredTestimonials.length - 1 : this.currentSlide - 1;
   }
 

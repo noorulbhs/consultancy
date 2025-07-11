@@ -40,7 +40,9 @@ export class SiteSettingsFormComponent implements OnInit {
   tabs = [
     { id: 'company', label: 'Company Info', icon: 'fas fa-building' },
     { id: 'contact', label: 'Contact Details', icon: 'fas fa-phone' },
+    { id: 'contactform', label: 'Contact Form', icon: 'fas fa-envelope' },
     { id: 'social', label: 'Social Media', icon: 'fas fa-share-alt' },
+    { id: 'statistics', label: 'Homepage Stats', icon: 'fas fa-chart-line' },
     { id: 'seo', label: 'SEO Settings', icon: 'fas fa-search' },
     { id: 'footer', label: 'Footer Settings', icon: 'fas fa-list' },
     { id: 'general', label: 'General', icon: 'fas fa-cog' }
@@ -117,7 +119,9 @@ export class SiteSettingsFormComponent implements OnInit {
         recipientEmail: ['', [Validators.required, Validators.email]],
         autoReplyEnabled: [true],
         autoReplySubject: [''],
-        autoReplyMessage: ['']
+        autoReplyMessage: [''],
+        subjectOptions: this.fb.array([]),
+        serviceOptions: this.fb.array([])
       }),
       
       // General Settings
@@ -125,7 +129,59 @@ export class SiteSettingsFormComponent implements OnInit {
       maintenanceMessage: [''],
       theme: ['light'],
       primaryColor: ['#007bff'],
-      secondaryColor: ['#6c757d']
+      secondaryColor: ['#6c757d'],
+      
+      // Homepage Statistics
+      statistics: this.fb.group({
+        projectsCompleted: this.fb.group({
+          number: ['150+', Validators.required],
+          label: ['Projects Completed', Validators.required],
+          icon: ['fas fa-project-diagram', Validators.required],
+          enabled: [true]
+        }),
+        happyClients: this.fb.group({
+          number: ['50+', Validators.required],
+          label: ['Happy Clients', Validators.required],
+          icon: ['fas fa-users', Validators.required],
+          enabled: [true]
+        }),
+        yearsExperience: this.fb.group({
+          number: ['10+', Validators.required],
+          label: ['Years Experience', Validators.required],
+          icon: ['fas fa-calendar-alt', Validators.required],
+          enabled: [true]
+        }),
+        support: this.fb.group({
+          number: ['24/7', Validators.required],
+          label: ['Support Available', Validators.required],
+          icon: ['fas fa-headset', Validators.required],
+          enabled: [false]
+        }),
+        clientSatisfaction: this.fb.group({
+          number: ['98%', Validators.required],
+          label: ['Client Satisfaction', Validators.required],
+          icon: ['fas fa-smile', Validators.required],
+          enabled: [false]
+        }),
+        averageRating: this.fb.group({
+          number: ['4.9/5', Validators.required],
+          label: ['Average Rating', Validators.required],
+          icon: ['fas fa-star', Validators.required],
+          enabled: [false]
+        }),
+        teamMembers: this.fb.group({
+          number: ['25+', Validators.required],
+          label: ['Expert Team Members', Validators.required],
+          icon: ['fas fa-user-tie', Validators.required],
+          enabled: [true]
+        }),
+        successRate: this.fb.group({
+          number: ['95%', Validators.required],
+          label: ['Project Success Rate', Validators.required],
+          icon: ['fas fa-trophy', Validators.required],
+          enabled: [false]
+        })
+      })
     });
   }
 
@@ -147,6 +203,8 @@ export class SiteSettingsFormComponent implements OnInit {
         this.setFooterLinks('quickLinks', data.footer.quickLinks || []);
         this.setFooterLinks('services', data.footer.services || []);
         this.setFooterLinks('aboutLinks', data.footer.aboutLinks || []);
+        this.setSubjectOptions(data.contactForm.subjectOptions || []);
+        this.setServiceOptions(data.contactForm.serviceOptions || []);
         
         this.loading = false;
       },
@@ -216,6 +274,61 @@ export class SiteSettingsFormComponent implements OnInit {
 
   removeFooterLink(type: string, index: number): void {
     this.getFooterLinks(type).removeAt(index);
+  }
+
+  // Contact Form Options management
+  get subjectOptions(): FormArray {
+    return this.form.get('contactForm.subjectOptions') as FormArray;
+  }
+
+  get serviceOptions(): FormArray {
+    return this.form.get('contactForm.serviceOptions') as FormArray;
+  }
+
+  setSubjectOptions(options: Array<{value: string, label: string, enabled: boolean}>): void {
+    const optionsFormArray = this.fb.array(
+      options.map(option => this.fb.group({
+        value: [option.value, Validators.required],
+        label: [option.label, Validators.required],
+        enabled: [option.enabled]
+      }))
+    );
+    this.form.setControl('contactForm.subjectOptions', optionsFormArray);
+  }
+
+  setServiceOptions(options: Array<{value: string, label: string, enabled: boolean}>): void {
+    const optionsFormArray = this.fb.array(
+      options.map(option => this.fb.group({
+        value: [option.value, Validators.required],
+        label: [option.label, Validators.required],
+        enabled: [option.enabled]
+      }))
+    );
+    this.form.setControl('contactForm.serviceOptions', optionsFormArray);
+  }
+
+  addSubjectOption(): void {
+    this.subjectOptions.push(this.fb.group({
+      value: ['', Validators.required],
+      label: ['', Validators.required],
+      enabled: [true]
+    }));
+  }
+
+  removeSubjectOption(index: number): void {
+    this.subjectOptions.removeAt(index);
+  }
+
+  addServiceOption(): void {
+    this.serviceOptions.push(this.fb.group({
+      value: ['', Validators.required],
+      label: ['', Validators.required],
+      enabled: [true]
+    }));
+  }
+
+  removeServiceOption(index: number): void {
+    this.serviceOptions.removeAt(index);
   }
 
   onSubmit(): void {

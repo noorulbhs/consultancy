@@ -1,41 +1,164 @@
+// Navbar Dark Theme Styling
 nav {
   z-index: 999;
+  background: rgba(15, 23, 42, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--public-border-primary);
+  box-shadow: var(--public-shadow-md);
 }
 
-.navbar-brand mat-icon {
-  vertical-align: middle;
-  margin-right: 5px;
-  color: #0d6efd;
-}
-
-.nav-link {
-  transition: color 0.3s ease;
-  cursor: pointer;
-  position: relative;
-
-  &.active,
+.navbar-brand {
+  color: var(--public-text-primary) !important;
+  font-weight: 700;
+  font-size: 1.5rem;
+  transition: var(--public-transition);
+  
   &:hover {
-    color: #0d6efd;
-    font-weight: 500;
+    color: var(--public-primary-light) !important;
+    transform: scale(1.05);
   }
+  
+  img {
+    transition: var(--public-transition);
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+    &:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  }
+  
+  .brand-text {
+    color: var(--public-text-primary);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  
+  mat-icon {
+    vertical-align: middle;
+    margin-right: 8px;
+    color: var(--public-primary);
+    font-size: 1.8rem;
+    transition: var(--public-transition);
+  }
+}
 
-  &.active::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80%;
-    height: 2px;
-    background-color: #0d6efd;
-    border-radius: 1px;
+.navbar-toggler {
+  border: 2px solid var(--public-border-primary);
+  background: transparent;
+  transition: var(--public-transition);
+  
+  &:hover {
+    border-color: var(--public-primary);
+    background: rgba(99, 102, 241, 0.1);
+  }
+  
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28248, 250, 252, 0.9%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='m4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  }
+  
+  &:focus {
+    box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
+  }
+}
+
+.navbar-nav {
+  .nav-link {
+    color: var(--public-text-secondary) !important;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 0.75rem 1rem !important;
+    margin: 0 0.25rem;
+    border-radius: var(--public-border-radius);
+    transition: var(--public-transition);
+    cursor: pointer;
+    position: relative;
+    
+    &:hover {
+      color: var(--public-primary-light) !important;
+      background: rgba(99, 102, 241, 0.1);
+      transform: translateY(-1px);
+    }
+    
+    &.active {
+      color: var(--public-primary) !important;
+      background: rgba(99, 102, 241, 0.15);
+      font-weight: 600;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60%;
+        height: 3px;
+        background: var(--public-gradient-primary);
+        border-radius: 2px;
+        
+        @media (max-width: 991px) {
+          display: none;
+        }
+      }
+    }
   }
 }
 
 .btn-primary {
-  transition: background-color 0.3s;
-
+  background: var(--public-gradient-primary) !important;
+  border: none !important;
+  color: white !important;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--public-border-radius);
+  transition: var(--public-transition);
+  box-shadow: var(--public-shadow-sm);
+  
   &:hover {
-    background-color: #084298;
+    transform: translateY(-2px);
+    box-shadow: var(--public-shadow-lg);
+    filter: brightness(1.1);
+    background: var(--public-gradient-primary) !important;
   }
+  
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Mobile menu styling
+@media (max-width: 991px) {
+  .navbar-collapse {
+    background: var(--public-bg-card);
+    border: 1px solid var(--public-border-primary);
+    border-radius: var(--public-border-radius-lg);
+    margin-top: 1rem;
+    padding: 1rem;
+    box-shadow: var(--public-shadow-lg);
+    
+    .navbar-nav {
+      .nav-link {
+        margin: 0.25rem 0;
+        text-align: center;
+        
+        &.active::after {
+          display: none;
+        }
+      }
+    }
+    
+    .btn-primary {
+      margin-top: 1rem;
+      width: 100%;
+    }
+  }
+}
+
+// Scrolled navbar state
+.navbar.scrolled {
+  background: rgba(15, 23, 42, 0.98) !important;
+  backdrop-filter: blur(15px);
+  box-shadow: var(--public-shadow-lg);
 }

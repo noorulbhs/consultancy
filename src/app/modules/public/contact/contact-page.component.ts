@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EnquiryService } from '../../admin/enquiry-manager/services/enquiry.service';
+import { SettingsService } from '../../admin/site-settings/services/settings.service';
 
 interface ContactForm {
   name: string;
@@ -34,10 +35,31 @@ export class ContactPageComponent implements OnInit {
   isSubmitting = false;
   submitMessage = '';
   submitSuccess = false;
+  siteSettings: any = {};
+  subjectOptions: Array<{value: string, label: string}> = [];
+  serviceOptions: Array<{value: string, label: string}> = [];
 
-  constructor(private enquiryService: EnquiryService) {}
+  constructor(
+    private enquiryService: EnquiryService,
+    private settingsService: SettingsService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadSettings();
+  }
+
+  private loadSettings(): void {
+    this.settingsService.getSettings().subscribe(settings => {
+      this.siteSettings = settings;
+      // Filter and map enabled options
+      this.subjectOptions = settings.contactForm.subjectOptions
+        .filter((option: any) => option.enabled)
+        .map((option: any) => ({ value: option.value, label: option.label }));
+      this.serviceOptions = settings.contactForm.serviceOptions
+        .filter((option: any) => option.enabled)
+        .map((option: any) => ({ value: option.value, label: option.label }));
+    });
+  }
 
   onSubmit(): void {
     if (this.isSubmitting) return;

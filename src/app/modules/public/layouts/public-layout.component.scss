@@ -4,9 +4,15 @@
   min-height: 100vh;
 }
 
+:host.public-dark-theme {
+  background: var(--public-bg-primary);
+  color: var(--public-text-primary);
+}
+
 main {
   flex: 1;
   margin-top: 56px; // Adjusted for navbar height
+  background: var(--public-bg-primary);
 }
 
 app-footer {

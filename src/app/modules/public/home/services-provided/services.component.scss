@@ -1,6 +1,92 @@
+// ================================
+// SERVICES PROVIDED DARK THEME OVERRIDES
+// ================================
+
 .card {
+  background: var(--public-bg-card) !important;
+  border: 1px solid var(--public-border-primary) !important;
   transition: transform 0.2s ease;
+
   &:hover {
     transform: translateY(-4px);
+    background: var(--public-bg-card-hover) !important;
+    box-shadow: var(--public-shadow-lg) !important;
+  }
+
+  .card-body {
+    color: var(--public-text-primary);
+
+    h4,
+    h5,
+    h6 {
+      color: var(--public-text-primary) !important;
+    }
+
+    p {
+      color: var(--public-text-secondary) !important;
+    }
+
+    .text-muted {
+      color: var(--public-text-muted) !important;
+    }
+
+    .card-title {
+      color: var(--public-text-primary) !important;
+    }
+
+    .card-text {
+      color: var(--public-text-secondary) !important;
+    }
+  }
+
+  .card-header {
+    background: var(--public-bg-secondary) !important;
+    border-bottom: 1px solid var(--public-border-primary) !important;
+    color: var(--public-text-primary);
+  }
+
+  .card-footer {
+    background: var(--public-bg-secondary) !important;
+    border-top: 1px solid var(--public-border-primary) !important;
+    color: var(--public-text-primary);
+  }
+}
+
+// Container overrides
+.container {
+  color: var(--public-text-primary);
+  
+  // Title overrides for ALL headings
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--public-text-primary) !important;
+  }
+  
+  // Section title styling
+  section.text-center {
+    h2 {
+      color: var(--public-text-primary) !important;
+      margin-bottom: 1rem;
+    }
+    
+    p {
+      color: var(--public-text-muted) !important;
+    }
+    
+    .text-muted {
+      color: var(--public-text-muted) !important;
+    }
+  }
+  
+  // Text color overrides
+  .text-muted {
+    color: var(--public-text-muted) !important;
+  }
+  
+  .text-primary {
+    color: var(--public-primary-light) !important;
+  }
+  
+  .lead {
+    color: var(--public-text-secondary) !important;
   }
 }

@@ -15,13 +15,13 @@ export const STATIC_PAGES: { [key: string]: StaticPage } = {
   'about-story': {
     id: 'about-story',
     title: 'Our Story',
-    content: `<p>At ITConsult, we empower businesses with cutting-edge IT solutions. Our journey began with a vision to solve complex technical challenges for startups and enterprises alike.</p>
+    content: `<p>At Altrevo, we empower businesses with cutting-edge technology solutions. Our journey began with a vision to solve complex technical challenges for startups and enterprises alike.</p>
     <p>With a dedicated team of developers, architects, and designers, we provide scalable, secure, and modern tech solutions.</p>`,
     lastUpdated: new Date('2024-01-15'),
     status: 'published',
     category: 'About Us',
-    metaDescription: 'Learn about ITConsult\'s journey and commitment to delivering exceptional IT solutions.',
-    keywords: ['IT consultancy', 'technology solutions', 'software development', 'digital transformation']
+    metaDescription: 'Learn about Altrevo\'s journey and commitment to delivering exceptional technology solutions.',
+    keywords: ['technology consultancy', 'technology solutions', 'software development', 'digital transformation']
   },
   'about-mission': {
     id: 'about-mission',
@@ -37,13 +37,13 @@ export const STATIC_PAGES: { [key: string]: StaticPage } = {
   'about-vision': {
     id: 'about-vision',
     title: 'Our Vision',
-    content: `<p>To become a global leader in IT consultancy by continuously innovating and delivering value.</p>
+    content: `<p>To become a global leader in technology consultancy by continuously innovating and delivering value.</p>
     <p>We envision a future where every business, regardless of size, has access to world-class technology solutions that propel them towards success.</p>`,
     lastUpdated: new Date('2024-01-15'),
     status: 'published',
     category: 'About Us',
-    metaDescription: 'Our vision is to become a global leader in IT consultancy through innovation.',
-    keywords: ['vision', 'global leadership', 'innovation', 'IT consultancy']
+    metaDescription: 'Our vision is to become a global leader in technology consultancy through innovation.',
+    keywords: ['vision', 'global leadership', 'innovation', 'technology consultancy']
   },
   'home-hero': {
     id: 'home-hero',

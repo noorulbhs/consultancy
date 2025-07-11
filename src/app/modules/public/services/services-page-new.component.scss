@@ -1,0 +1,398 @@
+// ================================
+// SERVICES PAGE DARK THEME COMPLETE
+// ================================
+
+// Hero section with maximum specificity
+.services-hero,
+.services-hero.bg-gradient-primary,
+.services-hero.bg-gradient-primary.text-white {
+  background: var(--public-gradient-primary) !important;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  color: var(--public-text-primary) !important;
+  
+  .container {
+    color: var(--public-text-primary) !important;
+    
+    .row.align-items-center {
+      .col-lg-8 {
+        h1,
+        h1.display-3,
+        h1.display-3.fw-bold,
+        h1.display-3.fw-bold.mb-3 {
+          color: var(--public-text-primary) !important;
+        }
+        
+        p,
+        p.lead,
+        p.lead.mb-4 {
+          color: var(--public-text-secondary) !important;
+        }
+        
+        .row.g-3 {
+          .col-auto {
+            .d-flex.align-items-center {
+              color: var(--public-text-primary) !important;
+              
+              i,
+              i.fas,
+              i.fas.fa-check-circle {
+                color: var(--public-text-primary) !important;
+              }
+              
+              span {
+                color: var(--public-text-primary) !important;
+              }
+            }
+          }
+        }
+      }
+      
+      .col-lg-4.text-center {
+        i,
+        i.fas,
+        i.fas.fa-rocket,
+        i.fas.fa-rocket.fa-6x {
+          color: var(--public-text-primary) !important;
+          opacity: 0.75;
+        }
+      }
+    }
+  }
+}
+
+// Container with complete specificity
+.container,
+.container.py-5 {
+  color: var(--public-text-primary) !important;
+  
+  // Service categories filter section
+  .row.mb-5 {
+    .col-12.text-center {
+      h2,
+      h2.mb-4 {
+        color: var(--public-text-primary) !important;
+      }
+    }
+  }
+  
+  // All services grid title section
+  .row.mb-4 {
+    .col-12 {
+      h3,
+      h3.text-center,
+      h3.text-center.mb-4 {
+        color: var(--public-text-primary) !important;
+        
+        span {
+          color: var(--public-text-primary) !important;
+        }
+      }
+    }
+  }
+  
+  // Individual service cards
+  .row.g-4 {
+    .col-lg-6 {
+      .service-card,
+      .service-card.h-100,
+      .service-card.h-100.border-0,
+      .service-card.h-100.border-0.shadow-sm {
+        background: var(--public-bg-card) !important;
+        border: 1px solid var(--public-border-primary) !important;
+        transition: all 0.3s ease;
+        border-radius: 12px;
+        overflow: hidden;
+        
+        &:hover {
+          transform: translateY(-10px);
+          box-shadow: var(--public-shadow-xl) !important;
+          background: var(--public-bg-card-hover) !important;
+        }
+        
+        .card-body,
+        .card-body.p-4 {
+          color: var(--public-text-primary) !important;
+          
+          .row {
+            .col-3,
+            .col-3.text-center {
+              .service-icon-wrapper {
+                background: rgba(99, 102, 241, 0.1) !important;
+                border-radius: 50%;
+                width: 80px;
+                height: 80px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto;
+                transition: all 0.3s ease;
+                
+                i,
+                i.fas,
+                i[class*="fa-3x"],
+                i.fas[class*="fa-3x"],
+                i[class*="text-primary"],
+                i.fas[class*="text-primary"],
+                i.text-primary,
+                i.fas.text-primary,
+                i.fa-3x.text-primary,
+                i.fas.fa-3x.text-primary {
+                  color: var(--public-primary) !important;
+                }
+              }
+            }
+            
+            .col-9 {
+              h5,
+              h5.fw-bold,
+              h5.fw-bold.mb-2 {
+                color: var(--public-text-primary) !important;
+              }
+              
+              p,
+              p.text-muted,
+              p.text-muted.mb-3 {
+                color: var(--public-text-muted) !important;
+              }
+              
+              .d-flex.flex-wrap.gap-1.mb-3 {
+                .badge {
+                  &.bg-light,
+                  &.bg-light.text-dark {
+                    background: var(--public-bg-tertiary) !important;
+                    color: var(--public-text-primary) !important;
+                  }
+                  
+                  &.bg-success {
+                    background: var(--public-success) !important;
+                    color: white !important;
+                  }
+                }
+              }
+              
+              .mb-3 {
+                small,
+                small.text-muted {
+                  color: var(--public-text-muted) !important;
+                  
+                  i,
+                  i.fas,
+                  i.fas.fa-users {
+                    color: var(--public-text-muted) !important;
+                  }
+                }
+              }
+              
+              .d-flex.gap-2 {
+                .btn {
+                  &.btn-outline-primary {
+                    border-color: var(--public-primary) !important;
+                    color: var(--public-primary) !important;
+                    background: transparent !important;
+                    
+                    &:hover {
+                      background: var(--public-primary) !important;
+                      border-color: var(--public-primary) !important;
+                      color: white !important;
+                    }
+                  }
+                  
+                  &.btn-primary {
+                    background: var(--public-primary) !important;
+                    border-color: var(--public-primary) !important;
+                    color: white !important;
+                    
+                    &:hover {
+                      background: var(--public-primary-hover) !important;
+                      border-color: var(--public-primary-hover) !important;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Category filters with complete specificity
+.category-filters {
+  .btn {
+    border-radius: 25px;
+    padding: 8px 20px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    
+    &.btn-primary {
+      background: var(--public-primary) !important;
+      border-color: var(--public-primary) !important;
+      color: white !important;
+      
+      &:hover {
+        background: var(--public-primary-hover) !important;
+        border-color: var(--public-primary-hover) !important;
+        transform: translateY(-2px);
+      }
+    }
+    
+    &.btn-outline-primary {
+      border-color: var(--public-primary) !important;
+      color: var(--public-primary) !important;
+      background: transparent !important;
+      
+      &:hover {
+        background: var(--public-primary) !important;
+        border-color: var(--public-primary) !important;
+        color: white !important;
+        transform: translateY(-2px);
+      }
+    }
+  }
+}
+
+// Service header
+.service-header {
+  background: var(--public-gradient-primary) !important;
+  color: var(--public-text-primary) !important;
+}
+
+// Service icon wrapper hover effects
+.service-card:hover .service-icon-wrapper {
+  background: rgba(99, 102, 241, 0.2) !important;
+  transform: scale(1.1);
+}
+
+// Global overrides with highest specificity
+* {
+  &.text-primary {
+    color: var(--public-primary) !important;
+  }
+}
+
+i.text-primary,
+.fas.text-primary,
+.fa-3x.text-primary,
+.fas.fa-3x.text-primary {
+  color: var(--public-primary) !important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--public-text-primary) !important;
+}
+
+.text-muted {
+  color: var(--public-text-muted) !important;
+}
+
+// Legacy styles for backwards compatibility
+.service-card {
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--public-shadow-xl) !important;
+}
+
+// Modal and alert styles (keeping existing functionality)
+.modal-content {
+  background: var(--public-bg-card) !important;
+  border: 1px solid var(--public-border-primary) !important;
+  border-radius: 15px;
+  box-shadow: var(--public-shadow-xl);
+  color: var(--public-text-primary);
+  
+  .modal-header {
+    background: var(--public-primary) !important;
+    border-bottom: 1px solid var(--public-border-primary) !important;
+    
+    .modal-title {
+      color: white !important;
+    }
+    
+    .btn-close-white {
+      filter: brightness(0) invert(1);
+    }
+  }
+  
+  .service-detail-header {
+    background: var(--public-bg-secondary) !important;
+    
+    .lead {
+      color: var(--public-text-primary) !important;
+    }
+    
+    .badge {
+      &.bg-primary {
+        background: var(--public-primary) !important;
+        color: white !important;
+      }
+      
+      &.bg-secondary {
+        background: var(--public-bg-tertiary) !important;
+        color: var(--public-text-primary) !important;
+      }
+    }
+  }
+  
+  .modal-body {
+    background: var(--public-bg-card) !important;
+    color: var(--public-text-primary) !important;
+    
+    h5, h6 {
+      color: var(--public-text-primary) !important;
+    }
+    
+    .list-unstyled li {
+      color: var(--public-text-primary) !important;
+      
+      i {
+        color: var(--public-primary) !important;
+      }
+    }
+    
+    .badge {
+      &.bg-secondary {
+        background: var(--public-bg-tertiary) !important;
+        color: var(--public-text-primary) !important;
+      }
+    }
+    
+    .bg-light {
+      background: var(--public-bg-secondary) !important;
+      
+      h5, h6 {
+        color: var(--public-text-primary) !important;
+      }
+      
+      .results-card {
+        &.bg-success {
+          background: var(--public-success) !important;
+          color: white !important;
+        }
+      }
+    }
+  }
+}
+
+.alert {
+  animation: slideInFromTop 0.5s ease-out;
+  border: 1px solid var(--public-border-primary) !important;
+}
+
+@keyframes slideInFromTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,4 +1,3 @@
-
 // Custom Theming for Angular Material
 // For more information: https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
@@ -94,4 +93,600 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .btn-outline-dark i {
   font-size: 14px !important;
   line-height: 1 !important;
+}
+
+// ====================================
+// DARK THEME VARIABLES FOR PUBLIC SIDE
+// ====================================
+:root {
+  // Primary Color Palette (Modern Blue/Purple)
+  --public-primary: #6366f1;
+  --public-primary-hover: #4f46e5;
+  --public-primary-light: #a5b4fc;
+  --public-primary-dark: #3730a3;
+  
+  // Secondary Color Palette (Complementary Purple)
+  --public-secondary: #8b5cf6;
+  --public-secondary-hover: #7c3aed;
+  --public-secondary-light: #c4b5fd;
+  --public-secondary-dark: #5b21b6;
+  
+  // Accent Colors
+  --public-accent: #06b6d4;
+  --public-accent-hover: #0891b2;
+  --public-success: #10b981;
+  --public-warning: #f59e0b;
+  --public-danger: #ef4444;
+  --public-info: #3b82f6;
+  
+  // Dark Background Colors
+  --public-bg-primary: #0f172a;      // Very dark slate
+  --public-bg-secondary: #1e293b;    // Dark slate
+  --public-bg-tertiary: #334155;     // Medium slate
+  --public-bg-card: #1e293b;         // Card backgrounds
+  --public-bg-card-hover: #334155;   // Card hover state
+  
+  // Text Colors
+  --public-text-primary: #f8fafc;    // Almost white
+  --public-text-secondary: #cbd5e1;  // Light gray
+  --public-text-muted: #94a3b8;      // Muted gray
+  --public-text-inverse: #1e293b;    // Dark text for light backgrounds
+  
+  // Border Colors
+  --public-border-primary: #334155;
+  --public-border-secondary: #475569;
+  --public-border-light: #64748b;
+  
+  // Shadow Colors
+  --public-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --public-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --public-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --public-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
+  
+  // Gradient Colors
+  --public-gradient-primary: linear-gradient(135deg, var(--public-primary) 0%, var(--public-secondary) 100%);
+  --public-gradient-secondary: linear-gradient(135deg, var(--public-secondary) 0%, var(--public-accent) 100%);
+  --public-gradient-dark: linear-gradient(135deg, var(--public-bg-primary) 0%, var(--public-bg-secondary) 100%);
+  
+  // Utility Variables
+  --public-border-radius: 12px;
+  --public-border-radius-lg: 16px;
+  --public-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --public-font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+// ====================================
+// PUBLIC DARK THEME APPLICATION
+// ====================================
+.public-dark-theme {
+  background: var(--public-bg-primary);
+  color: var(--public-text-primary);
+  min-height: 100vh;
+  font-family: var(--public-font-family);
+  
+  // Text selections
+  ::selection {
+    background: var(--public-primary);
+    color: white;
+  }
+  
+  // Scrollbar styling for dark theme
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--public-bg-secondary);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--public-border-secondary);
+    border-radius: 4px;
+    
+    &:hover {
+      background: var(--public-border-light);
+    }
+  }
+  
+  // Global link styling
+  a {
+    color: var(--public-primary-light);
+    text-decoration: none;
+    transition: var(--public-transition);
+    
+    &:hover {
+      color: var(--public-primary);
+      text-decoration: none;
+    }
+  }
+  
+  // Button base styling
+  .btn-primary {
+    background: var(--public-gradient-primary);
+    border: none;
+    color: white;
+    font-weight: 600;
+    border-radius: var(--public-border-radius);
+    padding: 0.75rem 1.5rem;
+    transition: var(--public-transition);
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--public-shadow-lg);
+      filter: brightness(1.1);
+    }
+  }
+  
+  .btn-secondary {
+    background: var(--public-bg-card);
+    border: 2px solid var(--public-border-primary);
+    color: var(--public-text-primary);
+    font-weight: 600;
+    border-radius: var(--public-border-radius);
+    padding: 0.75rem 1.5rem;
+    transition: var(--public-transition);
+    
+    &:hover {
+      background: var(--public-bg-card-hover);
+      border-color: var(--public-primary);
+      color: var(--public-primary-light);
+      transform: translateY(-2px);
+    }
+  }
+  
+  .btn-outline-primary {
+    background: transparent;
+    border: 2px solid var(--public-primary);
+    color: var(--public-primary);
+    font-weight: 600;
+    border-radius: var(--public-border-radius);
+    transition: var(--public-transition);
+    
+    &:hover {
+      background: var(--public-primary);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: var(--public-shadow-md);
+    }
+  }
+  
+  // Card styling
+  .card, .section-card {
+    background: var(--public-bg-card);
+    border: 1px solid var(--public-border-primary);
+    border-radius: var(--public-border-radius-lg);
+    box-shadow: var(--public-shadow-md);
+    transition: var(--public-transition);
+    
+    &:hover {
+      box-shadow: var(--public-shadow-lg);
+      border-color: var(--public-border-secondary);
+      transform: translateY(-2px);
+    }
+  }
+  
+  // Form elements
+  .form-control, .form-select {
+    background: var(--public-bg-card);
+    border: 2px solid var(--public-border-primary);
+    color: var(--public-text-primary);
+    border-radius: var(--public-border-radius);
+    
+    &:focus {
+      background: var(--public-bg-card);
+      border-color: var(--public-primary);
+      color: var(--public-text-primary);
+      box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
+    }
+    
+    &::placeholder {
+      color: var(--public-text-muted);
+    }
+  }
+  
+  // Text colors
+  .text-primary { color: var(--public-primary) !important; }
+  .text-secondary { color: var(--public-text-secondary) !important; }
+  .text-muted { color: var(--public-text-muted) !important; }
+  .text-white { color: var(--public-text-primary) !important; }
+  .text-light { color: var(--public-text-secondary) !important; }
+  
+  // Background colors
+  .bg-primary { background: var(--public-gradient-primary) !important; }
+  .bg-secondary { background: var(--public-bg-secondary) !important; }
+  .bg-dark { background: var(--public-bg-primary) !important; }
+  .bg-light { background: var(--public-bg-card) !important; }
+  
+  // ====================================
+  // BOOTSTRAP OVERRIDES FOR DARK THEME
+  // ====================================
+  
+  // Text color overrides
+  .text-primary {
+    color: var(--public-primary) !important;
+  }
+  
+  i.text-primary,
+  .fas.text-primary,
+  .far.text-primary,
+  .fab.text-primary {
+    color: var(--public-primary) !important;
+  }
+  
+  .text-secondary {
+    color: var(--public-text-secondary) !important;
+  }
+  
+  .text-muted {
+    color: var(--public-text-muted) !important;
+  }
+  
+  .text-dark {
+    color: var(--public-text-primary) !important;
+  }
+  
+  .text-light {
+    color: var(--public-text-primary) !important;
+  }
+  
+  .text-white {
+    color: var(--public-text-primary) !important;
+  }
+  
+  .text-success {
+    color: var(--public-success) !important;
+  }
+  
+  .text-danger {
+    color: var(--public-danger) !important;
+  }
+  
+  .text-warning {
+    color: var(--public-warning) !important;
+  }
+  
+  .text-info {
+    color: var(--public-info) !important;
+  }
+  
+  // Heading overrides
+  h1, h2, h3, h4, h5, h6,
+  .h1, .h2, .h3, .h4, .h5, .h6,
+  .display-1, .display-2, .display-3, .display-4, .display-5, .display-6 {
+    color: var(--public-text-primary) !important;
+  }
+  
+  // Paragraph and span overrides
+  p, span, div, li, td, th {
+    color: var(--public-text-primary);
+  }
+  
+  // Lead text override
+  .lead {
+    color: var(--public-text-secondary) !important;
+  }
+  
+  // Card overrides
+  .card {
+    background: var(--public-bg-card) !important;
+    border: 1px solid var(--public-border-primary) !important;
+    color: var(--public-text-primary);
+    
+    .card-body {
+      color: var(--public-text-primary);
+    }
+    
+    .card-title {
+      color: var(--public-text-primary) !important;
+    }
+    
+    .card-text {
+      color: var(--public-text-secondary) !important;
+    }
+    
+    .card-header {
+      background: var(--public-bg-secondary) !important;
+      border-bottom: 1px solid var(--public-border-primary) !important;
+      color: var(--public-text-primary);
+    }
+    
+    .card-footer {
+      background: var(--public-bg-secondary) !important;
+      border-top: 1px solid var(--public-border-primary) !important;
+      color: var(--public-text-primary);
+    }
+  }
+  
+  // Form overrides
+  .form-label {
+    color: var(--public-text-primary) !important;
+  }
+  
+  .form-control {
+    background: var(--public-bg-secondary) !important;
+    border: 1px solid var(--public-border-primary) !important;
+    color: var(--public-text-primary) !important;
+    
+    &::placeholder {
+      color: var(--public-text-muted) !important;
+    }
+    
+    &:focus {
+      background: var(--public-bg-secondary) !important;
+      border-color: var(--public-primary) !important;
+      box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25) !important;
+      color: var(--public-text-primary) !important;
+    }
+  }
+  
+  .form-select {
+    background: var(--public-bg-secondary) !important;
+    border: 1px solid var(--public-border-primary) !important;
+    color: var(--public-text-primary) !important;
+    
+    &:focus {
+      background: var(--public-bg-secondary) !important;
+      border-color: var(--public-primary) !important;
+      box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25) !important;
+      color: var(--public-text-primary) !important;
+    }
+    
+    option {
+      background: var(--public-bg-secondary) !important;
+      color: var(--public-text-primary) !important;
+    }
+  }
+  
+  .form-check-label {
+    color: var(--public-text-primary) !important;
+  }
+  
+  // Button overrides
+  .btn-primary {
+    background: var(--public-primary) !important;
+    border-color: var(--public-primary) !important;
+    color: white !important;
+    
+    &:hover {
+      background: var(--public-primary-hover) !important;
+      border-color: var(--public-primary-hover) !important;
+    }
+    
+    &:focus {
+      box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25) !important;
+    }
+  }
+  
+  .btn-outline-primary {
+    border-color: var(--public-primary) !important;
+    color: var(--public-primary) !important;
+    
+    &:hover {
+      background: var(--public-primary) !important;
+      border-color: var(--public-primary) !important;
+      color: white !important;
+    }
+  }
+  
+  .btn-secondary {
+    background: var(--public-secondary) !important;
+    border-color: var(--public-secondary) !important;
+    color: white !important;
+    
+    &:hover {
+      background: var(--public-secondary-hover) !important;
+      border-color: var(--public-secondary-hover) !important;
+    }
+  }
+  
+  // Alert overrides
+  .alert {
+    border: 1px solid var(--public-border-primary) !important;
+    
+    &.alert-success {
+      background: rgba(16, 185, 129, 0.1) !important;
+      border-color: var(--public-success) !important;
+      color: var(--public-success) !important;
+    }
+    
+    &.alert-danger {
+      background: rgba(239, 68, 68, 0.1) !important;
+      border-color: var(--public-danger) !important;
+      color: var(--public-danger) !important;
+    }
+    
+    &.alert-warning {
+      background: rgba(245, 158, 11, 0.1) !important;
+      border-color: var(--public-warning) !important;
+      color: var(--public-warning) !important;
+    }
+    
+    &.alert-info {
+      background: rgba(59, 130, 246, 0.1) !important;
+      border-color: var(--public-info) !important;
+      color: var(--public-info) !important;
+    }
+  }
+  
+  // Badge overrides
+  .badge {
+    &.bg-primary {
+      background: var(--public-primary) !important;
+    }
+    
+    &.bg-secondary {
+      background: var(--public-secondary) !important;
+    }
+    
+    &.bg-success {
+      background: var(--public-success) !important;
+    }
+    
+    &.bg-danger {
+      background: var(--public-danger) !important;
+    }
+    
+    &.bg-warning {
+      background: var(--public-warning) !important;
+    }
+    
+    &.bg-info {
+      background: var(--public-info) !important;
+    }
+    
+    &.bg-light {
+      background: var(--public-bg-tertiary) !important;
+      color: var(--public-text-primary) !important;
+    }
+    
+    &.bg-dark {
+      background: var(--public-bg-secondary) !important;
+      color: var(--public-text-primary) !important;
+    }
+  }
+  
+  // Table overrides
+  .table {
+    color: var(--public-text-primary) !important;
+    
+    th {
+      color: var(--public-text-primary) !important;
+      border-color: var(--public-border-primary) !important;
+    }
+    
+    td {
+      color: var(--public-text-secondary) !important;
+      border-color: var(--public-border-primary) !important;
+    }
+    
+    &.table-dark {
+      background: var(--public-bg-secondary) !important;
+    }
+    
+    &.table-striped tbody tr:nth-of-type(odd) {
+      background: rgba(255, 255, 255, 0.05) !important;
+    }
+    
+    &.table-hover tbody tr:hover {
+      background: rgba(255, 255, 255, 0.1) !important;
+    }
+  }
+  
+  // List group overrides
+  .list-group-item {
+    background: var(--public-bg-card) !important;
+    border: 1px solid var(--public-border-primary) !important;
+    color: var(--public-text-primary) !important;
+    
+    &:hover {
+      background: var(--public-bg-card-hover) !important;
+    }
+    
+    &.active {
+      background: var(--public-primary) !important;
+      border-color: var(--public-primary) !important;
+    }
+  }
+  
+  // Modal overrides
+  .modal-content {
+    background: var(--public-bg-card) !important;
+    border: 1px solid var(--public-border-primary) !important;
+    color: var(--public-text-primary);
+  }
+  
+  .modal-header {
+    border-bottom: 1px solid var(--public-border-primary) !important;
+    
+    .modal-title {
+      color: var(--public-text-primary) !important;
+    }
+    
+    .btn-close {
+      filter: invert(1) !important;
+    }
+  }
+  
+  .modal-footer {
+    border-top: 1px solid var(--public-border-primary) !important;
+  }
+  
+  // Nav overrides
+  .nav-link {
+    color: var(--public-text-secondary) !important;
+    
+    &:hover {
+      color: var(--public-primary) !important;
+    }
+    
+    &.active {
+      color: var(--public-primary) !important;
+    }
+  }
+  
+  // Progress bar overrides
+  .progress {
+    background: var(--public-bg-secondary) !important;
+  }
+  
+  .progress-bar {
+    background: var(--public-primary) !important;
+  }
+  
+  // Icon color overrides
+  .fas, .far, .fab {
+    color: inherit;
+  }
+  
+  // Specific icon overrides for primary colored icons
+  .text-primary .fas,
+  .text-primary .far,
+  .text-primary .fab,
+  i.text-primary,
+  .fas.text-primary,
+  .far.text-primary,
+  .fab.text-primary {
+    color: var(--public-primary) !important;
+  }
+  
+  // Font Awesome size classes with text-primary
+  .fa-lg.text-primary,
+  .fa-2x.text-primary,
+  .fa-3x.text-primary,
+  .fa-4x.text-primary,
+  .fa-5x.text-primary,
+  .fa-6x.text-primary {
+    color: var(--public-primary) !important;
+  }
+  
+  // Force override Bootstrap's default colors with highest specificity
+  .text-primary,
+  i.text-primary,
+  .fas.text-primary,
+  .far.text-primary,
+  .fab.text-primary,
+  .fa-lg.text-primary,
+  .fa-2x.text-primary,
+  .fa-3x.text-primary,
+  .fa-4x.text-primary,
+  .fa-5x.text-primary,
+  .fa-6x.text-primary {
+    color: var(--public-primary) !important;
+  }
+  
+  // Ensure Bootstrap's primary color is overridden everywhere
+  .btn-primary {
+    --bs-btn-bg: var(--public-primary) !important;
+    --bs-btn-border-color: var(--public-primary) !important;
+    --bs-btn-hover-bg: var(--public-primary-hover) !important;
+    --bs-btn-hover-border-color: var(--public-primary-hover) !important;
+  }
+  
+  .btn-outline-primary {
+    --bs-btn-color: var(--public-primary) !important;
+    --bs-btn-border-color: var(--public-primary) !important;
+    --bs-btn-hover-bg: var(--public-primary) !important;
+    --bs-btn-hover-color: white !important;
+  }
 }

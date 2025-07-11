@@ -55,13 +55,7 @@
                   <div class="form-text">Icon name from FontAwesome (without 'fa-' prefix)</div>
                 </div>
               </div>
-              <div class="col-sm-3">
-                <div class="mb-3">
-                  <label for="price" class="form-label fw-bold">Starting Price *</label>
-                  <input formControlName="price" type="text" class="form-control" id="price" placeholder="From $5,000" />
-                </div>
-              </div>
-              <div class="col-sm-3">
+              <div class="col-sm-6">
                 <div class="mb-3">
                   <label for="duration" class="form-label fw-bold">Duration *</label>
                   <input formControlName="duration" type="text" class="form-control" id="duration" placeholder="4-12 weeks" />
@@ -107,18 +101,11 @@
             </div>
 
             <div class="row mobile-horizontal">
-              <div class="col-6 mobile-col">
+              <div class="col-12">
                 <div class="mb-3">
                   <label for="technologies" class="form-label fw-bold">Technologies Used *</label>
                   <textarea formControlName="technologies" class="form-control mobile-textarea" id="technologies" rows="4" placeholder="React, Node.js, AWS, Docker, Kubernetes..."></textarea>
                   <div class="form-text">Separate technologies with commas</div>
-                </div>
-              </div>
-              <div class="col-6 mobile-col">
-                <div class="mb-3">
-                  <label for="clientTypes" class="form-label fw-bold">Target Client Types *</label>
-                  <input formControlName="clientTypes" type="text" class="form-control" id="clientTypes" placeholder="Enterprise, SMB, Startups..." />
-                  <div class="form-text">Separate client types with commas</div>
                 </div>
               </div>
             </div>
@@ -195,7 +182,6 @@
             <h6 class="fw-bold">{{form.get('title')?.value}}</h6>
             <p class="text-muted small">{{form.get('description')?.value}}</p>
             <span class="badge bg-primary me-1">{{form.get('category')?.value}}</span>
-            <span class="badge bg-success" *ngIf="form.get('price')?.value">{{form.get('price')?.value}}</span>
             <br>
             <span class="badge bg-warning text-dark mt-2" *ngIf="form.get('featured')?.value">
               <i class="fas fa-star me-1"></i>Featured

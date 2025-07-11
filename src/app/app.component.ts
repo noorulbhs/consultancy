@@ -9,5 +9,5 @@ import { NotificationToastComponent } from './core/components/notification-toast
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'it-consultancy';
+  title = 'altrevo';
 }

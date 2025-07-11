@@ -12,10 +12,8 @@ interface Service {
   icon: string;
   features: string[];
   technologies: string[];
-  price: string;
   duration: string;
   deliverables: string[];
-  clientTypes: string[];
   caseStudy: {
     client: string;
     challenge: string;

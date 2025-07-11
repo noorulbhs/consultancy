@@ -90,14 +90,8 @@
               <p class="card-text text-muted mb-2">{{service.description}}</p>
               
               <div class="service-details mb-2">
-                <small class="text-muted me-3">
-                  <i class="fas fa-dollar-sign me-1"></i>{{service.price}}
-                </small>
-                <small class="text-muted me-3">
-                  <i class="fas fa-clock me-1"></i>{{service.duration}}
-                </small>
                 <small class="text-muted">
-                  <i class="fas fa-users me-1"></i>{{service.clientTypes.join(', ')}}
+                  <i class="fas fa-clock me-1"></i>{{service.duration}}
                 </small>
               </div>
               
@@ -187,16 +181,14 @@
           <div class="col-md-4">
             <div class="service-info-card bg-light p-3 rounded">
               <h6 class="fw-bold mb-3">Service Details</h6>
-              <div class="mb-2"><strong>Price:</strong> {{selectedService.price}}</div>
               <div class="mb-2"><strong>Duration:</strong> {{selectedService.duration}}</div>
-              <div class="mb-2"><strong>Status:</strong> 
+              <div class="mb-3"><strong>Status:</strong> 
                 <span class="badge" [class.bg-success]="selectedService.status === 'active'"
                       [class.bg-secondary]="selectedService.status === 'inactive'"
                       [class.bg-warning]="selectedService.status === 'draft'">
                   {{selectedService.status | titlecase}}
                 </span>
               </div>
-              <div class="mb-3"><strong>Client Types:</strong> {{selectedService.clientTypes.join(', ')}}</div>
               
               <h6 class="fw-bold mb-2">Technologies</h6>
               <div class="d-flex flex-wrap gap-1">

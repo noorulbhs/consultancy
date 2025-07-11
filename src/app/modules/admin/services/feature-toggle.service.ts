@@ -36,13 +36,6 @@ export class FeatureToggleService {
       section: 'home'
     },
     {
-      id: 'testimonials-more-stories',
-      name: 'More Client Success Stories',
-      description: 'Show additional testimonials grid below the carousel',
-      enabled: true,
-      section: 'home'
-    },
-    {
       id: 'why-choose-us-section',
       name: 'Why Choose Us',
       description: 'Show company advantages and benefits',

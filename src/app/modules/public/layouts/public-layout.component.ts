@@ -8,7 +8,10 @@ import { FooterComponent } from './footer/footer.component';
   standalone: true,
   imports: [RouterOutlet, NavbarComponent, FooterComponent],
   templateUrl: './public-layout.component.html',
-  styleUrl: './public-layout.component.scss'
+  styleUrl: './public-layout.component.scss',
+  host: {
+    'class': 'public-dark-theme'
+  }
 })
 export class PublicLayoutComponent {
 

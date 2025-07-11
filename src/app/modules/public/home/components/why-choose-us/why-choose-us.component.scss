@@ -1,10 +1,11 @@
 .why-choose-us-section {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: var(--public-gradient-dark);
+  color: var(--public-text-primary);
   
   .section-title {
     font-size: 2.5rem;
     font-weight: 700;
-    color: #2c3e50;
+    color: var(--public-text-primary);
     margin-bottom: 1rem;
     position: relative;
     
@@ -16,37 +17,38 @@
       transform: translateX(-50%);
       width: 80px;
       height: 4px;
-      background: linear-gradient(45deg, #007bff, #0056b3);
+      background: var(--public-gradient-primary);
       border-radius: 2px;
     }
   }
   
   .section-subtitle {
     font-size: 1.1rem;
-    color: #6c757d;
+    color: var(--public-text-secondary);
     margin-bottom: 0;
   }
   
   .feature-card {
-    background: white;
+    background: var(--public-bg-card);
     border-radius: 12px;
     padding: 2rem;
     text-align: center;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--public-shadow-md);
     transition: all 0.3s ease;
-    border: 1px solid rgba(0, 123, 255, 0.1);
+    border: 1px solid var(--public-border-primary);
     
     &:hover {
       transform: translateY(-5px);
-      box-shadow: 0 15px 35px rgba(0, 123, 255, 0.15);
-      border-color: rgba(0, 123, 255, 0.3);
+      box-shadow: var(--public-shadow-xl);
+      border-color: var(--public-primary);
+      background: var(--public-bg-card-hover);
     }
   }
   
   .feature-icon {
     width: 80px;
     height: 80px;
-    background: linear-gradient(45deg, #007bff, #0056b3);
+    background: var(--public-gradient-primary);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -62,12 +64,12 @@
   .feature-title {
     font-size: 1.25rem;
     font-weight: 600;
-    color: #2c3e50;
+    color: var(--public-text-primary);
     margin-bottom: 1rem;
   }
   
   .feature-description {
-    color: #6c757d;
+    color: var(--public-text-secondary);
     line-height: 1.6;
     margin-bottom: 0;
   }

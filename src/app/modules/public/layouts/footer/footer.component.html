@@ -5,9 +5,9 @@
       <!-- Company Information -->
       <div class="col-lg-4 col-md-6 mb-4">
         <div class="footer-section">
-          <h5 class="footer-title mb-3">{{ footerData.companyName || 'TechNova IT Solutions' }}</h5>
+          <h5 class="footer-title mb-3">{{ footerData.companyName || 'Altrevo Tech Solutions' }}</h5>
           <p class="footer-description mb-3">
-            Leading IT consultancy providing cutting-edge technology solutions, digital transformation, 
+            Leading technology consultancy providing cutting-edge solutions, digital transformation, 
             and innovation services to businesses worldwide.
           </p>
           
@@ -33,10 +33,6 @@
                class="social-link me-3" title="LinkedIn">
               <i class="fab fa-linkedin-in"></i>
             </a>
-            <a *ngIf="footerData.social?.twitter" [href]="footerData.social.twitter" target="_blank" 
-               class="social-link me-3" title="Twitter">
-              <i class="fab fa-twitter"></i>
-            </a>
             <a *ngIf="footerData.social?.facebook" [href]="footerData.social.facebook" target="_blank" 
                class="social-link me-3" title="Facebook">
               <i class="fab fa-facebook-f"></i>
@@ -44,14 +40,6 @@
             <a *ngIf="footerData.social?.instagram" [href]="footerData.social.instagram" target="_blank" 
                class="social-link me-3" title="Instagram">
               <i class="fab fa-instagram"></i>
-            </a>
-            <a *ngIf="footerData.social?.youtube" [href]="footerData.social.youtube" target="_blank" 
-               class="social-link me-3" title="YouTube">
-              <i class="fab fa-youtube"></i>
-            </a>
-            <a *ngIf="footerData.social?.github" [href]="footerData.social.github" target="_blank" 
-               class="social-link me-3" title="GitHub">
-              <i class="fab fa-github"></i>
             </a>
           </div>
         </div>
@@ -95,25 +83,9 @@
         </div>
       </div>
 
-      <!-- Business Hours & Newsletter -->
+      <!-- Newsletter -->
       <div class="col-lg-4 col-md-6 mb-4">
         <div class="footer-section">
-          <h6 class="footer-title mb-3">Business Hours</h6>
-          <div class="business-hours mb-4" *ngIf="footerData.businessHours">
-            <div class="hour-item d-flex justify-content-between mb-1">
-              <span>Monday - Friday:</span>
-              <span>{{ footerData.businessHours.monday || '9:00 AM - 6:00 PM' }}</span>
-            </div>
-            <div class="hour-item d-flex justify-content-between mb-1">
-              <span>Saturday:</span>
-              <span>{{ footerData.businessHours.saturday || '10:00 AM - 4:00 PM' }}</span>
-            </div>
-            <div class="hour-item d-flex justify-content-between mb-1">
-              <span>Sunday:</span>
-              <span>{{ footerData.businessHours.sunday || 'Closed' }}</span>
-            </div>
-          </div>
-
           <!-- Newsletter Signup -->
           <div class="newsletter">
             <h6 class="footer-title mb-3">Stay Updated</h6>

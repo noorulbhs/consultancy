@@ -109,6 +109,234 @@
   border-radius: 12px;
 }
 
+// ================================
+// BLOG PAGE DARK THEME OVERRIDES
+// ================================
+
+// Container styling for dark theme
+.container {
+  color: var(--public-text-primary);
+  
+  // Title overrides
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--public-text-primary) !important;
+  }
+  
+  // Text color overrides
+  .text-muted {
+    color: var(--public-text-muted) !important;
+  }
+  
+  .text-primary {
+    color: var(--public-primary-light) !important;
+  }
+  
+  .lead {
+    color: var(--public-text-muted) !important;
+  }
+}
+
+// Card dark theme
+.card {
+  background: var(--public-bg-card) !important;
+  border: 1px solid var(--public-border-primary) !important;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--public-shadow-xl) !important;
+    background: var(--public-bg-card-hover) !important;
+  }
+  
+  .card-body {
+    color: var(--public-text-primary);
+    
+    h4, h5, h6 {
+      color: var(--public-text-primary) !important;
+    }
+    
+    p {
+      color: var(--public-text-muted) !important;
+    }
+    
+    .text-muted {
+      color: var(--public-text-muted) !important;
+    }
+    
+    .card-title {
+      color: var(--public-text-primary) !important;
+    }
+    
+    .card-text {
+      color: var(--public-text-muted) !important;
+    }
+  }
+  
+  .card-header {
+    background: var(--public-bg-secondary) !important;
+    border-bottom: 1px solid var(--public-border-primary) !important;
+    color: var(--public-text-primary);
+  }
+  
+  .card-footer {
+    background: var(--public-bg-secondary) !important;
+    border-top: 1px solid var(--public-border-primary) !important;
+    color: var(--public-text-primary);
+    
+    .text-muted {
+      color: var(--public-text-muted) !important;
+    }
+  }
+}
+
+// Featured card
+.featured-card {
+  border: 2px solid var(--public-warning) !important;
+}
+
+// Blog content styling for dark theme
+.blog-content {
+  line-height: 1.8;
+  color: var(--public-text-primary);
+  
+  h3 {
+    color: var(--public-primary-light) !important;
+    margin: 2rem 0 1rem 0;
+  }
+  
+  h4 {
+    color: var(--public-text-primary) !important;
+    margin: 1.5rem 0 1rem 0;
+  }
+  
+  h6 {
+    color: var(--public-text-secondary) !important;
+    font-weight: 600;
+  }
+  
+  .lead {
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--public-text-muted) !important;
+  }
+  
+  p {
+    color: var(--public-text-secondary) !important;
+  }
+  
+  .alert {
+    border-radius: 8px;
+    border: 1px solid var(--public-border-primary) !important;
+    
+    &.alert-success {
+      background: rgba(16, 185, 129, 0.1) !important;
+      border-color: var(--public-success) !important;
+      color: var(--public-success) !important;
+    }
+    
+    &.alert-danger {
+      background: rgba(239, 68, 68, 0.1) !important;
+      border-color: var(--public-danger) !important;
+      color: var(--public-danger) !important;
+    }
+    
+    &.alert-warning {
+      background: rgba(245, 158, 11, 0.1) !important;
+      border-color: var(--public-warning) !important;
+      color: var(--public-warning) !important;
+    }
+    
+    &.alert-info {
+      background: rgba(59, 130, 246, 0.1) !important;
+      border-color: var(--public-info) !important;
+      color: var(--public-info) !important;
+    }
+  }
+  
+  .badge {
+    font-size: 0.75rem;
+    
+    &.bg-primary {
+      background: var(--public-primary) !important;
+    }
+    
+    &.bg-secondary {
+      background: var(--public-secondary) !important;
+    }
+    
+    &.bg-success {
+      background: var(--public-success) !important;
+    }
+    
+    &.bg-danger {
+      background: var(--public-danger) !important;
+    }
+    
+    &.bg-warning {
+      background: var(--public-warning) !important;
+    }
+    
+    &.bg-info {
+      background: var(--public-info) !important;
+    }
+  }
+  
+  .table {
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--public-bg-card) !important;
+    color: var(--public-text-primary) !important;
+    
+    th {
+      background: var(--public-bg-secondary) !important;
+      color: var(--public-text-primary) !important;
+      border-color: var(--public-border-primary) !important;
+    }
+    
+    td {
+      color: var(--public-text-secondary) !important;
+      border-color: var(--public-border-primary) !important;
+    }
+    
+    &.table-striped tbody tr:nth-of-type(odd) {
+      background: rgba(255, 255, 255, 0.05) !important;
+    }
+    
+    &.table-hover tbody tr:hover {
+      background: rgba(255, 255, 255, 0.1) !important;
+    }
+  }
+}
+
+// Pagination dark theme
+.pagination {
+  .page-item {
+    .page-link {
+      background: var(--public-bg-card) !important;
+      border-color: var(--public-border-primary) !important;
+      color: var(--public-text-primary) !important;
+      
+      &:hover {
+        background: var(--public-bg-card-hover) !important;
+        border-color: var(--public-primary) !important;
+        color: var(--public-primary) !important;
+      }
+    }
+    
+    &.active .page-link {
+      background: var(--public-primary) !important;
+      border-color: var(--public-primary) !important;
+      color: white !important;
+    }
+    
+    &.disabled .page-link {
+      background: var(--public-bg-secondary) !important;
+      border-color: var(--public-border-primary) !important;
+      color: var(--public-text-muted) !important;
+    }
+  }
+}
+
 @media (max-width: 768px) {
   .modal-xl {
     max-width: 95%;

@@ -1,33 +1,96 @@
 section {
   padding: 30px 0;
+  color: var(--public-text-primary);
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--public-text-primary) !important;
+  }
+  
+  .text-muted {
+    color: var(--public-text-muted) !important;
+  }
+  
+  .text-primary {
+    color: var(--public-primary-light) !important;
+  }
+  
+  .lead {
+    color: var(--public-text-secondary) !important;
+  }
 }
 
 .card {
+  background: var(--public-bg-card) !important;
+  border: 1px solid var(--public-border-primary) !important;
   transition: all 0.2s ease;
+  
   &:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--public-shadow-lg) !important;
+    background: var(--public-bg-card-hover) !important;
+  }
+  
+  .card-body {
+    color: var(--public-text-primary);
+    
+    h4, h5, h6 {
+      color: var(--public-text-primary) !important;
+    }
+    
+    p {
+      color: var(--public-text-secondary) !important;
+    }
+    
+    .text-muted {
+      color: var(--public-text-muted) !important;
+    }
+    
+    .card-title {
+      color: var(--public-text-primary) !important;
+    }
+    
+    .card-text {
+      color: var(--public-text-secondary) !important;
+    }
   }
 }
 
 .team-card {
+  background: var(--public-bg-card) !important;
+  border: 1px solid var(--public-border-primary) !important;
   transition: all 0.3s ease;
   
   &:hover {
     transform: translateY(-10px);
-    box-shadow: 0 15px 35px rgba(0, 123, 255, 0.1) !important;
+    box-shadow: var(--public-shadow-xl) !important;
+    background: var(--public-bg-card-hover) !important;
     
     .team-photo {
       transform: scale(1.05);
     }
   }
+  
+  .card-body {
+    color: var(--public-text-primary);
+    
+    h5, h6 {
+      color: var(--public-text-primary) !important;
+    }
+    
+    .text-muted {
+      color: var(--public-text-muted) !important;
+    }
+  }
 }
 
 .team-mini-card {
+  background: var(--public-bg-card) !important;
+  border: 1px solid var(--public-border-primary) !important;
   transition: all 0.3s ease;
   
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 123, 255, 0.1) !important;
+    box-shadow: var(--public-shadow-lg) !important;
+    background: var(--public-bg-card-hover) !important;
   }
 }
 
