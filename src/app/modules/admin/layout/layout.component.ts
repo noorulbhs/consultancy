@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-admin-layout',
@@ -9,8 +10,17 @@ import { RouterModule } from '@angular/router';
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss']
 })
-export class LayoutComponent {
+export class LayoutComponent implements AfterViewInit {
   isMobileMenuOpen = false;
+  private router = inject(Router);
+
+  ngAfterViewInit(): void {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
@@ -18,5 +28,10 @@ export class LayoutComponent {
 
   closeMobileMenu() {
     this.isMobileMenuOpen = false;
+  }
+
+  logout() {
+    localStorage.clear();
+    this.router.navigate(['/admin-login']);
   }
 }

@@ -100,10 +100,13 @@ export class SettingsService {
           lastUpdated: new Date(),
           updatedBy: 'admin' // In real app, this would be the current user
         };
+        
         // Save to localStorage
         localStorage.setItem('siteSettings', JSON.stringify(this.settings));
+        
         // Update subject
         this.settingsSubject.next(this.settings);
+        
         return of({ success: true, message: 'Settings updated successfully' });
       } catch (error) {
         console.error('Error updating settings:', error);
@@ -134,29 +137,51 @@ export class SettingsService {
     });
   }
 
-  validateSettings(settings: Partial<SiteSettings>): { isValid: boolean; errors: string[] } {
-    const errors: string[] = [];
-
-    if (!settings.companyName?.trim()) {
-      errors.push('Company name is required');
-    }
-
-    if (!settings.email?.trim() || !this.isValidEmail(settings.email)) {
-      errors.push('Valid email is required');
-    }
-
-    if (!settings.phone?.trim()) {
-      errors.push('Phone number is required');
-    }
-
-    return {
-      isValid: errors.length === 0,
-      errors
-    };
+  // Get specific setting categories
+  getCompanyInfo(): Observable<any> {
+    return of({
+      companyName: this.settings.companyName,
+      tagline: this.settings.tagline,
+      description: this.settings.description,
+      logoUrl: this.settings.logoUrl,
+      faviconUrl: this.settings.faviconUrl
+    });
   }
 
-  private isValidEmail(email: string): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+  getContactInfo(): Observable<any> {
+    return of({
+      email: this.settings.email,
+      phone: this.settings.phone,
+      address: this.settings.address,
+      city: this.settings.city,
+      state: this.settings.state,
+      country: this.settings.country,
+      zipCode: this.settings.zipCode
+    });
+  }
+
+  getSocialMedia(): Observable<any> {
+    return of(this.settings.social);
+  }
+
+  getSeoSettings(): Observable<any> {
+    return of(this.settings.seo);
+  }
+
+  getStatistics(): Observable<any> {
+    return of(this.settings.statistics);
+  }
+
+  getContactForm(): Observable<any> {
+    return of(this.settings.contactForm);
+  }
+
+  getBusinessHours(): Observable<any> {
+    return of(this.settings.businessHours);
+  }
+
+  // Refresh settings from API or localStorage
+  refreshSettings(): void {
+    this.loadSettings();
   }
 }

@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, inject, AfterViewInit } from '@angular/core';
+import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from '../home/components/navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-public-layout',
@@ -13,6 +14,15 @@ import { FooterComponent } from './footer/footer.component';
     'class': 'public-dark-theme'
   }
 })
-export class PublicLayoutComponent {
+export class PublicLayoutComponent implements AfterViewInit {
+  private router = inject(Router);
 
+  ngAfterViewInit(): void {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Optionally, force reload data in child components if needed
+    });
+  }
 }
