@@ -8,9 +8,10 @@ export class AuthService {
   constructor() {}
 
   login(username: string, password: string): boolean {
-    return (
-      username === ADMIN_CREDENTIALS.username &&
-      password === ADMIN_CREDENTIALS.password
+    const found = ADMIN_CREDENTIALS.some(
+      cred => cred.username === username && cred.password === password
     );
+    console.log('[AuthService] Login attempt:', { username, password, found, ADMIN_CREDENTIALS });
+    return found;
   }
 }

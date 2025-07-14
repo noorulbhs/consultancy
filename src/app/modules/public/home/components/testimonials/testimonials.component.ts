@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { TestimonialService, Testimonial } from '../../../../admin/testimonial-manager/services/testimonial.service';
+import { TestimonialService } from '../../../../admin/testimonial-manager/services/testimonial.service';
+import { Testimonial } from '../../../../../core/interfaces/content.interface';
 
 @Component({
   selector: 'app-testimonials',

@@ -4,6 +4,7 @@ export interface SiteSettings {
   version?: string;
   companyName: string;
   tagline: string;
+  heroSubtext: string;
   description: string;
   logoUrl: string;
   faviconUrl: string;
@@ -44,6 +45,8 @@ export interface SeoSettings {
 export interface FooterSettings {
   copyrightText: string;
   quickLinks: QuickLink[];
+  services: QuickLink[];
+  aboutLinks: QuickLink[];
 }
 
 export interface QuickLink {

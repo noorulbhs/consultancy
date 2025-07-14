@@ -1,33 +1,36 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, BehaviorSubject, of } from 'rxjs';
+
 import { MOCK_TESTIMONIALS } from '../../../public/home/mock/testimonials-data';
 import { ActivityTrackerService } from '../../services/activity-tracker.service';
-
-export interface Testimonial {
-  id: number;
-  name: string;
-  designation: string;
-  company: string;
-  companyLogo?: string;
-  message: string;
-  rating: number;
-  photoUrl?: string;
-  published: boolean;
-  featured?: boolean;
-  date?: string;
-  projectType?: string;
-  location?: string;
-  tags?: string[];
-}
+import { Testimonial } from '../../../../core/interfaces/content.interface';
 
 @Injectable({ providedIn: 'root' })
 export class TestimonialService {
-  private testimonials = [...MOCK_TESTIMONIALS];
+  private storageKey = 'testimonials';
+  private testimonials: Testimonial[] = this.loadTestimonials();
+  private testimonialsSubject = new BehaviorSubject<Testimonial[]>(this.testimonials);
 
   constructor(private activityTracker: ActivityTrackerService) {}
 
+  private loadTestimonials(): Testimonial[] {
+    const saved = localStorage.getItem(this.storageKey);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch {
+        return [...MOCK_TESTIMONIALS];
+      }
+    }
+    return [...MOCK_TESTIMONIALS];
+  }
+
+  private saveTestimonials(): void {
+    localStorage.setItem(this.storageKey, JSON.stringify(this.testimonials));
+  }
+
   getAll(): Observable<Testimonial[]> {
-    return of(this.testimonials);
+    return this.testimonialsSubject.asObservable();
   }
 
   getById(id: number): Observable<Testimonial | undefined> {
@@ -37,33 +40,36 @@ export class TestimonialService {
   add(data: Testimonial): Observable<void> {
     data.id = Date.now();
     this.testimonials.push(data);
-    
-    // Track activity
+    this.saveTestimonials();
+    this.testimonialsSubject.next([...this.testimonials]);
     this.activityTracker.trackTestimonialActivity('Added', data.name, 'Admin');
-    
-    return of();
+    console.debug('[TestimonialService] Added testimonial:', data);
+    return of(void 0);
   }
 
   update(id: number, data: Testimonial): Observable<void> {
     const index = this.testimonials.findIndex(t => t.id === id);
+    console.debug('[TestimonialService] update called for id:', id, 'index:', index, 'data:', data);
     if (index !== -1) {
-      this.testimonials[index] = { ...data, id };
-      
-      // Track activity
+      this.testimonials[index] = { ...this.testimonials[index], ...data, id };
+      this.saveTestimonials();
+      this.testimonialsSubject.next([...this.testimonials]);
       this.activityTracker.trackTestimonialActivity('Updated', data.name, 'Admin');
+      console.debug('[TestimonialService] Updated testimonial:', this.testimonials[index]);
+    } else {
+      console.warn('[TestimonialService] Tried to update testimonial but not found for id:', id);
     }
-    return of();
+    return of(void 0);
   }
 
   delete(id: number): Observable<void> {
     const testimonialToDelete = this.testimonials.find(t => t.id === id);
     this.testimonials = this.testimonials.filter(t => t.id !== id);
-    
-    // Track activity
+    this.saveTestimonials();
+    this.testimonialsSubject.next([...this.testimonials]);
     if (testimonialToDelete) {
       this.activityTracker.trackTestimonialActivity('Deleted', testimonialToDelete.name, 'Admin');
     }
-    
-    return of();
+    return of(void 0);
   }
 }

@@ -8,15 +8,23 @@ export class AuthService {
   private readonly key = 'admin_logged_in';
 
   login(username: string, password: string): boolean {
-    if (
-      username === ADMIN_CREDENTIALS.username &&
-      password === ADMIN_CREDENTIALS.password
-    ) {
+    const found = ADMIN_CREDENTIALS.some(
+        cred => cred.username === username && cred.password === password
+      );
+    if (found) {
       localStorage.setItem(this.key, 'true');
       return true;
     }
     return false;
   }
+
+  // login(username: string, password: string): boolean {
+  //     const found = ADMIN_CREDENTIALS.some(
+  //       cred => cred.username === username && cred.password === password
+  //     );
+  //     console.log('[AuthService] Login attempt:', { username, password, found, ADMIN_CREDENTIALS });
+  //     return found;
+  //   }
 
   logout(): void {
     localStorage.removeItem(this.key);

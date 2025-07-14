@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { SiteSettings } from '../../../../core/interfaces/site-settings.interface';
-import { HttpService } from '../../../../core/services/http.service';
-import { DataSourceService } from '../../../../core/services/data-source.service';
-import { PUBLIC_API_ENDPOINTS, ADMIN_API_ENDPOINTS } from '../../../../core/constants/api-endpoints';
+import { SiteSettings } from '../interfaces/site-settings.interface';
+import { HttpService } from './http.service';
+import { DataSourceService } from './data-source.service';
+import { PUBLIC_API_ENDPOINTS, ADMIN_API_ENDPOINTS } from '../constants/api-endpoints';
 
 @Injectable({
   providedIn: 'root'
@@ -68,6 +68,7 @@ export class SiteSettingsService {
       version: '2.0',
       companyName: 'Altrevo Tech Solutions',
       tagline: 'Innovative Technology Solutions for Modern Business',
+      heroSubtext: 'We help startups and enterprises build scalable, secure, and cloud-native systems.',
       description: 'Leading technology consultancy providing innovative solutions for digital transformation, cloud migration, and enterprise modernization.',
       logoUrl: 'altrevo-logo.png',
       faviconUrl: 'altrevo-favicon.png',
@@ -97,6 +98,20 @@ export class SiteSettingsService {
           { title: 'Privacy Policy', url: '/privacy-policy', enabled: true },
           { title: 'Terms of Service', url: '/terms-of-service', enabled: true },
           { title: 'Cookie Policy', url: '/cookie-policy', enabled: true }
+        ],
+        services: [
+          { title: 'Cloud Solutions', url: '/services#cloud', enabled: true },
+          { title: 'Digital Transformation', url: '/services#digital-transformation', enabled: true },
+          { title: 'Cybersecurity', url: '/services#cybersecurity', enabled: true },
+          { title: 'Data Analytics', url: '/services#data-analytics', enabled: true },
+          { title: 'Software Development', url: '/services#software-development', enabled: true }
+        ],
+        aboutLinks: [
+          { title: 'Our Story', url: '/about#story', enabled: true },
+          { title: 'Our Team', url: '/about#team', enabled: true },
+          { title: 'Careers', url: '/careers', enabled: true },
+          { title: 'Press & Media', url: '/press', enabled: true },
+          { title: 'Contact Us', url: '/contact', enabled: true }
         ]
       },
       contactForm: {
@@ -175,7 +190,7 @@ export class SiteSettingsService {
   }
 
   // Get company info
-  getCompanyInfo(): Observable<Partial<SiteSettings>> {
+  getCompanyInfo(): Observable<Partial<SiteSettings> | null> {
     return this.settings$.pipe(
       map(settings => settings ? {
         companyName: settings.companyName,
@@ -188,7 +203,7 @@ export class SiteSettingsService {
   }
 
   // Get contact info
-  getContactInfo(): Observable<Partial<SiteSettings>> {
+  getContactInfo(): Observable<Partial<SiteSettings> | null> {
     return this.settings$.pipe(
       map(settings => settings ? {
         email: settings.email,

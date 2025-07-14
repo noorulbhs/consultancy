@@ -116,20 +116,6 @@
               <a [routerLink]="link.url" class="footer-link small">{{ link.title }}</a>
               <span *ngIf="!last" class="text-muted ms-3">|</span>
             </li>
-            <!-- Default quick links if none configured -->
-            <ng-container *ngIf="!footerData.footer?.quickLinks || footerData.footer.quickLinks.length === 0">
-              <li class="me-3">
-                <a href="/privacy-policy" class="footer-link small">Privacy Policy</a>
-                <span class="text-muted ms-3">|</span>
-              </li>
-              <li class="me-3">
-                <a href="/terms-of-service" class="footer-link small">Terms of Service</a>
-                <span class="text-muted ms-3">|</span>
-              </li>
-              <li class="me-3">
-                <a href="/sitemap" class="footer-link small">Sitemap</a>
-              </li>
-            </ng-container>
           </ul>
         </div>
       </div>

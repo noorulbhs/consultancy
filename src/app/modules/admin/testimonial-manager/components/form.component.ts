@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
-import { TestimonialService, Testimonial } from '../services/testimonial.service';
+import { TestimonialService } from '../services/testimonial.service';
+import { Testimonial } from '../../../../core/interfaces/content.interface';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { FormValidationService } from '../../../../core/services/form-validation.service';
 
@@ -108,10 +109,12 @@ export class FormComponent implements OnInit {
       this.testimonialService.update(this.testimonialId, testimonialData).subscribe({
         next: () => {
           this.notificationService.success('Success!', 'Testimonial updated successfully');
-          this.router.navigate(['/admin-testimonials']);
         },
         error: (error) => {
           this.notificationService.error('Error!', 'Failed to update testimonial. Please try again.');
+        },
+        complete: () => {
+          this.router.navigate(['/admin-testimonials']);
         }
       });
     } else {

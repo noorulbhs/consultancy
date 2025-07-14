@@ -45,7 +45,8 @@ export class ServicesPageComponent implements OnInit {
   ngOnInit(): void {
     this.serviceService.getAll().subscribe((data: Service[]) => {
       this.services = data;
-      this.filteredServices = data;
+      // Keep filteredServices in sync with services and current filter
+      this.filterByCategory(this.selectedCategory);
     });
   }
 

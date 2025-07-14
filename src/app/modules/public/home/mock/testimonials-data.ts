@@ -1,4 +1,4 @@
-import { Testimonial } from '../../../admin/testimonial-manager/services/testimonial.service';
+import { Testimonial } from '../../../../core/interfaces/content.interface';
 
 export const MOCK_TESTIMONIALS: Testimonial[] = [
   {

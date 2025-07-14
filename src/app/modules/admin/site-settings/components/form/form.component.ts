@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { SettingsService } from '../../services/settings.service';
-import { SiteSettings } from '../../mock/settings-data';
+import { SiteSettings } from '../../../../../core/interfaces/site-settings.interface';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { FormValidationService } from '../../../../../core/services/form-validation.service';
 
@@ -14,6 +14,31 @@ import { FormValidationService } from '../../../../../core/services/form-validat
   styleUrls: ['./form.component.scss']
 })
 export class SiteSettingsFormComponent implements OnInit {
+  onLogoFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.logoPreview = e.target.result;
+        this.form.get('logoUrl')?.setValue(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  onFaviconFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.faviconPreview = e.target.result;
+        this.form.get('faviconUrl')?.setValue(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
   form!: FormGroup;
   logoPreview: string = '';
   faviconPreview: string = '';
@@ -62,6 +87,7 @@ export class SiteSettingsFormComponent implements OnInit {
       // Company Information
       companyName: ['', Validators.required],
       tagline: ['', Validators.required],
+      heroSubtext: ['', Validators.required],
       description: ['', Validators.required],
       logoUrl: ['', Validators.required],
       faviconUrl: [''],
@@ -194,18 +220,50 @@ export class SiteSettingsFormComponent implements OnInit {
     this.loading = true;
     this.settingsService.getSettings().subscribe({
       next: (data: SiteSettings) => {
-        this.form.patchValue(data);
+        // Patch all fields except dynamic arrays
+        const { seo, footer, contactForm, ...rest } = data;
+        this.form.patchValue({ ...rest });
+        // heroSubtext is now always present and patched with ...rest
+        // Patch only primitive fields of seo
+        if (seo) {
+          const seoGroup = this.form.get('seo');
+          if (seoGroup) {
+            seoGroup.patchValue({
+              metaTitle: seo.metaTitle,
+              metaDescription: seo.metaDescription,
+              googleAnalyticsId: seo.googleAnalyticsId,
+              facebookPixelId: seo.facebookPixelId
+            });
+            // Now set keywords FormArray
+            this.setKeywords(seo.keywords || []);
+          }
+        }
+        // Patch primitive fields for footer
+        if (footer) {
+          const footerGroup = this.form.get('footer');
+          if (footerGroup) {
+            footerGroup.patchValue({
+              copyrightText: footer.copyrightText
+            });
+          }
+        }
+        // Patch primitive fields for contactForm
+        if (contactForm) {
+          const contactFormGroup = this.form.get('contactForm');
+          if (contactFormGroup) {
+            contactFormGroup.patchValue({
+              recipientEmail: contactForm.recipientEmail
+            });
+          }
+        }
         this.logoPreview = data.logoUrl;
         this.faviconPreview = data.faviconUrl;
-        
-        // Set up dynamic arrays
-        this.setKeywords(data.seo.keywords || []);
-        this.setFooterLinks('quickLinks', data.footer.quickLinks || []);
-        this.setFooterLinks('services', data.footer.services || []);
-        this.setFooterLinks('aboutLinks', data.footer.aboutLinks || []);
-        this.setSubjectOptions(data.contactForm.subjectOptions || []);
-        this.setServiceOptions(data.contactForm.serviceOptions || []);
-        
+        // Set other dynamic arrays
+        this.setFooterLinks('quickLinks', footer?.quickLinks || []);
+        this.setFooterLinks('services', footer?.services || []);
+        this.setFooterLinks('aboutLinks', footer?.aboutLinks || []);
+        this.setSubjectOptions(contactForm?.subjectOptions || []);
+        this.setServiceOptions(contactForm?.serviceOptions || []);
         this.loading = false;
       },
       error: () => {
@@ -231,14 +289,27 @@ export class SiteSettingsFormComponent implements OnInit {
 
   // Keywords management
   get keywords(): FormArray {
-    return this.form.get('seo.keywords') as FormArray;
+    // Always fetch the latest FormArray from the form to avoid stale references after setControl
+    return (this.form.get('seo.keywords') as FormArray) ?? this.fb.array([]);
   }
 
   setKeywords(keywords: string[]): void {
+    const seoGroup = this.form.get('seo');
     const keywordFormArray = this.fb.array(
       keywords.map(keyword => this.fb.control(keyword, Validators.required))
     );
-    this.form.setControl('seo.keywords', keywordFormArray);
+    if (seoGroup && seoGroup instanceof FormGroup) {
+      seoGroup.setControl('keywords', keywordFormArray);
+    } else {
+      // If seo group is missing, create it
+      this.form.setControl('seo', this.fb.group({
+        metaTitle: [''],
+        metaDescription: [''],
+        googleAnalyticsId: [''],
+        facebookPixelId: [''],
+        keywords: keywordFormArray
+      }));
+    }
   }
 
   addKeyword(): void {

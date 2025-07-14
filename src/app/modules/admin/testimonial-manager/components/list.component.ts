@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
-import { Testimonial, TestimonialService } from '../services/testimonial.service';
+import { TestimonialService } from '../services/testimonial.service';
+import { Testimonial } from '../../../../core/interfaces/content.interface';
 
 declare var bootstrap: any;
 
@@ -111,7 +112,11 @@ export class ListComponent implements OnInit {
 
   delete(id: number) {
     if (confirm('Are you sure you want to delete this testimonial? This action cannot be undone.')) {
-      this.testimonialService.delete(id).subscribe(() => this.fetch());
+      this.testimonialService.delete(id).subscribe(() => {
+        // Remove from local arrays immediately for instant UI update
+        this.testimonials = this.testimonials.filter(t => t.id !== id);
+        this.applyFilter();
+      });
     }
   }
 }

@@ -58,7 +58,7 @@
           <h4 class="mb-4">Company Information</h4>
           
           <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
               <div class="mb-3">
                 <label class="form-label">Company Name <span class="text-danger">*</span></label>
                 <input type="text" class="form-control" formControlName="companyName" 
@@ -66,12 +66,20 @@
                 <div class="invalid-feedback">{{ getFieldError('companyName') }}</div>
               </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
               <div class="mb-3">
                 <label class="form-label">Tagline <span class="text-danger">*</span></label>
                 <input type="text" class="form-control" formControlName="tagline" 
                        [class.is-invalid]="isFieldInvalid('tagline')">
                 <div class="invalid-feedback">{{ getFieldError('tagline') }}</div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="mb-3">
+                <label class="form-label">Hero Subtext <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" formControlName="heroSubtext" 
+                       [class.is-invalid]="isFieldInvalid('heroSubtext')" placeholder="We help startups and enterprises build scalable, secure, and cloud-native systems.">
+                <div class="invalid-feedback">{{ getFieldError('heroSubtext') }}</div>
               </div>
             </div>
           </div>
@@ -86,10 +94,17 @@
           <div class="row">
             <div class="col-md-6">
               <div class="mb-3">
-                <label class="form-label">Logo URL <span class="text-danger">*</span></label>
-                <input type="url" class="form-control" formControlName="logoUrl" 
-                       [class.is-invalid]="isFieldInvalid('logoUrl')">
-                <div class="invalid-feedback">{{ getFieldError('logoUrl') }}</div>
+                <label class="form-label">Logo <span class="text-danger">*</span></label>
+                <div class="mb-2">
+                  <label class="form-label small mb-1">From URL</label>
+                  <input type="url" class="form-control" formControlName="logoUrl" placeholder="Logo URL"
+                         [class.is-invalid]="isFieldInvalid('logoUrl')">
+                  <div class="invalid-feedback">{{ getFieldError('logoUrl') }}</div>
+                </div>
+                <div class="mb-2">
+                  <label class="form-label small mb-1">From Device</label>
+                  <input type="file" accept="image/*" class="form-control form-control-sm" style="max-width: 220px;" (change)="onLogoFileSelected($event)">
+                </div>
                 <div *ngIf="logoPreview" class="mt-2">
                   <img [src]="logoPreview" alt="Logo Preview" class="img-thumbnail" style="max-height: 60px;">
                 </div>
@@ -97,8 +112,15 @@
             </div>
             <div class="col-md-6">
               <div class="mb-3">
-                <label class="form-label">Favicon URL</label>
-                <input type="url" class="form-control" formControlName="faviconUrl">
+                <label class="form-label">Favicon</label>
+                <div class="mb-2">
+                  <label class="form-label small mb-1">From URL</label>
+                  <input type="url" class="form-control" formControlName="faviconUrl" placeholder="Favicon URL">
+                </div>
+                <div class="mb-2">
+                  <label class="form-label small mb-1">From Device</label>
+                  <input type="file" accept="image/*" class="form-control form-control-sm" style="max-width: 220px;" (change)="onFaviconFileSelected($event)">
+                </div>
                 <div *ngIf="faviconPreview" class="mt-2">
                   <img [src]="faviconPreview" alt="Favicon Preview" class="img-thumbnail" style="max-height: 32px;">
                 </div>
@@ -894,15 +916,22 @@
             <!-- Keywords -->
             <div class="mb-3">
               <label class="form-label">SEO Keywords</label>
-              <div formArrayName="keywords">
-                <div *ngFor="let keyword of keywords.controls; let i = index" class="d-flex mb-2">
-                  <input type="text" class="form-control" [formControlName]="i" placeholder="Enter keyword">
-                  <button type="button" class="btn btn-outline-danger ms-2" (click)="removeKeyword(i)">
-                    <i class="fas fa-trash"></i>
+              <div formArrayName="keywords" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                <div *ngFor="let keyword of keywords.controls; let i = index"
+                     style="display: inline-flex; align-items: center; background: #f1f3f4; border-radius: 16px; padding: 0.25rem 0.75rem; margin-bottom: 0.25rem; max-width: 100%;">
+                  <input type="text"
+                         [formControlName]="i"
+                         style="border: none; background: transparent; width: auto; min-width: 60px; max-width: 180px; padding: 0; margin: 0; outline: none; box-shadow: none; font-size: 0.95em;"
+                         placeholder="Keyword">
+                  <button type="button"
+                          class="btn btn-link btn-sm p-0 ms-2"
+                          style="color: #dc3545; text-decoration: none;"
+                          (click)="removeKeyword(i)">
+                    <i class="fas fa-times"></i>
                   </button>
                 </div>
               </div>
-              <button type="button" class="btn btn-outline-primary btn-sm" (click)="addKeyword()">
+              <button type="button" class="btn btn-outline-primary btn-sm mt-2" (click)="addKeyword()">
                 <i class="fas fa-plus me-2"></i>Add Keyword
               </button>
             </div>

@@ -28,34 +28,35 @@ export class SettingsService {
         this.settingsSubject.next(this.settings);
       });
     } else {
-      this.loadMockSettings();
+      this.settings = this.loadMockSettings();
+      this.settingsSubject.next(this.settings);
     }
   }
 
-  private loadMockSettings(): void {
-    // Load settings from localStorage if available
-    const savedSettings = localStorage.getItem('siteSettings');
-    if (savedSettings) {
-      try {
-        const parsed = JSON.parse(savedSettings);
-        // Check if version matches - if not, clear old settings
-        if (parsed.version !== SITE_SETTINGS.version) {
-          console.log('Settings version mismatch, clearing old data...');
-          localStorage.removeItem('siteSettings');
-          this.settings = { ...SITE_SETTINGS };
-        } else {
-          // Merge with latest mock data to ensure new fields are included
-          this.settings = { ...SITE_SETTINGS, ...parsed };
+  private loadMockSettings(): SiteSettings {
+    // Try to load from localStorage, but robustly merge with mock
+    let local: any = {};
+    let useLocal = false;
+    try {
+      const raw = localStorage.getItem('siteSettings');
+      if (raw) {
+        local = JSON.parse(raw);
+        // Check for required fields (add more as needed)
+        if (
+          typeof local === 'object' &&
+          local !== null &&
+          local.seo && Array.isArray(local.seo.keywords) &&
+          local.footer && typeof local.footer === 'object'
+        ) {
+          useLocal = true;
         }
-      } catch (error) {
-        // If parsing fails, use default settings
-        this.settings = { ...SITE_SETTINGS };
-        localStorage.removeItem('siteSettings');
       }
-    } else {
-      this.settings = { ...SITE_SETTINGS };
+    } catch (e) {
+      // ignore parse errors
     }
-    this.settingsSubject.next(this.settings);
+    // Merge with mock only if local is valid
+    const merged = useLocal ? { ...SITE_SETTINGS, ...local } : { ...SITE_SETTINGS };
+    return merged;
   }
 
   private getSettingsFromAPI(): Observable<SiteSettings> {
@@ -65,7 +66,6 @@ export class SettingsService {
     ).pipe(
       map(response => response.data || { ...SITE_SETTINGS }),
       catchError(error => {
-        console.error('Error fetching settings from API, falling back to mock data:', error);
         return of({ ...SITE_SETTINGS });
       })
     );
@@ -88,7 +88,6 @@ export class SettingsService {
       ).pipe(
         map(response => ({ success: true, message: 'Settings updated successfully' })),
         catchError(error => {
-          console.error('Error updating settings:', error);
           return of({ success: false, message: 'Failed to update settings' });
         })
       );
@@ -97,7 +96,7 @@ export class SettingsService {
         this.settings = { 
           ...this.settings, 
           ...updated, 
-          lastUpdated: new Date(),
+         lastUpdated: new Date().toISOString(),
           updatedBy: 'admin' // In real app, this would be the current user
         };
         // Save to localStorage
@@ -106,7 +105,6 @@ export class SettingsService {
         this.settingsSubject.next(this.settings);
         return of({ success: true, message: 'Settings updated successfully' });
       } catch (error) {
-        console.error('Error updating settings:', error);
         return of({ success: false, message: 'Failed to update settings' });
       }
     }

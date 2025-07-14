@@ -3,24 +3,26 @@ import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { MOCK_TESTIMONIALS } from '../mock/testimonials-data';
 import { Testimonial } from '../../../../core/interfaces/content.interface';
-import { HttpService } from '../../../../core/services/http.service';
 import { DataSourceService } from '../../../../core/services/data-source.service';
+import { HttpService } from '../../../../core/services/http.service';
 import { PUBLIC_API_ENDPOINTS } from '../../../../core/constants/api-endpoints';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TestimonialService {
+  private storageKey = 'testimonials';
+
   constructor(
-    private httpService: HttpService,
-    private dataSourceService: DataSourceService
+    private dataSourceService: DataSourceService,
+    private httpService: HttpService
   ) {}
 
   getTestimonials(): Observable<Testimonial[]> {
     if (this.dataSourceService.shouldUseRealData('testimonials')) {
       return this.getTestimonialsFromAPI();
     } else {
-      return this.getTestimonialsFromMock();
+      return this.getTestimonialsFromLocalStorage();
     }
   }
 
@@ -32,12 +34,20 @@ export class TestimonialService {
       map(response => response.data || []),
       catchError(error => {
         console.error('Error fetching testimonials from API, falling back to mock data:', error);
-        return this.getTestimonialsFromMock();
+        return of(MOCK_TESTIMONIALS);
       })
     );
   }
 
-  private getTestimonialsFromMock(): Observable<Testimonial[]> {
+  private getTestimonialsFromLocalStorage(): Observable<Testimonial[]> {
+    const saved = localStorage.getItem(this.storageKey);
+    if (saved) {
+      try {
+        return of(JSON.parse(saved));
+      } catch {
+        return of(MOCK_TESTIMONIALS);
+      }
+    }
     return of(MOCK_TESTIMONIALS);
   }
 

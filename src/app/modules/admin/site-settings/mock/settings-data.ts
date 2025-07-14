@@ -4,6 +4,7 @@ export interface SiteSettings {
   // Company Information
   companyName: string;
   tagline: string;
+  heroSubtext: string;
   description: string;
   logoUrl: string;
   faviconUrl: string;
@@ -50,19 +51,22 @@ export interface SiteSettings {
   
   // Footer Settings
   footer: {
-    copyrightText: string;
-    quickLinks: Array<{
-      title: string;
-      url: string;
-    }>;
-    services: Array<{
-      title: string;
-      url: string;
-    }>;
-    aboutLinks: Array<{
-      title: string;
-      url: string;
-    }>;
+  copyrightText: string;
+  quickLinks: Array<{
+    title: string;
+    url: string;
+    enabled?: boolean;
+  }>;
+  services: Array<{
+    title: string;
+    url: string;
+    enabled?: boolean;
+  }>;
+  aboutLinks: Array<{
+    title: string;
+    url: string;
+    enabled?: boolean;
+  }>;
   };
   
   // Contact Form Settings
@@ -143,7 +147,7 @@ export interface SiteSettings {
   };
   
   // Last Updated
-  lastUpdated: Date;
+  lastUpdated: string;
   updatedBy: string;
 }
 
@@ -154,6 +158,7 @@ export const SITE_SETTINGS: SiteSettings = {
   // Company Information
   companyName: 'Altrevo Tech Solutions',
   tagline: 'Innovative Technology Solutions for Modern Business',
+  heroSubtext: 'We help startups and enterprises build scalable, secure, and cloud-native systems.',
   description: 'Leading technology consultancy providing cutting-edge solutions, digital transformation, and innovation services to businesses worldwide.',
   logoUrl: 'altrevo-logo.png',
   faviconUrl: 'altrevo-favicon.png',
@@ -190,7 +195,18 @@ export const SITE_SETTINGS: SiteSettings = {
   seo: {
     metaTitle: 'Altrevo Tech Solutions - Leading Technology Consultancy',
     metaDescription: 'Transform your business with Altrevo\'s expert technology consulting, digital transformation, cloud solutions, and innovative technology services.',
-    keywords: ['technology consulting', 'digital transformation', 'cloud solutions', 'software development', 'technology consulting', 'enterprise solutions'],
+    keywords: [
+      'technology consulting',
+      'digital transformation',
+      'cloud solutions',
+      'software development',
+      'enterprise solutions',
+      'IT strategy',
+      'business innovation',
+      'cloud migration',
+      'devops',
+      'digital strategy'
+    ],
     googleAnalyticsId: 'GA-XXXXXXXX',
     facebookPixelId: 'FB-XXXXXXXX'
   },
@@ -305,6 +321,6 @@ export const SITE_SETTINGS: SiteSettings = {
   },
   
   // Last Updated
-  lastUpdated: new Date('2024-01-15'),
+  lastUpdated: '2024-01-15T00:00:00Z',
   updatedBy: 'admin'
 };

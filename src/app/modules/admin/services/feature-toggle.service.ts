@@ -25,7 +25,7 @@ export class FeatureToggleService {
       id: 'featured-team-section',
       name: 'Meet Our Expert Team',
       description: 'Show featured team members on the home page',
-      enabled: true,
+      enabled: false,
       section: 'home'
     },
     {
@@ -60,7 +60,7 @@ export class FeatureToggleService {
       id: 'navbar-careers',
       name: 'Careers Navigation', 
       description: 'Show/hide Careers link in the main navigation menu',
-      enabled: true,
+      enabled: false,
       section: 'navigation'
     }
   ]);
