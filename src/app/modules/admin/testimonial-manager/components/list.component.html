@@ -206,7 +206,7 @@
 </div>
 
 <!-- Preview Modal -->
-<div class="modal fade" id="previewModal" tabindex="-1" *ngIf="selectedTestimonial">
+<div class="modal fade" id="previewModal" tabindex="-1">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -225,15 +225,15 @@
             
             <!-- Testimonial Content -->
             <blockquote class="blockquote mb-4">
-              <p class="fs-5 text-dark lh-lg font-italic">{{ selectedTestimonial.message }}</p>
+              <p class="fs-5 text-dark lh-lg font-italic">{{ selectedTestimonial?.message }}</p>
             </blockquote>
             
             <!-- Rating -->
             <div class="mb-4">
-              <span *ngFor="let star of getStars(selectedTestimonial.rating)" class="text-warning fs-4">
+              <span *ngFor="let star of getStars(selectedTestimonial?.rating || 0)" class="text-warning fs-4">
                 <i class="fas fa-star"></i>
               </span>
-              <span *ngFor="let star of getStars(5 - selectedTestimonial.rating)" class="text-muted fs-4">
+              <span *ngFor="let star of getStars(5 - (selectedTestimonial?.rating || 0))" class="text-muted fs-4">
                 <i class="far fa-star"></i>
               </span>
             </div>
@@ -241,28 +241,28 @@
             <!-- Client Info -->
             <div class="text-center">
               <div>
-                <h5 class="mb-1 fw-bold">{{ selectedTestimonial.name }}</h5>
-                <p class="mb-1 text-muted">{{ selectedTestimonial.designation }}</p>
-                <small class="text-primary fw-semibold">{{ selectedTestimonial.company }}</small>
+                <h5 class="mb-1 fw-bold">{{ selectedTestimonial?.name }}</h5>
+                <p class="mb-1 text-muted">{{ selectedTestimonial?.designation }}</p>
+                <small class="text-primary fw-semibold">{{ selectedTestimonial?.company }}</small>
               </div>
             </div>
             
             <!-- Additional Info -->
             <div class="mt-4 pt-3 border-top">
               <div class="row text-center">
-                <div class="col-4" *ngIf="selectedTestimonial.projectType">
+                <div class="col-4" *ngIf="selectedTestimonial?.projectType">
                   <small class="text-muted d-block">Project Type</small>
-                  <span class="badge bg-primary-subtle text-primary">{{ selectedTestimonial.projectType }}</span>
+                  <span class="badge bg-primary-subtle text-primary">{{ selectedTestimonial?.projectType }}</span>
                 </div>
-                <div class="col-4" *ngIf="selectedTestimonial.location">
+                <div class="col-4" *ngIf="selectedTestimonial?.location">
                   <small class="text-muted d-block">Location</small>
                   <small class="text-secondary">
-                    <i class="fas fa-map-marker-alt me-1"></i>{{ selectedTestimonial.location }}
+                    <i class="fas fa-map-marker-alt me-1"></i>{{ selectedTestimonial?.location }}
                   </small>
                 </div>
-                <div class="col-4" *ngIf="selectedTestimonial.date">
+                <div class="col-4" *ngIf="selectedTestimonial?.date">
                   <small class="text-muted d-block">Date</small>
-                  <small class="text-secondary">{{ selectedTestimonial.date | date:'mediumDate' }}</small>
+                  <small class="text-secondary">{{ selectedTestimonial?.date | date:'mediumDate' }}</small>
                 </div>
               </div>
             </div>
@@ -271,7 +271,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a [routerLink]="['/admin-testimonials/edit', selectedTestimonial.id]" class="btn btn-primary" data-bs-dismiss="modal">
+        <a [routerLink]="['/admin-testimonials/edit', selectedTestimonial?.id]" class="btn btn-primary" data-bs-dismiss="modal">
           <i class="fas fa-edit me-2"></i>Edit This Testimonial
         </a>
       </div>

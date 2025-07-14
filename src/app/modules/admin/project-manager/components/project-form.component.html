@@ -22,7 +22,7 @@
         </button>
         <button type="button" 
                 class="btn btn-primary"
-                [disabled]="saving || loading"
+                [disabled]="saving || loading || projectForm.invalid"
                 (click)="onSubmit()">
           <i class="fas fa-spinner fa-spin me-2" *ngIf="saving"></i>
           <i class="fas fa-save me-2" *ngIf="!saving"></i>
@@ -380,7 +380,7 @@
             </div>
             <div class="card-body">
               <div class="team-members-list">
-                <div class="team-member-item" *ngFor="let member of selectedTeamMembers">
+                <div class="team-member-item" *ngFor="let member of selectedTeamMembers || []">
                   <div class="d-flex align-items-center">
                     <div class="member-avatar">
                       <i class="fas fa-user"></i>
@@ -427,7 +427,7 @@
             </div>
             <div class="card-body">
               <div class="external-members-list">
-                <div class="external-member-item" *ngFor="let member of externalTeamMembers">
+                <div class="external-member-item" *ngFor="let member of externalTeamMembers || []">
                   <div class="d-flex align-items-start">
                     <div class="member-avatar">
                       <i class="fas fa-user-tie"></i>
@@ -440,11 +440,11 @@
                         ${{ member.hourlyRate }}/hr - {{ member.allocatedHours }}h/week
                       </small>
                       <div class="member-skills mt-1">
-                        <span class="skill-badge" *ngFor="let skill of member.skills.slice(0, 2)">
+                        <span class="skill-badge" *ngFor="let skill of (member.skills || []).slice(0, 2)">
                           {{ skill }}
                         </span>
-                        <span class="skill-more" *ngIf="member.skills.length > 2">
-                          +{{ member.skills.length - 2 }}
+                        <span class="skill-more" *ngIf="(member.skills || []).length > 2">
+                          +{{ (member.skills || []).length - 2 }}
                         </span>
                       </div>
                     </div>
@@ -705,7 +705,20 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="showExternalMemberModal = false">Cancel</button>
+          <button type="button" class="btn btn-outline-info me-2" (click)="validateExternalMemberForm()" [disabled]="validatingExternalMember">
+            <i class="fas fa-spinner fa-spin me-2" *ngIf="validatingExternalMember"></i>
+            <i class="fas fa-check-circle me-2" *ngIf="!validatingExternalMember"></i>
+            {{ validatingExternalMember ? 'Validating...' : 'Validate Form' }}
+          </button>
           <button type="button" class="btn btn-primary" (click)="addExternalMember()">Add Member</button>
+        </div>
+        <div class="px-4 pb-3">
+          <div *ngIf="externalMemberValidationSuccess" class="alert alert-success py-2 mb-0">
+            <i class="fas fa-check-circle me-2"></i> All fields are valid!
+          </div>
+          <div *ngIf="externalMemberValidationError && !validatingExternalMember" class="alert alert-danger py-2 mb-0">
+            <i class="fas fa-exclamation-circle me-2"></i> {{ externalMemberValidationError }}
+          </div>
         </div>
       </div>
     </div>

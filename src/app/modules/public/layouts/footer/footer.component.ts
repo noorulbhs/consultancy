@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { SettingsService } from '../../../admin/site-settings/services/settings.service';
+import { SiteSettingsService } from '../../../../core/services/site-settings.service';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { FeatureToggleService } from '../../../admin/services/feature-toggle.service';
 
@@ -25,7 +25,7 @@ export class FooterComponent implements OnInit {
   ];
 
   constructor(
-    private settingsService: SettingsService,
+    private settingsService: SiteSettingsService,
     private notificationService: NotificationService,
     private featureToggleService: FeatureToggleService
   ) {}
@@ -41,7 +41,7 @@ export class FooterComponent implements OnInit {
   }
 
   private loadFooterData(): void {
-    this.settingsService.getSettingsForFooter().subscribe(data => {
+    this.settingsService.getSettings().subscribe(data => {
       this.footerData = data;
       this.updateCompanyLinks();
     });

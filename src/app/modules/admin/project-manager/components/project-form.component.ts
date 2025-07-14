@@ -1,3 +1,4 @@
+// ...existing imports and decorators...
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
@@ -38,6 +39,45 @@ export class ProjectFormComponent implements OnInit {
   selectedTeamMembers: TeamMember[] = [];
   externalTeamMembers: ExternalTeamMember[] = [];
   milestones: Milestone[] = [];
+  showExternalMemberValidationErrors = false;
+
+  externalMemberFieldDisplayNames = {
+    name: 'Name',
+    email: 'Email',
+    phone: 'Phone',
+    company: 'Company',
+    role: 'Role',
+    skills: 'Skills',
+    hourlyRate: 'Hourly Rate',
+    contractType: 'Contract Type',
+    contractStartDate: 'Contract Start Date',
+    contractEndDate: 'Contract End Date',
+    allocatedHours: 'Allocated Hours',
+    paymentTerms: 'Payment Terms',
+    notes: 'Notes'
+  };
+
+  validatingExternalMember = false;
+  externalMemberValidationSuccess = false;
+  externalMemberValidationError = '';
+
+  async validateExternalMemberForm() {
+    this.showExternalMemberValidationErrors = true;
+    this.externalMemberValidationSuccess = false;
+    this.externalMemberValidationError = '';
+    this.validatingExternalMember = true;
+    if (this.externalMemberForm) {
+      const isValid = await this.formValidationService.validateForm(this.externalMemberForm, this.externalMemberFieldDisplayNames);
+      this.validatingExternalMember = false;
+      if (isValid) {
+        this.externalMemberValidationSuccess = true;
+      } else {
+        this.externalMemberValidationError = 'Please fix the errors above.';
+      }
+    } else {
+      this.validatingExternalMember = false;
+    }
+  }
   
   statusOptions = Object.values(ProjectStatus);
   priorityOptions = Object.values(ProjectPriority);
@@ -146,10 +186,13 @@ export class ProjectFormComponent implements OnInit {
     this.projectService.getProject(id).subscribe({
       next: (project) => {
         if (project) {
+          // Ensure teamMembers and externalTeamMembers are always arrays
+          project.teamMembers = Array.isArray(project.teamMembers) ? project.teamMembers : [];
+          project.externalTeamMembers = Array.isArray(project.externalTeamMembers) ? project.externalTeamMembers : [];
           this.populateForm(project);
           this.selectedTeamMembers = [...project.teamMembers];
           this.externalTeamMembers = [...project.externalTeamMembers];
-          this.milestones = [...project.milestones];
+          this.milestones = Array.isArray(project.milestones) ? [...project.milestones] : [];
         }
         this.loading = false;
       },
@@ -219,39 +262,47 @@ export class ProjectFormComponent implements OnInit {
   async onSubmit(): Promise<void> {
     this.showValidationErrors = true;
     if (!(await this.formValidationService.validateForm(this.projectForm, this.fieldDisplayNames))) {
+      console.log('[ProjectForm] Form is invalid, not calling backend.');
       return;
     }
-    
+
     this.saving = true;
     this.error = null;
 
-      const formValue = this.projectForm.value;
-      const projectData = {
-        ...formValue,
-        startDate: new Date(formValue.startDate),
-        endDate: new Date(formValue.endDate),
-        teamMembers: this.selectedTeamMembers,
-        externalTeamMembers: this.externalTeamMembers,
-        milestones: this.milestones,
-        documents: [],
-        notes: []
-      };
+    const formValue = this.projectForm.value;
+    const projectData = {
+      ...formValue,
+      startDate: new Date(formValue.startDate),
+      endDate: new Date(formValue.endDate),
+      teamMembers: this.selectedTeamMembers,
+      externalTeamMembers: this.externalTeamMembers,
+      milestones: this.milestones,
+      documents: [],
+      notes: []
+    };
 
-      const operation = this.isEditMode && this.projectId
-        ? this.projectService.updateProject(this.projectId, projectData)
-        : this.projectService.createProject(projectData);
+    if (this.isEditMode && this.projectId) {
+      console.log('[ProjectForm] Calling updateProject API:', this.projectId, projectData);
+    } else {
+      console.log('[ProjectForm] Calling createProject API:', projectData);
+    }
 
-      operation.subscribe({
-        next: () => {
-          this.saving = false;
-          this.router.navigate(['/admin-projects']);
-        },
-        error: (error) => {
-          this.error = 'Failed to save project';
-          this.saving = false;
-          console.error('Error saving project:', error);
-        }
-      });
+    const operation = this.isEditMode && this.projectId
+      ? this.projectService.updateProject(this.projectId, projectData)
+      : this.projectService.createProject(projectData);
+
+    operation.subscribe({
+      next: () => {
+        console.log('[ProjectForm] Backend call successful.');
+        this.saving = false;
+        this.router.navigate(['/admin-projects']);
+      },
+      error: (error) => {
+        this.error = 'Failed to save project';
+        this.saving = false;
+        console.error('[ProjectForm] Error saving project:', error);
+      }
+    });
   }
 
   async validateForm() {
@@ -271,23 +322,31 @@ export class ProjectFormComponent implements OnInit {
 
   // Team Member Management
   addTeamMember(): void {
-    if (this.teamMemberForm.valid) {
-      const formValue = this.teamMemberForm.value;
-      const member = this.availableTeamMembers.find(m => m.id === formValue.memberId);
-      
-      if (member && !this.selectedTeamMembers.find(m => m.id === member.id)) {
-        const teamMember: TeamMember = {
-          ...member,
-          allocatedHours: formValue.allocatedHours,
-          isProjectLead: formValue.isProjectLead,
-          joinedDate: new Date()
-        };
-        
-        this.selectedTeamMembers.push(teamMember);
-        this.teamMemberForm.reset();
-        this.showTeamMemberModal = false;
-      }
+    console.log('addTeamMember called');
+    if (!this.teamMemberForm.valid) {
+      console.warn('Team member form is invalid', this.teamMemberForm.errors, this.teamMemberForm.value);
+      this.teamMemberForm.markAllAsTouched();
+      return;
     }
+    const formValue = this.teamMemberForm.value;
+    const member = this.availableTeamMembers.find(m => String(m.id) === String(formValue.memberId));
+    if (!member) {
+      console.warn('No member found for id', formValue.memberId, this.availableTeamMembers);
+      return;
+    }
+    if (this.selectedTeamMembers.find(m => m.id === member.id)) {
+      console.warn('Member already selected', member);
+      return;
+    }
+    const teamMember: TeamMember = {
+      ...member,
+      allocatedHours: formValue.allocatedHours,
+      isProjectLead: formValue.isProjectLead,
+      joinedDate: new Date()
+    };
+    this.selectedTeamMembers.push(teamMember);
+    this.teamMemberForm.reset();
+    this.showTeamMemberModal = false;
   }
 
   removeTeamMember(memberId: string): void {
@@ -296,21 +355,24 @@ export class ProjectFormComponent implements OnInit {
 
   // External Team Member Management
   addExternalMember(): void {
-    if (this.externalMemberForm.valid) {
-      const formValue = this.externalMemberForm.value;
-      const externalMember: ExternalTeamMember = {
-        ...formValue,
-        id: Date.now().toString(),
-        skills: formValue.skills ? formValue.skills.split(',').map((s: string) => s.trim()) : [],
-        contractStartDate: new Date(formValue.contractStartDate),
-        contractEndDate: formValue.contractEndDate ? new Date(formValue.contractEndDate) : undefined,
-        isActive: true
-      };
-      
-      this.externalTeamMembers.push(externalMember);
-      this.externalMemberForm.reset();
-      this.showExternalMemberModal = false;
+    console.log('addExternalMember called');
+    if (!this.externalMemberForm.valid) {
+      console.warn('External member form is invalid', this.externalMemberForm.errors, this.externalMemberForm.value);
+      this.externalMemberForm.markAllAsTouched();
+      return;
     }
+    const formValue = this.externalMemberForm.value;
+    const externalMember: ExternalTeamMember = {
+      ...formValue,
+      id: Date.now().toString(),
+      skills: formValue.skills ? formValue.skills.split(',').map((s: string) => s.trim()) : [],
+      contractStartDate: new Date(formValue.contractStartDate),
+      contractEndDate: formValue.contractEndDate ? new Date(formValue.contractEndDate) : undefined,
+      isActive: true
+    };
+    this.externalTeamMembers.push(externalMember);
+    this.externalMemberForm.reset();
+    this.showExternalMemberModal = false;
   }
 
   removeExternalMember(memberId: string): void {

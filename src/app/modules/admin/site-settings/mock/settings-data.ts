@@ -143,7 +143,7 @@ export interface SiteSettings {
   };
   
   // Last Updated
-  lastUpdated: Date;
+  lastUpdated: string;
   updatedBy: string;
 }
 
@@ -305,6 +305,6 @@ export const SITE_SETTINGS: SiteSettings = {
   },
   
   // Last Updated
-  lastUpdated: new Date('2024-01-15'),
+  lastUpdated: '2024-01-15T00:00:00.000Z',
   updatedBy: 'admin'
 };

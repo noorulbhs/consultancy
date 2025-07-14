@@ -1,16 +1,23 @@
 import { Injectable } from '@angular/core';
-import { ADMIN_CREDENTIALS } from '../mock/admin-login-data';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { buildApiUrl, ADMIN_API_ENDPOINTS } from '../../../core/constants/api-endpoints';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor() {}
+  private loginUrl = buildApiUrl(ADMIN_API_ENDPOINTS.LOGIN);
 
-  login(username: string, password: string): boolean {
-    return (
-      username === ADMIN_CREDENTIALS.username &&
-      password === ADMIN_CREDENTIALS.password
-    );
+  constructor(private http: HttpClient) {}
+
+  /**
+   * Login with real backend. Returns Observable of API response.
+   * @param email admin email
+   * @param password admin password
+   */
+  login(email: string, password: string): Observable<any> {
+    console.log('AuthService loginUrl:', this.loginUrl);
+    return this.http.post<any>(this.loginUrl, { email, password });
   }
 }

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EnquiryService } from '../../admin/enquiry-manager/services/enquiry.service';
-import { SettingsService } from '../../admin/site-settings/services/settings.service';
+import { SiteSettingsService } from '../../../core/services/site-settings.service';
+import { SiteSettings } from '../../../core/interfaces/site-settings.interface';
 
 interface ContactForm {
   name: string;
@@ -41,7 +42,7 @@ export class ContactPageComponent implements OnInit {
 
   constructor(
     private enquiryService: EnquiryService,
-    private settingsService: SettingsService
+    private settingsService: SiteSettingsService
   ) {}
 
   ngOnInit(): void {
@@ -49,7 +50,7 @@ export class ContactPageComponent implements OnInit {
   }
 
   private loadSettings(): void {
-    this.settingsService.getSettings().subscribe(settings => {
+    this.settingsService.getSettings().subscribe((settings: SiteSettings) => {
       this.siteSettings = settings;
       // Filter and map enabled options
       this.subjectOptions = settings.contactForm.subjectOptions

@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { FooterService } from '../../services/footer.service';
-import { FeatureToggleService } from '../../../../admin/services/feature-toggle.service';
+
+import { SiteSettingsService } from '../../../../../core/services/site-settings.service';
+import { SiteSettings } from '../../../../../core/interfaces/site-settings.interface';
 
 @Component({
   selector: 'app-footer',
@@ -13,48 +14,35 @@ import { FeatureToggleService } from '../../../../admin/services/feature-toggle.
   styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent implements OnInit {
+
   footerData: any;
-  filteredQuickLinks: any[] = [];
 
-  allQuickLinks = [
-    { path: '/home', label: 'Home' },
-    { path: '/services', label: 'Services' },
-    { path: '/about', label: 'About' },
-    { path: '/blog', label: 'Blog', featureId: 'navbar-blog' },
-    { path: '/careers', label: 'Careers', featureId: 'navbar-careers' },
-    { path: '/contact', label: 'Contact' }
-  ];
 
-  constructor(
-    private footerService: FooterService,
-    private featureToggleService: FeatureToggleService
-  ) {}
+  constructor(private settingsService: SiteSettingsService, private cdr: ChangeDetectorRef) {}
+
 
   ngOnInit(): void {
-    this.featureToggleService.initializeFromStorage();
-    
-    this.footerService.getFooterData().subscribe((data) => {
-      this.footerData = data;
-      this.updateQuickLinks();
-    });
-
-    // Subscribe to feature toggle changes
-    this.featureToggleService.getFeatures().subscribe(() => {
-      this.updateQuickLinks();
+    this.settingsService.settings$.subscribe((settings: SiteSettings | null) => {
+      console.log('[FOOTER] Received settings:', settings);
+      if (!settings) return;
+      this.footerData = {
+        company: {
+          name: settings.companyName,
+          description: settings.description
+        },
+        contact: {
+          email: settings.email,
+          phone: settings.phone
+        },
+        social: Object.entries(settings.social || {}).map(([platform, url]: [string, string]) => ({ platform, url })),
+        quickLinks: (settings.footer?.quickLinks || []).map((link: any) => ({ path: link.url, label: link.title })),
+        copyright: settings.footer?.copyrightText || ''
+      };
+      console.log('[FOOTER] Updated footerData:', this.footerData);
+      this.cdr.detectChanges();
     });
   }
 
-  private updateQuickLinks(): void {
-    this.filteredQuickLinks = this.allQuickLinks.filter(link => {
-      if (link.featureId) {
-        return this.featureToggleService.isFeatureEnabled(link.featureId);
-      }
-      return true; // Always show links without feature toggle
-    });
-    
-    // Update footer data with filtered links
-    if (this.footerData) {
-      this.footerData.quickLinks = this.filteredQuickLinks;
-    }
-  }
+
+  // No longer needed: updateQuickLinks
 }

@@ -1,17 +1,25 @@
+
 import { Injectable } from '@angular/core';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
-import { SiteSettings } from '../../../../core/interfaces/site-settings.interface';
-import { HttpService } from '../../../../core/services/http.service';
-import { DataSourceService } from '../../../../core/services/data-source.service';
-import { PUBLIC_API_ENDPOINTS, ADMIN_API_ENDPOINTS } from '../../../../core/constants/api-endpoints';
+import { SiteSettings } from '../interfaces/site-settings.interface';
+import { SITE_SETTINGS } from '../../modules/admin/site-settings/mock/settings-data';
+import { HttpService } from './http.service';
+import { DataSourceService } from './data-source.service';
+import { PUBLIC_API_ENDPOINTS, ADMIN_API_ENDPOINTS } from '../constants/api-endpoints';
+
+
+// Shared singleton for static site settings (mock mode)
+export const SHARED_MOCK_SITE_SETTINGS: SiteSettings = { ...SITE_SETTINGS };
+// Shared subject for all service instances
+export const SHARED_SETTINGS_SUBJECT = new BehaviorSubject<SiteSettings | null>(SHARED_MOCK_SITE_SETTINGS);
 
 @Injectable({
   providedIn: 'root'
 })
 export class SiteSettingsService {
-  private settingsSubject = new BehaviorSubject<SiteSettings | null>(null);
-  public settings$ = this.settingsSubject.asObservable();
+
+  public settings$ = SHARED_SETTINGS_SUBJECT.asObservable();
 
   constructor(
     private httpService: HttpService,
@@ -22,7 +30,7 @@ export class SiteSettingsService {
 
   private loadSettings(): void {
     this.getSettings().subscribe(settings => {
-      this.settingsSubject.next(settings);
+      SHARED_SETTINGS_SUBJECT.next(settings);
     });
   }
 
@@ -48,18 +56,8 @@ export class SiteSettingsService {
   }
 
   private getSettingsFromMock(): Observable<SiteSettings> {
-    // Load from localStorage or return default
-    const savedSettings = localStorage.getItem('siteSettings');
-    if (savedSettings) {
-      try {
-        const parsed = JSON.parse(savedSettings);
-        return of(parsed);
-      } catch (error) {
-        console.error('Error parsing saved settings:', error);
-        return of(this.getDefaultSettings());
-      }
-    }
-    return of(this.getDefaultSettings());
+    // Always use the shared singleton for static settings
+    return of(SHARED_MOCK_SITE_SETTINGS);
   }
 
   private getDefaultSettings(): SiteSettings {
@@ -158,13 +156,21 @@ export class SiteSettingsService {
         })
       );
     } else {
-      // Update mock data in localStorage
-      const currentSettings = this.settingsSubject.value || this.getDefaultSettings();
-      const updatedSettings = { ...currentSettings, ...settings };
-      localStorage.setItem('siteSettings', JSON.stringify(updatedSettings));
-      this.settingsSubject.next(updatedSettings);
-      return of({ success: true, message: 'Settings updated successfully' });
+      // Update the shared mock singleton from admin
+      console.log('[SETTINGS SERVICE] updateSettings called with:', settings);
+      Object.assign(SHARED_MOCK_SITE_SETTINGS, settings);
+      console.log('[SETTINGS SERVICE] SHARED_MOCK_SITE_SETTINGS after update:', SHARED_MOCK_SITE_SETTINGS);
+      SHARED_SETTINGS_SUBJECT.next(SHARED_MOCK_SITE_SETTINGS);
+      console.log('[SETTINGS SERVICE] SHARED_SETTINGS_SUBJECT emitted new value');
+      return of({ success: true, message: 'Settings updated successfully (mock only)' });
     }
+  }
+
+  // Reset settings to default (mock only)
+  resetSettings(): Observable<{ success: boolean; message: string }> {
+    Object.assign(SHARED_MOCK_SITE_SETTINGS, SITE_SETTINGS);
+    SHARED_SETTINGS_SUBJECT.next(SHARED_MOCK_SITE_SETTINGS);
+    return of({ success: true, message: 'Settings reset to default (mock only)' });
   }
 
   // Get specific setting value
@@ -183,7 +189,7 @@ export class SiteSettingsService {
         description: settings.description,
         logoUrl: settings.logoUrl,
         faviconUrl: settings.faviconUrl
-      } : null)
+      } : {})
     );
   }
 
@@ -198,7 +204,7 @@ export class SiteSettingsService {
         state: settings.state,
         country: settings.country,
         zipCode: settings.zipCode
-      } : null)
+      } : {})
     );
   }
 

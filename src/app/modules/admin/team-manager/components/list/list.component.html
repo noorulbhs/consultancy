@@ -221,7 +221,7 @@
 </div>
 
 <!-- Preview Modal -->
-<div class="modal fade" id="previewModal" tabindex="-1" *ngIf="selectedMember">
+<div class="modal fade" id="previewModal" tabindex="-1">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -234,39 +234,39 @@
         <div class="card team-preview-card">
           <div class="card-body text-center p-4">
             <!-- Basic Info -->
-            <h4 class="fw-bold mb-1">{{ selectedMember.name }}</h4>
-            <p class="text-primary fw-semibold mb-2">{{ selectedMember.role }}</p>
-            <p class="text-muted mb-3">{{ selectedMember.department }}</p>
+            <h4 class="fw-bold mb-1">{{ selectedMember?.name }}</h4>
+            <p class="text-primary fw-semibold mb-2">{{ selectedMember?.role }}</p>
+            <p class="text-muted mb-3">{{ selectedMember?.department }}</p>
             
             <!-- Bio -->
-            <p class="text-muted mb-4" *ngIf="selectedMember.bio">{{ selectedMember.bio }}</p>
+            <p class="text-muted mb-4" *ngIf="selectedMember?.bio">{{ selectedMember?.bio }}</p>
             
             <!-- Details Grid -->
             <div class="row text-start">
-              <div class="col-md-6" *ngIf="selectedMember.experience">
+              <div class="col-md-6" *ngIf="selectedMember?.experience">
                 <strong>Experience:</strong>
-                <p class="text-muted">{{ selectedMember.experience }}</p>
+                <p class="text-muted">{{ selectedMember?.experience }}</p>
               </div>
-              <div class="col-md-6" *ngIf="selectedMember.education">
+              <div class="col-md-6" *ngIf="selectedMember?.education">
                 <strong>Education:</strong>
-                <p class="text-muted">{{ selectedMember.education }}</p>
+                <p class="text-muted">{{ selectedMember?.education }}</p>
               </div>
-              <div class="col-md-6" *ngIf="selectedMember.location">
+              <div class="col-md-6" *ngIf="selectedMember?.location">
                 <strong>Location:</strong>
-                <p class="text-muted">{{ selectedMember.location }}</p>
+                <p class="text-muted">{{ selectedMember?.location }}</p>
               </div>
-              <div class="col-md-6" *ngIf="selectedMember.joinDate">
+              <div class="col-md-6" *ngIf="selectedMember?.joinDate">
                 <strong>Joined:</strong>
-                <p class="text-muted">{{ selectedMember.joinDate | date:'mediumDate' }}</p>
+                <p class="text-muted">{{ selectedMember?.joinDate | date:'mediumDate' }}</p>
               </div>
             </div>
             
             <!-- Skills -->
-            <div class="text-start mb-3" *ngIf="selectedMember.skills && selectedMember.skills.length > 0">
+            <div class="text-start mb-3" *ngIf="(selectedMember?.skills?.length ?? 0) > 0">
               <strong>Skills:</strong>
               <div class="mt-2">
                 <span 
-                  *ngFor="let skill of selectedMember.skills" 
+                  *ngFor="let skill of selectedMember?.skills" 
                   class="badge bg-primary me-1 mb-1">
                   {{ skill }}
                 </span>
@@ -274,30 +274,30 @@
             </div>
             
             <!-- Achievements -->
-            <div class="text-start mb-3" *ngIf="selectedMember.achievements && selectedMember.achievements.length > 0">
+            <div class="text-start mb-3" *ngIf="(selectedMember?.achievements?.length ?? 0) > 0">
               <strong>Achievements:</strong>
               <ul class="mt-2">
-                <li *ngFor="let achievement of selectedMember.achievements" class="text-muted">
+                <li *ngFor="let achievement of selectedMember?.achievements" class="text-muted">
                   {{ achievement }}
                 </li>
               </ul>
             </div>
             
             <!-- Languages -->
-            <div class="text-start mb-3" *ngIf="selectedMember.languages && selectedMember.languages.length > 0">
+            <div class="text-start mb-3" *ngIf="(selectedMember?.languages?.length ?? 0) > 0">
               <strong>Languages:</strong>
-              <p class="text-muted mt-1">{{ selectedMember.languages.join(', ') }}</p>
+              <p class="text-muted mt-1">{{ selectedMember?.languages?.join(', ') }}</p>
             </div>
             
             <!-- Social Links -->
             <div class="d-flex justify-content-center gap-2">
-              <a [href]="selectedMember.linkedin" target="_blank" class="btn btn-outline-primary" *ngIf="selectedMember.linkedin && selectedMember.linkedin.trim()">
+              <a [href]="selectedMember?.linkedin" target="_blank" class="btn btn-outline-primary" *ngIf="selectedMember?.linkedin?.trim()">
                 <i class="fab fa-linkedin me-2"></i>LinkedIn
               </a>
-              <a [href]="selectedMember.twitter" target="_blank" class="btn btn-outline-info" *ngIf="selectedMember.twitter && selectedMember.twitter.trim()">
+              <a [href]="selectedMember?.twitter" target="_blank" class="btn btn-outline-info" *ngIf="selectedMember?.twitter?.trim()">
                 <i class="fab fa-twitter me-2"></i>Twitter
               </a>
-              <a [href]="selectedMember.github" target="_blank" class="btn btn-outline-dark" *ngIf="selectedMember.github && selectedMember.github.trim()">
+              <a [href]="selectedMember?.github" target="_blank" class="btn btn-outline-dark" *ngIf="selectedMember?.github?.trim()">
                 <i class="fab fa-github me-2"></i>GitHub
               </a>
             </div>
@@ -306,7 +306,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <a [routerLink]="['/admin-team/edit', selectedMember.id]" class="btn btn-primary" data-bs-dismiss="modal">
+        <a [routerLink]="['/admin-team/edit', selectedMember?.id]" class="btn btn-primary" data-bs-dismiss="modal">
           <i class="fas fa-edit me-2"></i>Edit This Member
         </a>
       </div>

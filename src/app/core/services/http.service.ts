@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, retry, tap } from 'rxjs/operators';
 import { ApiResponse, PaginatedResponse } from '../interfaces/api-response.interface';
 import { DataSourceService } from './data-source.service';
 
@@ -24,6 +24,8 @@ export class HttpService {
     isPublic?: boolean;
   }): Observable<ApiResponse<T>> {
     const url = this.buildUrl(endpoint, options?.isPublic);
+    const token = this.getAuthToken();
+    console.log('[HTTP GET]', url, 'Token:', token);
     const headers = this.buildHeaders(options?.headers, options?.isPublic);
     
     return this.http.get<ApiResponse<T>>(url, {
@@ -31,6 +33,8 @@ export class HttpService {
       params: options?.params
     }).pipe(
       retry(this.MAX_RETRIES),
+      // Log the raw backend response for all GET requests
+      tap(res => console.log('[HttpService][GET] Raw backend response:', res)),
       catchError(this.handleError)
     );
   }
@@ -50,8 +54,10 @@ export class HttpService {
     isPublic?: boolean;
   }): Observable<ApiResponse<T>> {
     const url = this.buildUrl(endpoint, options?.isPublic);
+    const token = this.getAuthToken();
+
     const headers = this.buildHeaders(options?.headers, options?.isPublic);
-    
+    console.log('[HTTP POST]', url, 'Token:', token,'Request Body:', body,'headers:', headers.keys());    
     return this.http.post<ApiResponse<T>>(url, body, { headers }).pipe(
       retry(this.MAX_RETRIES),
       catchError(this.handleError)
@@ -64,7 +70,9 @@ export class HttpService {
     isPublic?: boolean;
   }): Observable<ApiResponse<T>> {
     const url = this.buildUrl(endpoint, options?.isPublic);
+    const token = this.getAuthToken();
     const headers = this.buildHeaders(options?.headers, options?.isPublic);
+    console.log('[HTTP POST]', url, 'Token:', token,'Request Body:', body,'headers:', headers.keys());
     
     return this.http.put<ApiResponse<T>>(url, body, { headers }).pipe(
       retry(this.MAX_RETRIES),
@@ -78,7 +86,9 @@ export class HttpService {
     isPublic?: boolean;
   }): Observable<ApiResponse<T>> {
     const url = this.buildUrl(endpoint, options?.isPublic);
+    const token = this.getAuthToken();
     const headers = this.buildHeaders(options?.headers, options?.isPublic);
+    console.log('[HTTP POST]', url, 'Token:', token,'headers:', headers.keys());
     
     return this.http.delete<ApiResponse<T>>(url, { headers }).pipe(
       retry(this.MAX_RETRIES),
@@ -141,7 +151,7 @@ export class HttpService {
 
   private getAuthToken(): string | null {
     // Get token from localStorage or your auth service
-    return localStorage.getItem('authToken');
+    return localStorage.getItem('admin_jwt');
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
@@ -177,5 +187,22 @@ export class HttpService {
       message: errorMessage,
       error: error.error
     }));
+  }
+
+
+  // PATCH request
+  patch<T>(endpoint: string, body: any, options?: {
+    headers?: HttpHeaders;
+    isPublic?: boolean;
+  }): Observable<ApiResponse<T>> {
+    const url = this.buildUrl(endpoint, options?.isPublic);
+    const token = this.getAuthToken();
+    console.log('[HTTP PATCH]', url, 'Token:', token);
+    const headers = this.buildHeaders(options?.headers, options?.isPublic);
+    console.log('[HTTP POST]', url, 'Token:', token,'Request Body:', body,'headers:', headers.keys());
+    return this.http.patch<ApiResponse<T>>(url, body, { headers }).pipe(
+      retry(this.MAX_RETRIES),
+      catchError(this.handleError)
+    );
   }
 }

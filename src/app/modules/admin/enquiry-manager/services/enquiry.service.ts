@@ -1,68 +1,65 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, of } from 'rxjs';
-import { ENQUIRY_DATA } from '../mock/enquiry-data';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { HttpService } from '../../../../core/services/http.service';
 import { ActivityTrackerService } from '../../services/activity-tracker.service';
+import { buildApiUrl, ADMIN_API_ENDPOINTS } from '../../../../core/constants/api-endpoints';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EnquiryService {
-  private enquiries = [...ENQUIRY_DATA];
-  private enquiriesSubject = new BehaviorSubject<any[]>(this.enquiries);
+  private enquiriesUrl = ADMIN_API_ENDPOINTS.ENQUIRIES;
 
-  constructor(private activityTracker: ActivityTrackerService) {
-  }
+  constructor(
+    private http: HttpService,
+    private activityTracker: ActivityTrackerService
+  ) {}
 
   getAll(): Observable<any[]> {
-    return this.enquiriesSubject.asObservable();
+    return this.http.get<any>(this.enquiriesUrl).pipe(
+      map(res => {
+        if (res.data && Array.isArray(res.data.enquiries)) return res.data.enquiries;
+        return [];
+      })
+    );
   }
 
   add(enquiry: any): Observable<any> {
-    const newEnquiry = {
-      ...enquiry,
-      id: Date.now(),
-      date: new Date().toISOString().split('T')[0],
-      isRead: false
-    };
-    
-    this.enquiries.unshift(newEnquiry); // Add to the beginning of the array
-    
-    // Emit the updated list to all subscribers
-    this.enquiriesSubject.next([...this.enquiries]);
-    
-    // Track activity
     this.activityTracker.trackEnquiryActivity('Received', `New enquiry from ${enquiry.name || 'Unknown'}: ${enquiry.subject || 'No subject'}`, 'System');
-    
-    return of(newEnquiry);
+    return this.http.post<any>(this.enquiriesUrl, enquiry).pipe(
+      map(res => res.data!)
+    );
   }
 
   delete(id: number): Observable<any> {
-    const enquiryToDelete = this.enquiries.find(e => e.id === id);
-    this.enquiries = this.enquiries.filter(e => e.id !== id);
-    // Emit the updated list to all subscribers
-    this.enquiriesSubject.next([...this.enquiries]);
-    
-    // Track activity
-    if (enquiryToDelete) {
-      this.activityTracker.trackEnquiryActivity('Deleted', `Enquiry from ${enquiryToDelete.name || 'Unknown'} deleted`, 'Admin');
-    }
-    
-    return of({ success: true });
+    this.activityTracker.trackEnquiryActivity('Deleted', `Enquiry deleted`, 'Admin');
+    const endpoint = ADMIN_API_ENDPOINTS.ENQUIRY_BY_ID(id);
+    return this.http.delete<any>(endpoint).pipe(
+      map(res => res.data!)
+    );
   }
 
-  toggleReadStatus(id: number): Observable<any> {
-    const enquiry = this.enquiries.find(e => e.id === id);
-    if (enquiry) {
-      enquiry.isRead = !enquiry.isRead;
-      // Emit the updated list to all subscribers
-      this.enquiriesSubject.next([...this.enquiries]);
-      
-      // Track activity
-      const status = enquiry.isRead ? 'Read' : 'Marked as Unread';
-      this.activityTracker.trackEnquiryActivity(status, `Enquiry from ${enquiry.name || 'Unknown'} marked as ${enquiry.isRead ? 'read' : 'unread'}`, 'Admin');
-      
-      return of({ status: enquiry.isRead });
-    }
-    return of({ status: false, error: 'Enquiry not found' });
+  /**
+   * Mark an enquiry as read (isRead: true)
+   */
+  markAsRead(id: number): Observable<any> {
+    const endpoint = ADMIN_API_ENDPOINTS.ENQUIRY_BY_ID(id);
+    this.activityTracker.trackEnquiryActivity('Marked as Read', `Enquiry marked as read`, 'Admin');
+    return this.http.patch<any>(endpoint, { isRead: true }).pipe(
+      map(res => res.data!)
+    );
+  }
+
+  /**
+   * Toggle the read status of an enquiry (isRead: !currentStatus)
+   */
+  toggleReadStatus(id: number, currentStatus: boolean): Observable<any> {
+    const endpoint = ADMIN_API_ENDPOINTS.ENQUIRY_BY_ID(id);
+    const newStatus = !currentStatus;
+    this.activityTracker.trackEnquiryActivity('Status Toggled', `Enquiry status toggled`, 'Admin');
+    return this.http.patch<any>(endpoint, { isRead: newStatus }).pipe(
+      map(res => res.data!)
+    );
   }
 }

@@ -3,18 +3,18 @@
 
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
     <div class="mb-3">
-      <label for="username" class="form-label">Email</label>
+      <label for="email" class="form-label">Email</label>
       <input
         type="email"
-        formControlName="username"
+        formControlName="email"
         class="form-control"
-        id="username"
-        [class.is-invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
+        id="email"
+        [class.is-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
       />
-      <div class="invalid-feedback" *ngIf="loginForm.get('username')?.hasError('required')">
+      <div class="invalid-feedback" *ngIf="loginForm.get('email')?.hasError('required')">
         Email is required.
       </div>
-      <div class="invalid-feedback" *ngIf="loginForm.get('username')?.hasError('email')">
+      <div class="invalid-feedback" *ngIf="loginForm.get('email')?.hasError('email')">
         Invalid email.
       </div>
     </div>

@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { MOCK_TESTIMONIALS } from '../../../public/home/mock/testimonials-data';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { HttpService } from '../../../../core/services/http.service';
 import { ActivityTrackerService } from '../../services/activity-tracker.service';
+import { buildApiUrl, ADMIN_API_ENDPOINTS } from '../../../../core/constants/api-endpoints';
 
 export interface Testimonial {
   id: number;
@@ -22,48 +24,43 @@ export interface Testimonial {
 
 @Injectable({ providedIn: 'root' })
 export class TestimonialService {
-  private testimonials = [...MOCK_TESTIMONIALS];
+  private testimonialsUrl = ADMIN_API_ENDPOINTS.TESTIMONIALS;
 
-  constructor(private activityTracker: ActivityTrackerService) {}
+  constructor(
+    private http: HttpService,
+    private activityTracker: ActivityTrackerService
+  ) {}
 
   getAll(): Observable<Testimonial[]> {
-    return of(this.testimonials);
+    return this.http.get<any>(ADMIN_API_ENDPOINTS.TESTIMONIALS).pipe(
+      map(res => Array.isArray(res.data?.content) ? res.data.content : [])
+    );
   }
 
-  getById(id: number): Observable<Testimonial | undefined> {
-    return of(this.testimonials.find(t => t.id === id));
+  getById(id: number): Observable<Testimonial> {
+    return this.http.get<Testimonial>(ADMIN_API_ENDPOINTS.TESTIMONIAL_BY_ID(id)).pipe(
+      map(res => res.data!)
+    );
   }
 
-  add(data: Testimonial): Observable<void> {
-    data.id = Date.now();
-    this.testimonials.push(data);
-    
-    // Track activity
+  add(data: Testimonial): Observable<Testimonial> {
     this.activityTracker.trackTestimonialActivity('Added', data.name, 'Admin');
-    
-    return of();
+    return this.http.post<Testimonial>(ADMIN_API_ENDPOINTS.TESTIMONIALS, data).pipe(
+      map(res => res.data!)
+    );
   }
 
-  update(id: number, data: Testimonial): Observable<void> {
-    const index = this.testimonials.findIndex(t => t.id === id);
-    if (index !== -1) {
-      this.testimonials[index] = { ...data, id };
-      
-      // Track activity
-      this.activityTracker.trackTestimonialActivity('Updated', data.name, 'Admin');
-    }
-    return of();
+  update(id: number, data: Testimonial): Observable<Testimonial> {
+    this.activityTracker.trackTestimonialActivity('Updated', data.name, 'Admin');
+    return this.http.put<Testimonial>(ADMIN_API_ENDPOINTS.TESTIMONIAL_BY_ID(id), data).pipe(
+      map(res => res.data!)
+    );
   }
 
-  delete(id: number): Observable<void> {
-    const testimonialToDelete = this.testimonials.find(t => t.id === id);
-    this.testimonials = this.testimonials.filter(t => t.id !== id);
-    
-    // Track activity
-    if (testimonialToDelete) {
-      this.activityTracker.trackTestimonialActivity('Deleted', testimonialToDelete.name, 'Admin');
-    }
-    
-    return of();
+  delete(id: number): Observable<any> {
+    this.activityTracker.trackTestimonialActivity('Deleted', 'Testimonial', 'Admin');
+    return this.http.delete<any>(ADMIN_API_ENDPOINTS.TESTIMONIAL_BY_ID(id)).pipe(
+      map(res => res.data!)
+    );
   }
 }

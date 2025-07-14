@@ -6,7 +6,7 @@ export const API_BASE_URLS = {
 
 // Get current base URL based on environment
 export const getCurrentBaseUrl = (): string => {
-  return API_BASE_URLS.DEVELOPMENT; // Change this based on your environment
+  return API_BASE_URLS.DEVELOPMENT; // Use development API
 };
 
 // Public API Endpoints (No Authentication Required)

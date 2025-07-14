@@ -73,7 +73,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   markAsRead(id: number): void {
-    this.enquiryService.toggleReadStatus(id).subscribe(() => {
+    this.enquiryService.markAsRead(id).subscribe(() => {
       // Data will be automatically updated via subscription
       if (this.selectedEnquiry && this.selectedEnquiry.id === id) {
         this.selectedEnquiry.isRead = true;
@@ -93,7 +93,9 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   toggleStatus(id: number): void {
-    this.enquiryService.toggleReadStatus(id).subscribe(() => {
+    const enquiry = this.enquiries.find(e => e.id === id);
+    if (!enquiry) return;
+    this.enquiryService.toggleReadStatus(id, enquiry.isRead).subscribe(() => {
       // Data will be automatically updated via subscription
     });
   }

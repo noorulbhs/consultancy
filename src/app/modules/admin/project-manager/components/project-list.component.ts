@@ -40,6 +40,7 @@ export class ProjectListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log('[ProjectList] ngOnInit called');
     this.loadProjects();
     this.loadProjectSummary();
   }
@@ -47,9 +48,10 @@ export class ProjectListComponent implements OnInit {
   loadProjects(): void {
     this.loading = true;
     this.error = null;
-
+    console.log('[ProjectList] Calling getProjects with filters:', this.filters);
     this.projectService.getProjects(this.filters).subscribe({
       next: (projects) => {
+        console.log('[ProjectList] Projects loaded from backend:', projects);
         this.projects = projects;
         this.applyFiltersAndSearch();
         this.loading = false;
@@ -57,7 +59,7 @@ export class ProjectListComponent implements OnInit {
       error: (error) => {
         this.error = 'Failed to load projects';
         this.loading = false;
-        console.error('Error loading projects:', error);
+        console.error('[ProjectList] Error loading projects:', error);
       }
     });
   }

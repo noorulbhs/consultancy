@@ -21,7 +21,7 @@ export const routes: Routes = [
   },
   
   // Auth routes without layout
-  { path: 'admin-login', loadComponent: () => import('./auth/login/login.component').then(m => m.LoginComponent)},
+  { path: 'admin-login', loadComponent: () => import('./modules/admin/login/login.component').then(m => m.LoginComponent)},
 
   {
     path: '',

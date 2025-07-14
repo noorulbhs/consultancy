@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { SettingsService } from '../../services/settings.service';
-import { SiteSettings } from '../../mock/settings-data';
+import { SiteSettingsService } from '../../../../../core/services/site-settings.service';
+// import { SiteSettings } from '../../mock/settings-data';
 import { NotificationService } from '../../../../../core/services/notification.service';
 import { FormValidationService } from '../../../../../core/services/form-validation.service';
 
@@ -50,7 +50,7 @@ export class SiteSettingsFormComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder, 
-    private settingsService: SettingsService,
+    private settingsService: SiteSettingsService,
     private notificationService: NotificationService,
     private formValidationService: FormValidationService
   ) {
@@ -193,19 +193,18 @@ export class SiteSettingsFormComponent implements OnInit {
   private loadSettings(): void {
     this.loading = true;
     this.settingsService.getSettings().subscribe({
-      next: (data: SiteSettings) => {
+      next: (data: any) => {
+        console.log('[ADMIN] loadSettings received:', data);
         this.form.patchValue(data);
         this.logoPreview = data.logoUrl;
         this.faviconPreview = data.faviconUrl;
-        
         // Set up dynamic arrays
-        this.setKeywords(data.seo.keywords || []);
-        this.setFooterLinks('quickLinks', data.footer.quickLinks || []);
-        this.setFooterLinks('services', data.footer.services || []);
-        this.setFooterLinks('aboutLinks', data.footer.aboutLinks || []);
-        this.setSubjectOptions(data.contactForm.subjectOptions || []);
-        this.setServiceOptions(data.contactForm.serviceOptions || []);
-        
+        this.setKeywords(data.seo?.keywords || []);
+        this.setFooterLinks('quickLinks', data.footer?.quickLinks || []);
+        this.setFooterLinks('services', data.footer?.services || []);
+        this.setFooterLinks('aboutLinks', data.footer?.aboutLinks || []);
+        this.setSubjectOptions(data.contactForm?.subjectOptions || []);
+        this.setServiceOptions(data.contactForm?.serviceOptions || []);
         this.loading = false;
       },
       error: () => {
@@ -340,19 +339,13 @@ export class SiteSettingsFormComponent implements OnInit {
 
     this.loading = true;
     const formValue = this.form.value;
-
-    // Validate settings
-    const validation = this.settingsService.validateSettings(formValue);
-    if (!validation.isValid) {
-      this.showMessage(validation.errors.join(', '), 'error');
-      this.loading = false;
-      return;
-    }
-
+    console.log('[ADMIN] Calling updateSettings with:', formValue);
     this.settingsService.updateSettings(formValue).subscribe({
-      next: (response) => {
+      next: (response: any) => {
+        console.log('[ADMIN] updateSettings response:', response);
         this.showMessage(response.message, response.success ? 'success' : 'error');
         this.loading = false;
+        this.loadSettings(); // Ensure all subscribers get the latest value
       },
       error: () => {
         this.showMessage('Failed to update settings', 'error');
@@ -364,10 +357,12 @@ export class SiteSettingsFormComponent implements OnInit {
   onReset(): void {
     if (confirm('Are you sure you want to reset all settings to default? This action cannot be undone.')) {
       this.loading = true;
+      console.log('[ADMIN] Calling resetSettings');
       this.settingsService.resetSettings().subscribe({
         next: (response) => {
+          console.log('[ADMIN] resetSettings response:', response);
           this.showMessage(response.message, 'success');
-          this.loadSettings();
+          this.loadSettings(); // Ensure all subscribers get the latest value
         },
         error: () => {
           this.showMessage('Failed to reset settings', 'error');
