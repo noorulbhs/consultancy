@@ -31,7 +31,7 @@ export class HomeService {
     ).pipe(
       map(response => response.data || []),
       catchError(error => {
-        console.error('Error fetching services from API, falling back to mock data:', error);
+        // removed log
         return this.getServicesFromMock();
       })
     );
@@ -73,7 +73,7 @@ export class HomeService {
       ).pipe(
         map(response => response.data),
         catchError(error => {
-          console.error('Error fetching service from API:', error);
+          // removed log
           return of(undefined);
         })
       );

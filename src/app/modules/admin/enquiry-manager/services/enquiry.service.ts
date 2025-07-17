@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpService } from '../../../../core/services/http.service';
-import { ADMIN_API_ENDPOINTS } from '../../../../core/constants/api-endpoints';
+import { ADMIN_API_ENDPOINTS, PUBLIC_API_ENDPOINTS } from '../../../../core/constants/api-endpoints';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +24,7 @@ export class EnquiryService {
   }
 
   add(enquiry: any): Observable<any> {
-    return this.http.post<any>(ADMIN_API_ENDPOINTS.ENQUIRIES, enquiry);
+    return this.http.post<any>(PUBLIC_API_ENDPOINTS.ENQUIRIES, enquiry);
   }
 
   delete(id: number): Observable<any> {

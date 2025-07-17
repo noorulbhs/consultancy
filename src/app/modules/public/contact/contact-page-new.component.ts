@@ -56,7 +56,7 @@ export class ContactPageComponent {
         error: (error) => {
           this.isSubmitting = false;
           this.showError = true;
-          console.error('Error submitting form:', error);
+          // removed log
         }
       });
     } else {

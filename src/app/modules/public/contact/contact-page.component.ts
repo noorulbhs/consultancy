@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { EnquiryService } from '../../admin/enquiry-manager/services/enquiry.service';
 import { SettingsService } from '../../admin/site-settings/services/settings.service';
+import { AdminServiceService } from '../../admin/services-manager/services/admin-service.service';
 
 interface ContactForm {
   name: string;
@@ -36,29 +38,37 @@ export class ContactPageComponent implements OnInit {
   submitMessage = '';
   submitSuccess = false;
   siteSettings: any = {};
-  subjectOptions: Array<{value: string, label: string}> = [];
+  // subjectOptions: Array<{value: string, label: string}> = [];
   serviceOptions: Array<{value: string, label: string}> = [];
+  allServices: Array<{ value: string, label: string }> = [];
 
   constructor(
     private enquiryService: EnquiryService,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
+    private adminServiceService: AdminServiceService
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.loadSettings();
+    await this.loadServiceOptions();
   }
 
   private loadSettings(): void {
     this.settingsService.getSettings().subscribe(settings => {
       this.siteSettings = settings;
-      // Filter and map enabled options
-      this.subjectOptions = settings.contactForm.subjectOptions
-        .filter((option: any) => option.enabled)
-        .map((option: any) => ({ value: option.value, label: option.label }));
-      this.serviceOptions = settings.contactForm.serviceOptions
-        .filter((option: any) => option.enabled)
-        .map((option: any) => ({ value: option.value, label: option.label }));
     });
+  }
+
+  private async loadServiceOptions(): Promise<void> {
+    try {
+      const services: any[] = await firstValueFrom(this.adminServiceService.getAllPublic());
+      this.serviceOptions = [
+        ...(services || []).map(service => ({ value: service.title, label: service.title })),
+        { value: 'Other', label: 'Other' }
+      ];
+    } catch {
+      this.serviceOptions = [{ value: 'Other', label: 'Other' }];
+    }
   }
 
   onSubmit(): void {
@@ -98,7 +108,7 @@ export class ContactPageComponent implements OnInit {
         }, 5000);
       },
       error: (error) => {
-        console.error('Error submitting contact form:', error);
+        // removed log
         this.isSubmitting = false;
         this.submitSuccess = false;
         this.submitMessage = 'There was an error submitting your message. Please try again.';

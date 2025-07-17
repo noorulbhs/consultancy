@@ -178,7 +178,7 @@ export class FormComponent implements OnInit {
           this.router.navigate(['/admin-team']);
         },
         error: (error) => {
-          console.error('Update error:', error);
+          // removed log
           this.notificationService.error('Error!', 'Failed to update team member. Please try again.');
         }
       });
@@ -189,7 +189,7 @@ export class FormComponent implements OnInit {
           this.router.navigate(['/admin-team']);
         },
         error: (error) => {
-          console.error('Add error:', error);
+          // removed log
           this.notificationService.error('Error!', 'Failed to add team member. Please try again.');
         }
       });

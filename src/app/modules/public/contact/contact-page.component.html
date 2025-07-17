@@ -42,13 +42,13 @@
           <div>
             <h6 class="fw-bold mb-3">Follow Us</h6>
             <div class="d-flex gap-3">
-              <a [href]="siteSettings.social.linkedin" target="_blank" class="text-primary" *ngIf="siteSettings.social.linkedin">
+              <a [href]="siteSettings.social?.linkedin" target="_blank" class="text-primary" *ngIf="siteSettings.social?.linkedin">
                 <i class="fab fa-linkedin fa-2x"></i>
               </a>
-              <a [href]="siteSettings.social.facebook" target="_blank" class="text-primary" *ngIf="siteSettings.social.facebook">
+              <a [href]="siteSettings.social?.facebook" target="_blank" class="text-primary" *ngIf="siteSettings.social?.facebook">
                 <i class="fab fa-facebook fa-2x"></i>
               </a>
-              <a [href]="siteSettings.social.instagram" target="_blank" class="text-primary" *ngIf="siteSettings.social.instagram">
+              <a [href]="siteSettings.social?.instagram" target="_blank" class="text-primary" *ngIf="siteSettings.social?.instagram">
                 <i class="fab fa-instagram fa-2x"></i>
               </a>
             </div>
@@ -107,16 +107,13 @@
             <div class="row">
               <div class="col-md-6 mb-3">
                 <label class="form-label">Subject <span class="text-danger">*</span></label>
-                <select 
-                  class="form-select" 
+                <input 
+                  type="text"
+                  class="form-control"
                   [(ngModel)]="formData.subject"
                   name="subject"
-                  required>
-                  <option value="">Select a subject</option>
-                  <option *ngFor="let option of subjectOptions" [value]="option.value">
-                    {{ option.label }}
-                  </option>
-                </select>
+                  required
+                  placeholder="Enter subject">
               </div>
               <div class="col-md-6 mb-3">
                 <label class="form-label">Service of Interest</label>

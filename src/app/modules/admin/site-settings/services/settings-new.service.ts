@@ -65,7 +65,7 @@ export class SettingsService {
     ).pipe(
       map(response => response.data || { ...SITE_SETTINGS }),
       catchError(error => {
-        console.error('Error fetching settings from API, falling back to mock data:', error);
+        // removed log
         return of({ ...SITE_SETTINGS });
       })
     );
@@ -88,7 +88,7 @@ export class SettingsService {
       ).pipe(
         map(response => ({ success: true, message: 'Settings updated successfully' })),
         catchError(error => {
-          console.error('Error updating settings:', error);
+          // removed log
           return of({ success: false, message: 'Failed to update settings' });
         })
       );
@@ -109,7 +109,7 @@ export class SettingsService {
         
         return of({ success: true, message: 'Settings updated successfully' });
       } catch (error) {
-        console.error('Error updating settings:', error);
+        // removed log
         return of({ success: false, message: 'Failed to update settings' });
       }
     }

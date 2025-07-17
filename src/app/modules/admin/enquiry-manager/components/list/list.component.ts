@@ -84,7 +84,8 @@ export class ListComponent implements OnInit, OnDestroy {
   delete(id: number): void {
     if (confirm('Are you sure you want to delete this enquiry? This action cannot be undone.')) {
       this.enquiryService.delete(id).subscribe(() => {
-        // Data will be automatically updated via subscription
+        // Remove the deleted enquiry from the list immediately
+        this.enquiries = this.enquiries.filter(e => e.id !== id);
         if (this.selectedEnquiry && this.selectedEnquiry.id === id) {
           this.selectedEnquiry = null;
         }

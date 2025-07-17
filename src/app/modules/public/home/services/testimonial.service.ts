@@ -33,7 +33,7 @@ export class TestimonialService {
     ).pipe(
       map(response => response.data || []),
       catchError(error => {
-        console.error('Error fetching testimonials from API, falling back to mock data:', error);
+        // removed log
         return of(MOCK_TESTIMONIALS);
       })
     );

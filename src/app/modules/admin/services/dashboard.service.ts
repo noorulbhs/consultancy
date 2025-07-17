@@ -74,49 +74,49 @@ export class DashboardService {
       blogs: this.blogService.getAll().pipe(
         map((res: any) => Array.isArray(res) ? res : (Array.isArray(res?.data) ? res.data : [])),
         catchError(error => {
-          console.error('Blog service error in stats:', error);
+          // removed log
           return of([]);
         })
       ),
       jobs: this.jobService.getAll().pipe(
         map((res: any) => Array.isArray(res) ? res : (Array.isArray(res?.data) ? res.data : [])),
         catchError(error => {
-          console.error('Job service error in stats:', error);
+          // removed log
           return of([]);
         })
       ),
       enquiries: this.enquiryService.getAll().pipe(
         map((res: any) => Array.isArray(res) ? res : (Array.isArray(res?.data) ? res.data : [])),
         catchError(error => {
-          console.error('Enquiry service error in stats:', error);
+          // removed log
           return of([]);
         })
       ),
       services: this.serviceService.getAll().pipe(
         map((res: any) => Array.isArray(res) ? res : (Array.isArray(res?.data) ? res.data : [])),
         catchError(error => {
-          console.error('Service service error in stats:', error);
+          // removed log
           return of([]);
         })
       ),
       team: this.teamService.getAll().pipe(
         map((res: any) => Array.isArray(res) ? res : (Array.isArray(res?.data) ? res.data : [])),
         catchError(error => {
-          console.error('Team service error in stats:', error);
+          // removed log
           return of([]);
         })
       ),
       testimonials: this.testimonialService.getAll().pipe(
         map((res: any) => Array.isArray(res) ? res : (Array.isArray(res?.data) ? res.data : [])),
         catchError(error => {
-          console.error('Testimonial service error in stats:', error);
+          // removed log
           return of([]);
         })
       ),
       projects: this.projectService.getProjects().pipe(
         map((res: any) => this.toProjectArray(res)),
         catchError(error => {
-          console.error('Project service error in stats:', error);
+          // removed log
           return of([]);
         })
       )
@@ -231,7 +231,7 @@ export class DashboardService {
         }
       }),
       catchError(error => {
-        console.error('Error loading recent activities:', error);
+        // removed log
         return of(RECENT_ACTIVITIES);
       })
     );
@@ -288,7 +288,7 @@ export class DashboardService {
         }
       }),
       catchError(error => {
-        console.error('Error loading all activities:', error);
+        // removed log
         return of(RECENT_ACTIVITIES);
       })
     );
@@ -451,7 +451,7 @@ export class DashboardService {
         }));
       }),
       catchError(error => {
-        console.error('Error loading active projects for dashboard:', error);
+        // removed log
         // Fallback to mock data if service fails
         return of(ACTIVE_PROJECTS);
       })
