@@ -155,9 +155,9 @@
               </div>
 
               <!-- Keywords -->
-              <div class="mb-3">
+              <div class="mb-3" formArrayName="keywords">
                 <label class="form-label">Keywords</label>
-                <div class="keywords-container">
+                <div class="keywords-container" *ngIf="keywords && keywords.controls">
                   <div 
                     *ngFor="let keyword of keywords.controls; let i = index" 
                     class="keyword-input-group mb-2">

@@ -10,126 +10,87 @@ import { PUBLIC_API_ENDPOINTS, ADMIN_API_ENDPOINTS } from '../../../../core/cons
   providedIn: 'root'
 })
 export class SettingsService {
-  private settings = { ...SITE_SETTINGS };
-  private settingsSubject = new BehaviorSubject<SiteSettings>(this.settings);
+  private settingsSubject = new BehaviorSubject<SiteSettings | null>(null);
   public settings$ = this.settingsSubject.asObservable();
 
   constructor(
-    private httpService: HttpService,
-    private dataSourceService: DataSourceService
+    private httpService: HttpService
   ) {
     this.loadSettings();
   }
 
   private loadSettings(): void {
-    if (this.dataSourceService.shouldUseRealData('siteSettings')) {
-      this.getSettingsFromAPI().subscribe(settings => {
-        this.settings = settings;
-        this.settingsSubject.next(this.settings);
-      });
-    } else {
-      this.settings = this.loadMockSettings();
-      this.settingsSubject.next(this.settings);
-    }
+    this.getSettingsFromAPI().subscribe(settings => {
+      this.settingsSubject.next(settings);
+    });
   }
 
-  private loadMockSettings(): SiteSettings {
-    // Try to load from localStorage, but robustly merge with mock
-    let local: any = {};
-    let useLocal = false;
-    try {
-      const raw = localStorage.getItem('siteSettings');
-      if (raw) {
-        local = JSON.parse(raw);
-        // Check for required fields (add more as needed)
-        if (
-          typeof local === 'object' &&
-          local !== null &&
-          local.seo && Array.isArray(local.seo.keywords) &&
-          local.footer && typeof local.footer === 'object'
-        ) {
-          useLocal = true;
-        }
-      }
-    } catch (e) {
-      // ignore parse errors
-    }
-    // Merge with mock only if local is valid
-    const merged = useLocal ? { ...SITE_SETTINGS, ...local } : { ...SITE_SETTINGS };
-    return merged;
-  }
+  // loadMockSettings removed: always use backend
 
   private getSettingsFromAPI(): Observable<SiteSettings> {
     return this.httpService.get<SiteSettings>(
       PUBLIC_API_ENDPOINTS.SETTINGS,
       { isPublic: true }
     ).pipe(
-      map(response => response.data || { ...SITE_SETTINGS }),
+      map(response => {
+        const data: any = response.data || {};
+        // Parse JSON string fields if present and not already objects
+        const parseIfString = (val: any) => {
+          if (typeof val === 'string') {
+            try { return JSON.parse(val); } catch { return val; }
+          }
+          return val;
+        };
+        return {
+          ...data,
+          businessHours: parseIfString(data.businessHours),
+          social: parseIfString(data.social),
+          seo: parseIfString(data.seo),
+          footer: parseIfString(data.footer),
+          contactForm: parseIfString(data.contactForm),
+          statistics: parseIfString(data.statistics)
+        } as SiteSettings;
+      }),
       catchError(error => {
-        return of({ ...SITE_SETTINGS });
+        throw error;
       })
     );
   }
 
   getSettings(): Observable<SiteSettings> {
-    if (this.dataSourceService.shouldUseRealData('siteSettings')) {
-      return this.getSettingsFromAPI();
-    } else {
-      return of(this.settings);
-    }
+    return this.getSettingsFromAPI();
   }
 
   updateSettings(updated: Partial<SiteSettings>): Observable<{ success: boolean; message: string }> {
-    if (this.dataSourceService.shouldUseRealData('siteSettings')) {
-      return this.httpService.put(
-        ADMIN_API_ENDPOINTS.SETTINGS,
-        updated,
-        { isPublic: false }
-      ).pipe(
-        map(response => ({ success: true, message: 'Settings updated successfully' })),
-        catchError(error => {
-          return of({ success: false, message: 'Failed to update settings' });
-        })
-      );
-    } else {
-      try {
-        this.settings = { 
-          ...this.settings, 
-          ...updated, 
-         lastUpdated: new Date().toISOString(),
-          updatedBy: 'admin' // In real app, this would be the current user
-        };
-        // Save to localStorage
-        localStorage.setItem('siteSettings', JSON.stringify(this.settings));
-        // Update subject
-        this.settingsSubject.next(this.settings);
-        return of({ success: true, message: 'Settings updated successfully' });
-      } catch (error) {
+    return this.httpService.put(
+      ADMIN_API_ENDPOINTS.SETTINGS,
+      updated,
+      { isPublic: false }
+    ).pipe(
+      map(response => ({ success: true, message: 'Settings updated successfully' })),
+      catchError(error => {
         return of({ success: false, message: 'Failed to update settings' });
-      }
-    }
+      })
+    );
   }
 
-  resetSettings(): Observable<{ success: boolean; message: string }> {
-    this.settings = { ...SITE_SETTINGS };
-    localStorage.removeItem('siteSettings');
-    this.settingsSubject.next(this.settings);
-    return of({ success: true, message: 'Settings reset to default' });
-  }
+  // resetSettings removed: always use backend
 
   getSettingsForFooter(): Observable<any> {
-    return of({
-      companyName: this.settings.companyName,
-      address: this.settings.address,
-      city: this.settings.city,
-      state: this.settings.state,
-      country: this.settings.country,
-      phone: this.settings.phone,
-      email: this.settings.email,
-      social: this.settings.social,
-      footer: this.settings.footer,
-      businessHours: this.settings.businessHours
-    });
+    return this.getSettings().pipe(
+      map(settings => ({
+        companyName: settings.companyName,
+        address: settings.address,
+        city: settings.city,
+        state: settings.state,
+        country: settings.country,
+        phone: settings.phone,
+        email: settings.email,
+        social: settings.social,
+        footer: settings.footer,
+        businessHours: settings.businessHours
+      }))
+    );
   }
 
   validateSettings(settings: Partial<SiteSettings>): { isValid: boolean; errors: string[] } {

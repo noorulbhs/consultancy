@@ -31,9 +31,7 @@ export class FooterComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.featureToggleService.initializeFromStorage();
     this.loadFooterData();
-    
     // Subscribe to feature toggle changes
     this.featureToggleService.getFeatures().subscribe(() => {
       this.updateCompanyLinks();

@@ -18,748 +18,702 @@
         </button>
         <button type="button" class="btn btn-outline-info me-2" (click)="validateForm()">
           <i class="fas fa-check-circle me-2"></i>
-          Validate Form
+          Validate
         </button>
-        <button type="button" 
-                class="btn btn-primary"
-                [disabled]="saving || loading"
-                (click)="onSubmit()">
-          <i class="fas fa-spinner fa-spin me-2" *ngIf="saving"></i>
-          <i class="fas fa-save me-2" *ngIf="!saving"></i>
-          {{ saving ? 'Saving...' : (isEditMode ? 'Update Project' : 'Create Project') }}
+        <button type="submit" class="btn btn-primary" [disabled]="loading || !projectForm.valid" (click)="onSubmit()">
+          <i class="fas fa-save me-2"></i>
+          {{ isEditMode ? 'Update Project' : 'Create Project' }}
         </button>
       </div>
     </div>
   </div>
-
-  <!-- Loading State -->
-  <div class="text-center py-5" *ngIf="loading">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
-    <p class="mt-3 text-muted">Loading project details...</p>
-  </div>
-
-  <!-- Error State -->
-  <div class="alert alert-danger" *ngIf="error && !loading">
-    <i class="fas fa-exclamation-triangle me-2"></i>
-    {{ error }}
-  </div>
-
-  <!-- Form Content -->
-  <div *ngIf="!loading" [formGroup]="projectForm">
-    
-    <!-- Navigation Tabs -->
-    <div class="form-tabs mb-4">
-      <ul class="nav nav-pills nav-fill">
-        <li class="nav-item">
-          <button class="nav-link" 
-                  [class.active]="activeTab === 'basic'"
-                  (click)="setActiveTab('basic')">
-            <i class="fas fa-info-circle me-2"></i>
-            Basic Details
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" 
-                  [class.active]="activeTab === 'team'"
-                  (click)="setActiveTab('team')">
-            <i class="fas fa-users me-2"></i>
-            Team Members
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" 
-                  [class.active]="activeTab === 'milestones'"
-                  (click)="setActiveTab('milestones')">
-            <i class="fas fa-flag-checkered me-2"></i>
-            Milestones
-          </button>
-        </li>
-        <li class="nav-item">
-          <button class="nav-link" 
-                  [class.active]="activeTab === 'additional'"
-                  (click)="setActiveTab('additional')">
-            <i class="fas fa-cog me-2"></i>
-            Additional Info
-          </button>
-        </li>
-      </ul>
-    </div>
-
-    <!-- Basic Details Tab -->
-    <div class="tab-content" *ngIf="activeTab === 'basic'">
+  <!-- Tab Navigation -->
+  <ul class="nav nav-tabs mb-4">
+    <li class="nav-item">
+      <button class="nav-link" 
+              [class.active]="activeTab === 'basic'"
+              (click)="setActiveTab('basic')">
+        <i class="fas fa-info-circle me-2"></i>
+        Basic Details
+      </button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" 
+              [class.active]="activeTab === 'team'"
+              (click)="setActiveTab('team')">
+        <i class="fas fa-users me-2"></i>
+        Team Members
+      </button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" 
+              [class.active]="activeTab === 'milestones'"
+              (click)="setActiveTab('milestones')">
+        <i class="fas fa-flag-checkered me-2"></i>
+        Milestones
+      </button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" 
+              [class.active]="activeTab === 'additional'"
+              (click)="setActiveTab('additional')">
+        <i class="fas fa-cog me-2"></i>
+        Additional Info
+      </button>
+    </li>
+  </ul>
+  <!-- Basic Details Tab -->
+  <div class="tab-content" *ngIf="activeTab === 'basic'">
+    <form [formGroup]="projectForm">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title mb-4">
             <i class="fas fa-info-circle me-2"></i>
             Project Information
           </h5>
-          
           <div class="row g-4">
-            <!-- Project Name -->
-            <div class="col-md-6">
-              <label class="form-label required">Project Name</label>
-              <input type="text" 
-                     class="form-control" 
-                     formControlName="name"
-                     [class.is-invalid]="isFieldInvalid('name')"
-                     placeholder="Enter project name">
-              <div class="invalid-feedback" *ngIf="isFieldInvalid('name')">
-                {{ getFieldError('name') }}
-              </div>
-            </div>
-
-            <!-- Category -->
-            <div class="col-md-6">
-              <label class="form-label required">Category</label>
-              <select class="form-select" 
-                      formControlName="category"
-                      [class.is-invalid]="isFieldInvalid('category')">
-                <option value="">Select category</option>
-                <option value="Web Development">Web Development</option>
-                <option value="Mobile Development">Mobile Development</option>
-                <option value="Desktop Application">Desktop Application</option>
-                <option value="E-commerce">E-commerce</option>
-                <option value="CMS Development">CMS Development</option>
-                <option value="API Development">API Development</option>
-                <option value="UI/UX Design">UI/UX Design</option>
-                <option value="Consulting">Consulting</option>
-                <option value="Other">Other</option>
-              </select>
-              <div class="invalid-feedback" *ngIf="isFieldInvalid('category')">
-                {{ getFieldError('category') }}
-              </div>
-            </div>
-
-            <!-- Description -->
-            <div class="col-12">
-              <label class="form-label required">Description</label>
-              <textarea class="form-control" 
-                        formControlName="description"
-                        [class.is-invalid]="isFieldInvalid('description')"
-                        rows="4"
-                        placeholder="Describe the project in detail..."></textarea>
-              <div class="invalid-feedback" *ngIf="isFieldInvalid('description')">
-                {{ getFieldError('description') }}
-              </div>
-            </div>
-
-            <!-- Client Information -->
-            <div class="col-12">
-              <h6 class="mb-3">
-                <i class="fas fa-user me-2"></i>
-                Client Information
-              </h6>
-            </div>
-
-            <!-- Client Name -->
-            <div class="col-md-6">
-              <label class="form-label required">Client Name</label>
-              <input type="text" 
-                     class="form-control" 
-                     formControlName="clientName"
-                     [class.is-invalid]="isFieldInvalid('clientName')"
-                     placeholder="Enter client name">
-              <div class="invalid-feedback" *ngIf="isFieldInvalid('clientName')">
-                {{ getFieldError('clientName') }}
-              </div>
-            </div>
-
-            <!-- Client Email -->
-            <div class="col-md-6">
-              <label class="form-label required">Client Email</label>
-              <input type="email" 
-                     class="form-control" 
-                     formControlName="clientEmail"
-                     [class.is-invalid]="isFieldInvalid('clientEmail')"
-                     placeholder="Enter client email">
-              <div class="invalid-feedback" *ngIf="isFieldInvalid('clientEmail')">
-                {{ getFieldError('clientEmail') }}
-              </div>
-            </div>
-
-            <!-- Client Phone -->
-            <div class="col-md-6">
-              <label class="form-label">Client Phone</label>
-              <input type="tel" 
-                     class="form-control" 
-                     formControlName="clientPhone"
-                     placeholder="Enter client phone">
-            </div>
-
-            <!-- Client Company -->
-            <div class="col-md-6">
-              <label class="form-label">Client Company</label>
-              <input type="text" 
-                     class="form-control" 
-                     formControlName="clientCompany"
-                     placeholder="Enter client company">
-            </div>
-
-            <!-- Project Timeline -->
-            <div class="col-12">
-              <h6 class="mb-3">
-                <i class="fas fa-calendar me-2"></i>
-                Project Timeline
-              </h6>
-            </div>
-
-            <!-- Start Date -->
-            <div class="col-md-6">
-              <label class="form-label required">Start Date</label>
-              <input type="date" 
-                     class="form-control" 
-                     formControlName="startDate"
-                     [class.is-invalid]="isFieldInvalid('startDate')">
-              <div class="invalid-feedback" *ngIf="isFieldInvalid('startDate')">
-                {{ getFieldError('startDate') }}
-              </div>
-            </div>
-
-            <!-- End Date -->
-            <div class="col-md-6">
-              <label class="form-label required">End Date</label>
-              <input type="date" 
-                     class="form-control" 
-                     formControlName="endDate"
-                     [class.is-invalid]="isFieldInvalid('endDate')">
-              <div class="invalid-feedback" *ngIf="isFieldInvalid('endDate')">
-                {{ getFieldError('endDate') }}
-              </div>
-            </div>
-
-            <!-- Budget Information -->
-            <div class="col-12">
-              <h6 class="mb-3">
-                <i class="fas fa-dollar-sign me-2"></i>
-                Budget Information
-              </h6>
-            </div>
-
-            <!-- Estimated Budget -->
-            <div class="col-md-6">
-              <label class="form-label required">Estimated Budget ($)</label>
-              <input type="number" 
-                     class="form-control" 
-                     formControlName="estimatedBudget"
-                     [class.is-invalid]="isFieldInvalid('estimatedBudget')"
-                     min="0"
-                     step="100"
-                     placeholder="0">
-              <div class="invalid-feedback" *ngIf="isFieldInvalid('estimatedBudget')">
-                {{ getFieldError('estimatedBudget') }}
-              </div>
-            </div>
-
-            <!-- Actual Budget -->
-            <div class="col-md-6" *ngIf="isEditMode">
-              <label class="form-label">Actual Budget ($)</label>
-              <input type="number" 
-                     class="form-control" 
-                     formControlName="actualBudget"
-                     min="0"
-                     step="100"
-                     placeholder="0">
-            </div>
-
-            <!-- Project Status & Priority -->
-            <div class="col-12">
-              <h6 class="mb-3">
-                <i class="fas fa-flag me-2"></i>
-                Status & Priority
-              </h6>
-            </div>
-
-            <!-- Status -->
-            <div class="col-md-4">
-              <label class="form-label required">Status</label>
-              <select class="form-select" 
-                      formControlName="status"
-                      [class.is-invalid]="isFieldInvalid('status')">
-                <option *ngFor="let status of statusOptions" [value]="status">
-                  {{ status | titlecase }}
-                </option>
-              </select>
-              <div class="invalid-feedback" *ngIf="isFieldInvalid('status')">
-                {{ getFieldError('status') }}
-              </div>
-            </div>
-
-            <!-- Priority -->
-            <div class="col-md-4">
-              <label class="form-label required">Priority</label>
-              <select class="form-select" 
-                      formControlName="priority"
-                      [class.is-invalid]="isFieldInvalid('priority')">
-                <option *ngFor="let priority of priorityOptions" [value]="priority">
-                  {{ priority | titlecase }}
-                </option>
-              </select>
-              <div class="invalid-feedback" *ngIf="isFieldInvalid('priority')">
-                {{ getFieldError('priority') }}
-              </div>
-            </div>
-
-            <!-- Progress -->
-            <div class="col-md-4" *ngIf="isEditMode">
-              <label class="form-label">Progress (%)</label>
-              <input type="number" 
-                     class="form-control" 
-                     formControlName="progress"
-                     min="0"
-                     max="100"
-                     placeholder="0">
-            </div>
-
-            <!-- Project Manager -->
-            <div class="col-md-6">
-              <label class="form-label required">Project Manager</label>
-              <input type="text" 
-                     class="form-control" 
-                     formControlName="projectManager"
-                     [class.is-invalid]="isFieldInvalid('projectManager')"
-                     placeholder="Enter project manager name">
-              <div class="invalid-feedback" *ngIf="isFieldInvalid('projectManager')">
-                {{ getFieldError('projectManager') }}
-              </div>
-            </div>
-
-            <!-- Technologies -->
-            <div class="col-12">
-              <label class="form-label">Technologies</label>
-              <div class="technologies-section">
-                <div class="row g-2" formArrayName="technologies">
-                  <div class="col-md-4" *ngFor="let tech of technologiesArray.controls; let i = index">
-                    <div class="input-group">
-                      <input type="text" 
-                             class="form-control" 
-                             [formControlName]="i"
-                             placeholder="Technology name">
-                      <button type="button" 
-                              class="btn btn-outline-danger"
-                              (click)="removeTechnology(i)">
-                        <i class="fas fa-times"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <button type="button" 
-                        class="btn btn-outline-primary btn-sm mt-2"
-                        (click)="addTechnology()">
-                  <i class="fas fa-plus me-2"></i>
-                  Add Technology
-                </button>
-              </div>
+          <!-- Project Name -->
+          <div class="col-md-6">
+            <label class="form-label required">Project Name</label>
+            <input type="text" 
+                   class="form-control" 
+                   formControlName="name"
+                   [class.is-invalid]="isFieldInvalid('name')"
+                   placeholder="Enter project name">
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('name')">
+              {{ getFieldError('name') }}
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Team Members Tab -->
-    <div class="tab-content" *ngIf="activeTab === 'team'">
-      <div class="row g-4">
-        
-        <!-- Internal Team Members -->
-        <div class="col-lg-6">
-          <div class="card h-100">
-            <div class="card-header">
-              <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">
-                  <i class="fas fa-users me-2"></i>
-                  Internal Team Members
-                </h5>
-                <button type="button" 
-                        class="btn btn-sm btn-primary"
-                        (click)="showTeamMemberModal = true">
-                  <i class="fas fa-plus me-2"></i>
-                  Add Member
-                </button>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="team-members-list">
-                <div class="team-member-item" *ngFor="let member of selectedTeamMembers">
-                  <div class="d-flex align-items-center">
-                    <div class="member-avatar">
-                      <i class="fas fa-user"></i>
-                    </div>
-                    <div class="member-info flex-grow-1">
-                      <h6 class="mb-1">{{ member.name }}</h6>
-                      <p class="mb-0 text-muted">{{ member.role }}</p>
-                      <small class="text-muted">{{ member.allocatedHours }}h/week</small>
-                      <span class="badge bg-success ms-2" *ngIf="member.isProjectLead">Lead</span>
-                    </div>
-                    <button type="button" 
-                            class="btn btn-sm btn-outline-danger"
-                            (click)="removeTeamMember(member.id)">
-                      <i class="fas fa-times"></i>
-                    </button>
-                  </div>
-                </div>
-                
-                <div class="empty-state text-center py-4" *ngIf="selectedTeamMembers.length === 0">
-                  <i class="fas fa-users fa-2x text-muted mb-3"></i>
-                  <p class="text-muted">No team members added yet</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- External Team Members -->
-        <div class="col-lg-6">
-          <div class="card h-100">
-            <div class="card-header">
-              <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">
-                  <i class="fas fa-user-friends me-2"></i>
-                  External Team Members
-                </h5>
-                <button type="button" 
-                        class="btn btn-sm btn-primary"
-                        (click)="showExternalMemberModal = true">
-                  <i class="fas fa-plus me-2"></i>
-                  Add External
-                </button>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="external-members-list">
-                <div class="external-member-item" *ngFor="let member of externalTeamMembers">
-                  <div class="d-flex align-items-start">
-                    <div class="member-avatar">
-                      <i class="fas fa-user-tie"></i>
-                    </div>
-                    <div class="member-info flex-grow-1">
-                      <h6 class="mb-1">{{ member.name }}</h6>
-                      <p class="mb-1 text-muted">{{ member.role }} - {{ member.contractType | titlecase }}</p>
-                      <p class="mb-1 text-muted">{{ member.company || 'Freelancer' }}</p>
-                      <small class="text-muted">
-                        ${{ member.hourlyRate }}/hr - {{ member.allocatedHours }}h/week
-                      </small>
-                      <div class="member-skills mt-1">
-                        <span class="skill-badge" *ngFor="let skill of member.skills.slice(0, 2)">
-                          {{ skill }}
-                        </span>
-                        <span class="skill-more" *ngIf="member.skills.length > 2">
-                          +{{ member.skills.length - 2 }}
-                        </span>
-                      </div>
-                    </div>
-                    <button type="button" 
-                            class="btn btn-sm btn-outline-danger"
-                            (click)="removeExternalMember(member.id!)">
-                      <i class="fas fa-times"></i>
-                    </button>
-                  </div>
-                </div>
-                
-                <div class="empty-state text-center py-4" *ngIf="externalTeamMembers.length === 0">
-                  <i class="fas fa-user-friends fa-2x text-muted mb-3"></i>
-                  <p class="text-muted">No external members added yet</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Milestones Tab -->
-    <div class="tab-content" *ngIf="activeTab === 'milestones'">
-      <div class="card">
-        <div class="card-header">
-          <div class="d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">
-              <i class="fas fa-flag-checkered me-2"></i>
-              Project Milestones
-            </h5>
-            <button type="button" 
-                    class="btn btn-primary"
-                    (click)="showMilestoneModal = true">
-              <i class="fas fa-plus me-2"></i>
-              Add Milestone
-            </button>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="milestones-list">
-            <div class="milestone-item" *ngFor="let milestone of milestones">
-              <div class="milestone-content">
-                <div class="d-flex justify-content-between align-items-start mb-2">
-                  <h6 class="milestone-title">{{ milestone.title }}</h6>
-                  <div class="milestone-actions">
-                    <span class="badge bg-info me-2">{{ milestone.status | titlecase }}</span>
-                    <button type="button" 
-                            class="btn btn-sm btn-outline-danger"
-                            (click)="removeMilestone(milestone.id!)">
-                      <i class="fas fa-times"></i>
-                    </button>
-                  </div>
-                </div>
-                <p class="milestone-description text-muted">{{ milestone.description }}</p>
-                <div class="milestone-meta">
-                  <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">
-                      <i class="fas fa-calendar me-1"></i>
-                      Due: {{ formatDate(milestone.dueDate) }}
-                    </small>
-                    <div class="milestone-progress">
-                      <small class="text-muted me-2">{{ milestone.progress }}%</small>
-                      <div class="progress" style="width: 100px; height: 6px;">
-                        <div class="progress-bar bg-primary" 
-                             [style.width.%]="milestone.progress">
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="milestone-deliverables mt-2" *ngIf="milestone.deliverables.length > 0">
-                  <small class="text-muted">Deliverables:</small>
-                  <div class="deliverables-list">
-                    <span class="deliverable-badge" *ngFor="let deliverable of milestone.deliverables">
-                      {{ deliverable }}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            <div class="empty-state text-center py-4" *ngIf="milestones.length === 0">
-              <i class="fas fa-flag-checkered fa-2x text-muted mb-3"></i>
-              <p class="text-muted">No milestones added yet</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Additional Info Tab -->
-    <div class="tab-content" *ngIf="activeTab === 'additional'">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title mb-4">
-            <i class="fas fa-info-circle me-2"></i>
-            Additional Information
-          </h5>
-          
-          <div class="info-section">
-            <div class="row g-4">
-              <div class="col-12">
-                <div class="alert alert-info">
-                  <i class="fas fa-info-circle me-2"></i>
-                  Additional features like document management, time tracking, and detailed reporting will be available in future updates.
-                </div>
-              </div>
-              
-              <div class="col-md-6">
-                <h6 class="mb-3">Project Summary</h6>
-                <div class="summary-item">
-                  <strong>Total Team Members:</strong> 
-                  {{ selectedTeamMembers.length + externalTeamMembers.length }}
-                </div>
-                <div class="summary-item">
-                  <strong>Total Milestones:</strong> 
-                  {{ milestones.length }}
-                </div>
-                <div class="summary-item">
-                  <strong>Technologies Count:</strong> 
-                  {{ technologiesArray.length }}
-                </div>
-              </div>
-              
-              <div class="col-md-6">
-                <h6 class="mb-3">Budget Overview</h6>
-                <div class="summary-item">
-                  <strong>Estimated Budget:</strong> 
-                  {{ formatCurrency(projectForm.get('estimatedBudget')?.value || 0) }}
-                </div>
-                <div class="summary-item" *ngIf="isEditMode">
-                  <strong>Actual Budget:</strong> 
-                  {{ formatCurrency(projectForm.get('actualBudget')?.value || 0) }}
-                </div>
-                <div class="summary-item">
-                  <strong>External Team Cost:</strong> 
-                  {{ formatCurrency(getExternalTeamCost()) }}/month
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modals -->
-  
-  <!-- Team Member Modal -->
-  <div class="modal" [class.show]="showTeamMemberModal" [style.display]="showTeamMemberModal ? 'block' : 'none'">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Add Team Member</h5>
-          <button type="button" class="btn-close" (click)="showTeamMemberModal = false"></button>
-        </div>
-        <div class="modal-body" [formGroup]="teamMemberForm">
-          <div class="mb-3">
-            <label class="form-label">Select Team Member</label>
-            <select class="form-select" formControlName="memberId">
-              <option value="">Choose a team member</option>
-              <option *ngFor="let member of availableTeamMembers" 
-                      [value]="member.id"
-                      [disabled]="isTeamMemberSelected(member.id)">
-                {{ member.name }} - {{ member.role }}
-              </option>
+          <!-- Category -->
+          <div class="col-md-6">
+            <label class="form-label required">Category</label>
+            <select class="form-select" 
+                    formControlName="category"
+                    [class.is-invalid]="isFieldInvalid('category')">
+              <option value="">Select category</option>
+              <option value="Web Development">Web Development</option>
+              <option value="Mobile Development">Mobile Development</option>
+              <option value="Desktop Application">Desktop Application</option>
+              <option value="E-commerce">E-commerce</option>
+              <option value="CMS Development">CMS Development</option>
+              <option value="API Development">API Development</option>
+              <option value="UI/UX Design">UI/UX Design</option>
+              <option value="Consulting">Consulting</option>
+              <option value="Other">Other</option>
             </select>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Allocated Hours per Week</label>
-            <input type="number" class="form-control" formControlName="allocatedHours" min="1" max="40">
-          </div>
-          <div class="mb-3">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" formControlName="isProjectLead">
-              <label class="form-check-label">
-                Project Lead
-              </label>
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('category')">
+              {{ getFieldError('category') }}
             </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="showTeamMemberModal = false">Cancel</button>
-          <button type="button" class="btn btn-primary" (click)="addTeamMember()">Add Member</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- External Member Modal -->
-  <div class="modal" [class.show]="showExternalMemberModal" [style.display]="showExternalMemberModal ? 'block' : 'none'">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Add External Team Member</h5>
-          <button type="button" class="btn-close" (click)="showExternalMemberModal = false"></button>
-        </div>
-        <div class="modal-body" [formGroup]="externalMemberForm">
-          <div class="row g-3">
-            <div class="col-md-6">
-              <label class="form-label">Name</label>
-              <input type="text" class="form-control" formControlName="name">
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Email</label>
-              <input type="email" class="form-control" formControlName="email">
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Phone</label>
-              <input type="tel" class="form-control" formControlName="phone">
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Company</label>
-              <input type="text" class="form-control" formControlName="company">
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Role</label>
-              <input type="text" class="form-control" formControlName="role">
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Contract Type</label>
-              <select class="form-select" formControlName="contractType">
-                <option *ngFor="let type of contractTypes" [value]="type">
-                  {{ type | titlecase }}
-                </option>
-              </select>
-            </div>
-            <div class="col-12">
-              <label class="form-label">Skills (comma separated)</label>
-              <input type="text" class="form-control" formControlName="skills">
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Hourly Rate ($)</label>
-              <input type="number" class="form-control" formControlName="hourlyRate" min="0">
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Allocated Hours/Week</label>
-              <input type="number" class="form-control" formControlName="allocatedHours" min="1">
-            </div>
-            <div class="col-md-4">
-              <label class="form-label">Contract Start</label>
-              <input type="date" class="form-control" formControlName="contractStartDate">
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Contract End (Optional)</label>
-              <input type="date" class="form-control" formControlName="contractEndDate">
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Payment Terms</label>
-              <input type="text" class="form-control" formControlName="paymentTerms">
-            </div>
-            <div class="col-12">
-              <label class="form-label">Notes</label>
-              <textarea class="form-control" formControlName="notes" rows="2"></textarea>
+          <!-- Description -->
+          <div class="col-12">
+            <label class="form-label required">Description</label>
+            <textarea class="form-control" 
+                      formControlName="description"
+                      [class.is-invalid]="isFieldInvalid('description')"
+                      rows="4"
+                      placeholder="Describe the project in detail..."></textarea>
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('description')">
+              {{ getFieldError('description') }}
             </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="showExternalMemberModal = false">Cancel</button>
-          <button type="button" class="btn btn-primary" (click)="addExternalMember()">Add Member</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Milestone Modal -->
-  <div class="modal" [class.show]="showMilestoneModal" [style.display]="showMilestoneModal ? 'block' : 'none'">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Add Milestone</h5>
-          <button type="button" class="btn-close" (click)="showMilestoneModal = false"></button>
-        </div>
-        <div class="modal-body" [formGroup]="milestoneForm">
-          <div class="mb-3">
-            <label class="form-label">Title</label>
-            <input type="text" class="form-control" formControlName="title">
+          <!-- Client Information -->
+          <div class="col-12">
+            <h6 class="mb-3">
+              <i class="fas fa-user me-2"></i>
+              Client Information
+            </h6>
           </div>
-          <div class="mb-3">
-            <label class="form-label">Description</label>
-            <textarea class="form-control" formControlName="description" rows="3"></textarea>
+          <!-- Client Name -->
+          <div class="col-md-6">
+            <label class="form-label required">Client Name</label>
+            <input type="text" 
+                   class="form-control" 
+                   formControlName="clientName"
+                   [class.is-invalid]="isFieldInvalid('clientName')"
+                   placeholder="Enter client name">
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('clientName')">
+              {{ getFieldError('clientName') }}
+            </div>
           </div>
-          <div class="mb-3">
-            <label class="form-label">Due Date</label>
-            <input type="date" class="form-control" formControlName="dueDate">
+          <!-- Client Email -->
+          <div class="col-md-6">
+            <label class="form-label required">Client Email</label>
+            <input type="email" 
+                   class="form-control" 
+                   formControlName="clientEmail"
+                   [class.is-invalid]="isFieldInvalid('clientEmail')"
+                   placeholder="Enter client email">
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('clientEmail')">
+              {{ getFieldError('clientEmail') }}
+            </div>
           </div>
-          <div class="mb-3">
-            <label class="form-label">Status</label>
-            <select class="form-select" formControlName="status">
-              <option *ngFor="let status of milestoneStatusOptions" [value]="status">
+          <!-- Client Phone -->
+          <div class="col-md-6">
+            <label class="form-label">Client Phone</label>
+            <input type="tel" 
+                   class="form-control" 
+                   formControlName="clientPhone"
+                   placeholder="Enter client phone">
+          </div>
+          <!-- Client Company -->
+          <div class="col-md-6">
+            <label class="form-label">Client Company</label>
+            <input type="text" 
+                   class="form-control" 
+                   formControlName="clientCompany"
+                   placeholder="Enter client company">
+          </div>
+          <!-- Project Timeline -->
+          <div class="col-12">
+            <h6 class="mb-3">
+              <i class="fas fa-calendar me-2"></i>
+              Project Timeline
+            </h6>
+          </div>
+          <!-- Start Date -->
+          <div class="col-md-6">
+            <label class="form-label required">Start Date</label>
+            <input type="date" 
+                   class="form-control" 
+                   formControlName="startDate"
+                   [class.is-invalid]="isFieldInvalid('startDate')">
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('startDate')">
+              {{ getFieldError('startDate') }}
+            </div>
+          </div>
+          <!-- End Date -->
+          <div class="col-md-6">
+            <label class="form-label required">End Date</label>
+            <input type="date" 
+                   class="form-control" 
+                   formControlName="endDate"
+                   [class.is-invalid]="isFieldInvalid('endDate')">
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('endDate')">
+              {{ getFieldError('endDate') }}
+            </div>
+          </div>
+          <!-- Budget Information -->
+          <div class="col-12">
+            <h6 class="mb-3">
+              <i class="fas fa-dollar-sign me-2"></i>
+              Budget Information
+            </h6>
+          </div>
+          <!-- Estimated Budget -->
+          <div class="col-md-6">
+            <label class="form-label required">Estimated Budget ($)</label>
+            <input type="number" 
+                   class="form-control" 
+                   formControlName="estimatedBudget"
+                   [class.is-invalid]="isFieldInvalid('estimatedBudget')"
+                   min="0"
+                   step="100"
+                   placeholder="0">
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('estimatedBudget')">
+              {{ getFieldError('estimatedBudget') }}
+            </div>
+          </div>
+          <!-- Actual Budget -->
+          <div class="col-md-6" *ngIf="isEditMode">
+            <label class="form-label">Actual Budget ($)</label>
+            <input type="number" 
+                   class="form-control" 
+                   formControlName="actualBudget"
+                   min="0"
+                   step="100"
+                   placeholder="0">
+          </div>
+          <!-- Project Status & Priority -->
+          <div class="col-12">
+            <h6 class="mb-3">
+              <i class="fas fa-flag me-2"></i>
+              Status & Priority
+            </h6>
+          </div>
+          <!-- Status -->
+          <div class="col-md-4">
+            <label class="form-label required">Status</label>
+            <select class="form-select" 
+                    formControlName="status"
+                    [class.is-invalid]="isFieldInvalid('status')">
+              <option *ngFor="let status of statusOptions" [value]="status">
                 {{ status | titlecase }}
               </option>
             </select>
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('status')">
+              {{ getFieldError('status') }}
+            </div>
           </div>
-          <div class="mb-3">
+          <!-- Priority -->
+          <div class="col-md-4">
+            <label class="form-label required">Priority</label>
+            <select class="form-select" 
+                    formControlName="priority"
+                    [class.is-invalid]="isFieldInvalid('priority')">
+              <option *ngFor="let priority of priorityOptions" [value]="priority">
+                {{ priority | titlecase }}
+              </option>
+            </select>
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('priority')">
+              {{ getFieldError('priority') }}
+            </div>
+          </div>
+          <!-- Progress -->
+          <div class="col-md-4" *ngIf="isEditMode">
             <label class="form-label">Progress (%)</label>
-            <input type="number" class="form-control" formControlName="progress" min="0" max="100">
+            <input type="number" 
+                   class="form-control" 
+                   formControlName="progress"
+                   min="0"
+                   max="100"
+                   placeholder="0">
           </div>
-          <div class="mb-3">
-            <label class="form-label">Deliverables (comma separated)</label>
-            <input type="text" class="form-control" formControlName="deliverables">
+          <!-- Project Manager -->
+          <div class="col-md-6">
+            <label class="form-label required">Project Manager</label>
+            <input type="text" 
+                   class="form-control" 
+                   formControlName="projectManager"
+                   [class.is-invalid]="isFieldInvalid('projectManager')"
+                   placeholder="Enter project manager name">
+            <div class="invalid-feedback" *ngIf="isFieldInvalid('projectManager')">
+              {{ getFieldError('projectManager') }}
+            </div>
+          </div>
+          <!-- Technologies -->
+          <div class="col-12">
+            <label class="form-label">Technologies</label>
+            <div class="technologies-section">
+              <div class="row g-2" formArrayName="technologies">
+                <div class="col-md-4" *ngFor="let tech of technologiesArray.controls; let i = index">
+                  <div class="input-group">
+                    <input type="text" 
+                           class="form-control" 
+                           [formControlName]="i"
+                           placeholder="Technology name">
+                    <button type="button" 
+                            class="btn btn-outline-danger"
+                            (click)="removeTechnology(i)">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <button type="button" 
+                      class="btn btn-outline-primary btn-sm mt-2"
+                      (click)="addTechnology()">
+                <i class="fas fa-plus me-2"></i>
+                Add Technology
+              </button>
+            </div>
+          </div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="showMilestoneModal = false">Cancel</button>
-          <button type="button" class="btn btn-primary" (click)="addMilestone()">Add Milestone</button>
+      </div>
+    </form>
+  </div>
+  <!-- Team Members Tab -->
+  <div class="tab-content" *ngIf="activeTab === 'team'">
+    <div class="row g-4">
+      <!-- Internal Team Members -->
+      <div class="col-lg-6">
+        <div class="card h-100">
+          <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">
+                <i class="fas fa-users me-2"></i>
+                Internal Team Members
+              </h5>
+              <button type="button" 
+                      class="btn btn-sm btn-primary"
+                      (click)="showTeamMemberModal = true">
+                <i class="fas fa-plus me-2"></i>
+                Add Member
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="team-members-list">
+              <div class="team-member-item" *ngFor="let member of (selectedTeamMembers || [])">
+                <div class="d-flex align-items-center">
+                  <div class="member-avatar">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="member-info flex-grow-1">
+                    <h6 class="mb-1">{{ member.name }}</h6>
+                    <p class="mb-0 text-muted">{{ member.role }}</p>
+                    <small class="text-muted">{{ member.allocatedHours }}h/week</small>
+                    <span class="badge bg-success ms-2" *ngIf="member.isProjectLead">Lead</span>
+                  </div>
+                  <button type="button" 
+                          class="btn btn-sm btn-outline-danger"
+                          (click)="removeTeamMember(member.id)">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="empty-state text-center py-4" *ngIf="!(selectedTeamMembers && selectedTeamMembers.length > 0)">
+                <i class="fas fa-users fa-2x text-muted mb-3"></i>
+                <p class="text-muted">No team members added yet</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Team Member Modal (moved here from Milestones tab) -->
+      <div class="modal" [class.show]="showTeamMemberModal" [style.display]="showTeamMemberModal ? 'block' : 'none'">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Add Team Member</h5>
+              <button type="button" class="btn-close" (click)="showTeamMemberModal = false"></button>
+            </div>
+            <div class="modal-body" [formGroup]="teamMemberForm">
+              <div class="mb-3">
+                <label class="form-label">Select Team Member</label>
+                <select class="form-select" formControlName="memberId">
+                  <option value="">Choose a team member</option>
+                  <option *ngFor="let member of (availableTeamMembers || [])" 
+                          [value]="member.id"
+                          [disabled]="isTeamMemberSelected(member.id)">
+                    {{ member.name }} - {{ member.role }}
+                  </option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Allocated Hours per Week</label>
+                <input type="number" class="form-control" formControlName="allocatedHours" min="1" max="40">
+              </div>
+              <div class="mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" formControlName="isProjectLead">
+                  <label class="form-check-label">
+                    Project Lead
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="showTeamMemberModal = false">Cancel</button>
+              <button type="button" class="btn btn-primary" (click)="addTeamMember()">Add Member</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- External Team Members -->
+      <div class="col-lg-6">
+        <div class="card h-100">
+          <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="mb-0">
+                <i class="fas fa-user-friends me-2"></i>
+                External Team Members
+              </h5>
+              <button type="button" 
+                      class="btn btn-sm btn-primary"
+                      (click)="showExternalMemberModal = true">
+                <i class="fas fa-plus me-2"></i>
+                Add External
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="external-members-list">
+      <!-- External Team Member Modal -->
+      <div class="modal" [class.show]="showExternalMemberModal" [style.display]="showExternalMemberModal ? 'block' : 'none'">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Add External Team Member</h5>
+              <button type="button" class="btn-close" (click)="showExternalMemberModal = false"></button>
+            </div>
+            <div class="modal-body" [formGroup]="externalMemberForm">
+              <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" formControlName="name">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" formControlName="email">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Phone</label>
+                <input type="text" class="form-control" formControlName="phone">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Company</label>
+                <input type="text" class="form-control" formControlName="company">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Role</label>
+                <input type="text" class="form-control" formControlName="role">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Skills (comma separated)</label>
+                <input type="text" class="form-control" formControlName="skills">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Hourly Rate</label>
+                <input type="number" class="form-control" formControlName="hourlyRate" min="0">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Contract Type</label>
+                <select class="form-select" formControlName="contractType">
+                  <option value="freelancer">Freelancer</option>
+                  <option value="contractor">Contractor</option>
+                  <option value="agency">Agency</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Contract Start Date</label>
+                <input type="date" class="form-control" formControlName="contractStartDate">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Contract End Date</label>
+                <input type="date" class="form-control" formControlName="contractEndDate">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Allocated Hours per Week</label>
+                <input type="number" class="form-control" formControlName="allocatedHours" min="1">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Payment Terms</label>
+                <input type="text" class="form-control" formControlName="paymentTerms">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Notes</label>
+                <textarea class="form-control" formControlName="notes" rows="2"></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" (click)="showExternalMemberModal = false">Cancel</button>
+              <button type="button" class="btn btn-primary" (click)="addExternalMember()">Add External Member</button>
+            </div>
+          </div>
+        </div>
+      </div>
+              <div class="external-member-item" *ngFor="let member of (externalTeamMembers || [])">
+                <div class="d-flex align-items-start">
+                  <div class="member-avatar">
+                    <i class="fas fa-user-tie"></i>
+                  </div>
+                  <div class="member-info flex-grow-1">
+                    <h6 class="mb-1">{{ member.name }}</h6>
+                    <p class="mb-1 text-muted">{{ member.role }} - {{ member.contractType | titlecase }}</p>
+                    <p class="mb-1 text-muted">{{ member.company || 'Freelancer' }}</p>
+                    <small class="text-muted">
+                      ${{ member.hourlyRate }}/hr - {{ member.allocatedHours }}h/week
+                    </small>
+                    <div class="member-skills mt-1">
+                      <span class="skill-badge" *ngFor="let skill of (member.skills || []).slice(0, 2)">
+                        {{ skill }}
+                      </span>
+                      <span class="skill-more" *ngIf="(member.skills || []).length > 2">
+                        +{{ (member.skills || []).length - 2 }}
+                      </span>
+                    </div>
+                  </div>
+                  <button type="button" 
+                          class="btn btn-sm btn-outline-danger"
+                          (click)="removeExternalMember(member.id!)">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="empty-state text-center py-4" *ngIf="!(externalTeamMembers && externalTeamMembers.length > 0)">
+                <i class="fas fa-user-friends fa-2x text-muted mb-3"></i>
+                <p class="text-muted">No external members added yet</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
+  <!-- Milestones Tab -->
+  <div class="tab-content" *ngIf="activeTab === 'milestones'">
+    <div class="card">
+      <div class="card-header">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">
+            <i class="fas fa-flag-checkered me-2"></i>
+            Project Milestones
+          </h5>
+          <button type="button" 
+                  class="btn btn-primary"
+                  (click)="showMilestoneModal = true">
+            <i class="fas fa-plus me-2"></i>
+            Add Milestone
+          </button>
 
-  <!-- Modal Backdrop -->
-  <div class="modal-backdrop" 
-       [class.show]="isAnyModalOpen()"
-       *ngIf="isAnyModalOpen()">
+          <!-- Milestone Modal -->
+          <div class="modal" [class.show]="showMilestoneModal" [style.display]="showMilestoneModal ? 'block' : 'none'">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Add Milestone</h5>
+                  <button type="button" class="btn-close" (click)="showMilestoneModal = false"></button>
+                </div>
+                <div class="modal-body" [formGroup]="milestoneForm">
+                  <div class="mb-3">
+                    <label class="form-label">Title</label>
+                    <input type="text" class="form-control" formControlName="title">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" formControlName="description" rows="3"></textarea>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Due Date</label>
+                    <input type="date" class="form-control" formControlName="dueDate">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Status</label>
+                    <select class="form-select" formControlName="status">
+                      <option *ngFor="let status of milestoneStatusOptions" [value]="status">
+                        {{ status | titlecase }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Progress (%)</label>
+                    <input type="number" class="form-control" formControlName="progress" min="0" max="100">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Deliverables (comma separated)</label>
+                    <input type="text" class="form-control" formControlName="deliverables">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" (click)="showMilestoneModal = false">Cancel</button>
+                  <button type="button" class="btn btn-primary" (click)="addMilestone()">Add Milestone</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal Backdrop -->
+          <div class="modal-backdrop" 
+               [class.show]="isAnyModalOpen()"
+               *ngIf="isAnyModalOpen()">
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="milestones-list">
+          <div class="milestone-item" *ngFor="let milestone of milestones">
+            <div class="milestone-content">
+              <div class="d-flex justify-content-between align-items-start mb-2">
+                <h6 class="milestone-title">{{ milestone.title }}</h6>
+                <div class="milestone-actions">
+                  <span class="badge bg-info me-2">{{ milestone.status | titlecase }}</span>
+                  <button type="button" 
+                          class="btn btn-sm btn-outline-danger"
+                          (click)="removeMilestone(milestone.id!)">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <p class="milestone-description text-muted">{{ milestone.description }}</p>
+              <div class="milestone-meta">
+                <div class="d-flex justify-content-between align-items-center">
+                  <small class="text-muted">
+                    <i class="fas fa-calendar me-1"></i>
+                    Due: {{ formatDate(milestone.dueDate) }}
+                  </small>
+                  <div class="milestone-progress">
+                    <small class="text-muted me-2">{{ milestone.progress }}%</small>
+                    <div class="progress" style="width: 100px; height: 6px;">
+                      <div class="progress-bar bg-primary" 
+                           [style.width.%]="milestone.progress">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="milestone-deliverables mt-2" *ngIf="milestone.deliverables.length > 0">
+                <small class="text-muted">Deliverables:</small>
+                <div class="deliverables-list">
+                  <span class="deliverable-badge" *ngFor="let deliverable of milestone.deliverables">
+                    {{ deliverable }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="empty-state text-center py-4" *ngIf="milestones.length === 0">
+            <i class="fas fa-flag-checkered fa-2x text-muted mb-3"></i>
+            <p class="text-muted">No milestones added yet</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+  <!-- Additional Info Tab -->
+  <div class="tab-content" *ngIf="activeTab === 'additional'">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title mb-4">
+          <i class="fas fa-info-circle me-2"></i>
+          Additional Information
+        </h5>
+        <div class="info-section">
+          <div class="row g-4">
+            <div class="col-12">
+              <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                Additional features like document management, time tracking, and detailed reporting will be available in future updates.
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h6 class="mb-3">Current Project Details</h6>
+              <div class="summary-item">
+                <strong>Project Name:</strong>
+                {{ projectForm.get('name')?.value || '-' }}
+              </div>
+              <div class="summary-item">
+                <strong>Client:</strong>
+                {{ projectForm.get('clientName')?.value || '-' }}
+              </div>
+              <div class="summary-item">
+                <strong>Category:</strong>
+                {{ projectForm.get('category')?.value || '-' }}
+              </div>
+              <div class="summary-item">
+                <strong>Status:</strong>
+                {{ projectForm.get('status')?.value ? (projectForm.get('status')?.value | titlecase) : '-' }}
+              </div>
+              <div class="summary-item">
+                <strong>Priority:</strong>
+                {{ projectForm.get('priority')?.value ? (projectForm.get('priority')?.value | titlecase) : '-' }}
+              </div>
+              <div class="summary-item">
+                <strong>Progress:</strong>
+                {{ projectForm.get('progress')?.value || 0 }}%
+              </div>
+            </div>
+            <div class="col-md-6">
+              <h6 class="mb-3">Budget Overview</h6>
+              <div class="summary-item">
+                <strong>Estimated Budget:</strong>
+                {{ formatCurrency(projectForm.get('estimatedBudget')?.value || 0) }}
+              </div>
+              <div class="summary-item">
+                <strong>Actual Budget:</strong>
+                {{ formatCurrency(projectForm.get('actualBudget')?.value || 0) }}
+              </div>
+              <div class="summary-item">
+                <strong>Start Date:</strong>
+                {{ projectForm.get('startDate')?.value || '-' }}
+              </div>
+              <div class="summary-item">
+                <strong>End Date:</strong>
+                {{ projectForm.get('endDate')?.value || '-' }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

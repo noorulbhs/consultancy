@@ -57,8 +57,8 @@ export class StatsComponent implements OnInit, OnDestroy {
   private loadStatsFromSettings(): void {
     this.settingsService.settings$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((settings: SiteSettings) => {
-        if (settings?.statistics) {
+      .subscribe((settings: SiteSettings | null) => {
+        if (settings && settings.statistics) {
           // Create array of all possible stats
           const allStats = [
             {

@@ -1,3 +1,4 @@
+// ...existing imports...
 import { Injectable } from '@angular/core';
 import { Observable, of, forkJoin, map, tap, catchError, combineLatest } from 'rxjs';
 import { 
@@ -29,6 +30,9 @@ import { ProjectService } from '../project-manager/services/project.service';
 import { Project, ProjectStatus } from '../project-manager/models/project.model';
 import { ActivityTrackerService } from './activity-tracker.service';
 
+
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -44,46 +48,73 @@ export class DashboardService {
     private activityTrackerService: ActivityTrackerService
   ) {}
 
+  // Utility to normalize any project response to an array
+  private toProjectArray(val: any): Project[] {
+    if (Array.isArray(val)) return val;
+    if (val && Array.isArray(val.data)) return val.data;
+    if (val && Array.isArray(val.projects)) return val.projects;
+    if (val && val.data && Array.isArray(val.data.projects)) return val.data.projects;
+    return [];
+  }
+
+  // Adapter for dashboard.component.ts compatibility
+  getDashboardMetrics(): Observable<any> {
+    return this.getStats().pipe(
+      map(stats => ({ stats }))
+    );
+  }
+
+  getOngoingProjects(): Observable<any[]> {
+    return this.getActiveProjects();
+  }
+
   getStats(): Observable<DashboardStat[]> {
     // Use combineLatest for real-time updates instead of forkJoin
     return combineLatest({
       blogs: this.blogService.getAll().pipe(
+        map((res: any) => Array.isArray(res) ? res : (Array.isArray(res?.data) ? res.data : [])),
         catchError(error => {
           console.error('Blog service error in stats:', error);
           return of([]);
         })
       ),
       jobs: this.jobService.getAll().pipe(
+        map((res: any) => Array.isArray(res) ? res : (Array.isArray(res?.data) ? res.data : [])),
         catchError(error => {
           console.error('Job service error in stats:', error);
           return of([]);
         })
       ),
       enquiries: this.enquiryService.getAll().pipe(
+        map((res: any) => Array.isArray(res) ? res : (Array.isArray(res?.data) ? res.data : [])),
         catchError(error => {
           console.error('Enquiry service error in stats:', error);
           return of([]);
         })
       ),
       services: this.serviceService.getAll().pipe(
+        map((res: any) => Array.isArray(res) ? res : (Array.isArray(res?.data) ? res.data : [])),
         catchError(error => {
           console.error('Service service error in stats:', error);
           return of([]);
         })
       ),
       team: this.teamService.getAll().pipe(
+        map((res: any) => Array.isArray(res) ? res : (Array.isArray(res?.data) ? res.data : [])),
         catchError(error => {
           console.error('Team service error in stats:', error);
           return of([]);
         })
       ),
       testimonials: this.testimonialService.getAll().pipe(
+        map((res: any) => Array.isArray(res) ? res : (Array.isArray(res?.data) ? res.data : [])),
         catchError(error => {
           console.error('Testimonial service error in stats:', error);
           return of([]);
         })
       ),
-      projects: this.projectService.projects$.pipe(
+      projects: this.projectService.getProjects().pipe(
+        map((res: any) => this.toProjectArray(res)),
         catchError(error => {
           console.error('Project service error in stats:', error);
           return of([]);
@@ -93,19 +124,19 @@ export class DashboardService {
       map(data => {
         console.log('Dashboard stats data:', data);
         
-        const activeProjects = data.projects.filter(project => 
+        const activeProjects = (data.projects as Project[]).filter((project: Project) => 
           project.status === ProjectStatus.ACTIVE || 
           project.status === ProjectStatus.PLANNING
         ).length;
         
-        const completedProjects = data.projects.filter(project => 
+        const completedProjects = (data.projects as Project[]).filter((project: Project) => 
           project.status === ProjectStatus.COMPLETED
         ).length;
 
-        const unreadEnquiries = data.enquiries.filter(enq => !enq.isRead).length;
+        const unreadEnquiries = data.enquiries.filter((enq: any) => !enq.isRead).length;
         const totalEnquiries = data.enquiries.length;
-        const openJobs = data.jobs.filter(job => job.isOpen).length;
-        const activeServices = data.services.filter(service => service.status === 'active').length;
+        const openJobs = data.jobs.filter((job: any) => job.isOpen).length;
+        const activeServices = data.services.filter((service: any) => service.status === 'active').length;
 
         const stats = [
           {
@@ -398,22 +429,22 @@ export class DashboardService {
 
   getActiveProjects(): Observable<ProjectProgress[]> {
     // Get real project data from ProjectService with real-time updates
-    return this.projectService.projects$.pipe(
-      map(projects => {
+    return this.projectService.getProjects().pipe(
+      map((res: any) => {
+        const projects = this.toProjectArray(res);
         // Filter for active projects and convert to ProjectProgress format
-        const activeProjects = projects.filter(project => 
+        const activeProjects = projects.filter((project: Project) => 
           project.status === ProjectStatus.ACTIVE || 
           project.status === ProjectStatus.PLANNING
         );
-        
-        return activeProjects.slice(0, 8).map(project => ({
+        return activeProjects.slice(0, 8).map((project: Project) => ({
           id: project.id || '',
           name: project.name,
           client: project.clientName,
           progress: project.progress,
           status: this.mapProjectStatusToDashboard(project.status),
           deadline: project.endDate,
-          team: project.teamMembers.map(member => member.name),
+          team: (project.teamMembers || []).map((member: any) => member.name),
           priority: project.priority,
           budget: project.estimatedBudget,
           technologies: project.technologies
@@ -446,15 +477,15 @@ export class DashboardService {
     return forkJoin({
       enquiries: this.enquiryService.getAll(),
       testimonials: this.testimonialService.getAll(),
-      projects: this.projectService.projects$
+      projects: this.projectService.getProjects()
     }).pipe(
       map(data => {
-        const uniqueCompanies = [...new Set(data.enquiries.map(e => e.company).filter(c => c))];
+        const uniqueCompanies = [...new Set(data.enquiries.map((e: any) => e.company).filter((c: any) => c))];
         const avgRating = data.testimonials.length > 0 
-          ? data.testimonials.reduce((sum, t) => sum + t.rating, 0) / data.testimonials.length 
+          ? data.testimonials.reduce((sum: number, t: any) => sum + t.rating, 0) / data.testimonials.length 
           : 0;
 
-        const activeProjectsCount = data.projects.filter(project => 
+        const activeProjectsCount = (data.projects as Project[]).filter((project: Project) => 
           project.status === ProjectStatus.ACTIVE || 
           project.status === ProjectStatus.PLANNING
         ).length;

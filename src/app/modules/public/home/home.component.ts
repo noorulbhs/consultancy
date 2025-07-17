@@ -39,7 +39,6 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.featureToggleService.initializeFromStorage();
     this.loadFeatureToggles();
     // Set SEO meta tags from site settings
     this.settingsService.settings$.subscribe((settings: SiteSettings | null) => {

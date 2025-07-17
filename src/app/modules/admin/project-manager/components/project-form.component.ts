@@ -22,6 +22,7 @@ import {
   styleUrls: ['./project-form.component.scss']
 })
 export class ProjectFormComponent implements OnInit {
+  // Project summary logic removed; no longer updates from /project/summary API
   projectForm!: FormGroup;
   teamMemberForm!: FormGroup;
   externalMemberForm!: FormGroup;
@@ -39,8 +40,8 @@ export class ProjectFormComponent implements OnInit {
   externalTeamMembers: ExternalTeamMember[] = [];
   milestones: Milestone[] = [];
   
-  statusOptions = Object.values(ProjectStatus);
-  priorityOptions = Object.values(ProjectPriority);
+  statusOptions = Object.values(ProjectStatus).filter(v => typeof v === 'string');
+  priorityOptions = Object.values(ProjectPriority).filter(v => typeof v === 'string');
   milestoneStatusOptions = Object.values(MilestoneStatus);
   contractTypes = ['freelancer', 'contractor', 'agency'];
   
@@ -78,6 +79,7 @@ export class ProjectFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // this.loadProjectSummary();
     this.projectId = this.route.snapshot.paramMap.get('id');
     this.isEditMode = !!this.projectId;
     
@@ -145,11 +147,20 @@ export class ProjectFormComponent implements OnInit {
     this.loading = true;
     this.projectService.getProject(id).subscribe({
       next: (project) => {
-        if (project) {
-          this.populateForm(project);
-          this.selectedTeamMembers = [...project.teamMembers];
-          this.externalTeamMembers = [...project.externalTeamMembers];
-          this.milestones = [...project.milestones];
+        const projectData = project && project.data ? project.data : project;
+        if (projectData) {
+          this.populateForm(projectData);
+          this.selectedTeamMembers = Array.isArray(projectData.teamMembers) ? [...projectData.teamMembers] : [];
+          this.externalTeamMembers = Array.isArray(projectData.externalTeamMembers) ? [...projectData.externalTeamMembers] : [];
+          this.milestones = Array.isArray(projectData.milestones)
+            ? projectData.milestones.map((m: any) => {
+                const deliverables = Array.isArray(m.deliverables) ? m.deliverables : [];
+                return {
+                  ...m,
+                  deliverables
+                };
+              })
+            : [];
         }
         this.loading = false;
       },
@@ -164,7 +175,7 @@ export class ProjectFormComponent implements OnInit {
   loadAvailableTeamMembers(): void {
     this.projectService.getAvailableTeamMembers().subscribe({
       next: (members) => {
-        this.availableTeamMembers = members;
+        this.availableTeamMembers = Array.isArray(members.data) ? members.data : [];
       },
       error: (error) => {
         console.error('Error loading team members:', error);
@@ -184,8 +195,8 @@ export class ProjectFormComponent implements OnInit {
       endDate: this.formatDateForInput(project.endDate),
       estimatedBudget: project.estimatedBudget,
       actualBudget: project.actualBudget,
-      status: project.status,
-      priority: project.priority,
+      status: project.status ? project.status.toLowerCase() : '',
+      priority: project.priority ? project.priority.toLowerCase() : '',
       progress: project.progress,
       category: project.category,
       projectManager: project.projectManager
@@ -194,13 +205,17 @@ export class ProjectFormComponent implements OnInit {
     // Set technologies
     const technologiesArray = this.projectForm.get('technologies') as FormArray;
     technologiesArray.clear();
-    project.technologies.forEach(tech => {
-      technologiesArray.push(this.fb.control(tech));
-    });
+    if (Array.isArray(project.technologies)) {
+      project.technologies.forEach(tech => {
+        technologiesArray.push(this.fb.control(tech));
+      });
+    }
   }
 
   formatDateForInput(date: Date): string {
+    if (!date) return '';
     const d = new Date(date);
+    if (isNaN(d.getTime())) return '';
     return d.toISOString().split('T')[0];
   }
 
@@ -273,8 +288,9 @@ export class ProjectFormComponent implements OnInit {
   addTeamMember(): void {
     if (this.teamMemberForm.valid) {
       const formValue = this.teamMemberForm.value;
-      const member = this.availableTeamMembers.find(m => m.id === formValue.memberId);
-      
+      // Convert memberId to number for comparison, as API returns numeric IDs
+      const memberIdNum = typeof formValue.memberId === 'string' ? parseInt(formValue.memberId, 10) : formValue.memberId;
+      const member = this.availableTeamMembers.find(m => m.id === memberIdNum);
       if (member && !this.selectedTeamMembers.find(m => m.id === member.id)) {
         const teamMember: TeamMember = {
           ...member,
@@ -282,7 +298,6 @@ export class ProjectFormComponent implements OnInit {
           isProjectLead: formValue.isProjectLead,
           joinedDate: new Date()
         };
-        
         this.selectedTeamMembers.push(teamMember);
         this.teamMemberForm.reset();
         this.showTeamMemberModal = false;
@@ -300,13 +315,12 @@ export class ProjectFormComponent implements OnInit {
       const formValue = this.externalMemberForm.value;
       const externalMember: ExternalTeamMember = {
         ...formValue,
-        id: Date.now().toString(),
+        // id will be assigned by backend
         skills: formValue.skills ? formValue.skills.split(',').map((s: string) => s.trim()) : [],
         contractStartDate: new Date(formValue.contractStartDate),
         contractEndDate: formValue.contractEndDate ? new Date(formValue.contractEndDate) : undefined,
         isActive: true
       };
-      
       this.externalTeamMembers.push(externalMember);
       this.externalMemberForm.reset();
       this.showExternalMemberModal = false;
@@ -321,11 +335,19 @@ export class ProjectFormComponent implements OnInit {
   addMilestone(): void {
     if (this.milestoneForm.valid) {
       const formValue = this.milestoneForm.value;
+      let deliverables: any = formValue.deliverables;
+      if (Array.isArray(deliverables)) {
+        // already array
+      } else if (typeof deliverables === 'string') {
+        deliverables = deliverables.split(',').map((d: string) => d.trim());
+      } else {
+        deliverables = [];
+      }
       const milestone: Milestone = {
         ...formValue,
         id: Date.now().toString(),
         dueDate: new Date(formValue.dueDate),
-        deliverables: formValue.deliverables ? formValue.deliverables.split(',').map((d: string) => d.trim()) : []
+        deliverables
       };
       
       this.milestones.push(milestone);
@@ -353,6 +375,8 @@ export class ProjectFormComponent implements OnInit {
   }
 
   setActiveTab(tab: string): void {
+    // No debug logs
+    this.activeTab = tab;
     this.activeTab = tab;
   }
 

@@ -30,12 +30,14 @@ export class LoginComponent {
 
   onSubmit() {
     const { username, password } = this.loginForm.value;
-    if (this.authService.login(username!, password!)) {
-      this.notificationService.success('Login Successful', 'Welcome to the admin dashboard!');
-      this.loginFailed = false;
-      // Redirect to dashboard here
-    } else {
-      this.loginFailed = true;
-    }
+    this.authService.login(username!, password!).subscribe(success => {
+      if (success) {
+        this.notificationService.success('Login Successful', 'Welcome to the admin dashboard!');
+        this.loginFailed = false;
+        // Redirect to dashboard here
+      } else {
+        this.loginFailed = true;
+      }
+    });
   }
 }

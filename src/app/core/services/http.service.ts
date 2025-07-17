@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, retry, map } from 'rxjs/operators';
 import { ApiResponse, PaginatedResponse } from '../interfaces/api-response.interface';
 import { DataSourceService } from './data-source.service';
 
@@ -25,24 +25,20 @@ export class HttpService {
   }): Observable<ApiResponse<T>> {
     const url = this.buildUrl(endpoint, options?.isPublic);
     const headers = this.buildHeaders(options?.headers, options?.isPublic);
-    
+    console.log('[HttpService][GET] URL:', url);
+    console.log('[HttpService][GET] Headers:', headers);
     return this.http.get<ApiResponse<T>>(url, {
-      headers,
-      params: options?.params
+      headers
     }).pipe(
       retry(this.MAX_RETRIES),
+      map((res: any) => {
+        console.log('[HttpService][GET] Response:', res);
+        return res;
+      }),
       catchError(this.handleError)
     );
   }
 
-  // GET request for paginated data
-  getPaginated<T>(endpoint: string, options?: {
-    params?: HttpParams | { [key: string]: any };
-    headers?: HttpHeaders;
-    isPublic?: boolean;
-  }): Observable<ApiResponse<PaginatedResponse<T>>> {
-    return this.get<PaginatedResponse<T>>(endpoint, options);
-  }
 
   // POST request
   post<T>(endpoint: string, body: any, options?: {
@@ -51,9 +47,15 @@ export class HttpService {
   }): Observable<ApiResponse<T>> {
     const url = this.buildUrl(endpoint, options?.isPublic);
     const headers = this.buildHeaders(options?.headers, options?.isPublic);
-    
+    console.log('[HttpService][POST] URL:', url);
+    console.log('[HttpService][POST] Body:', body);
+    console.log('[HttpService][POST] Headers:', headers);
     return this.http.post<ApiResponse<T>>(url, body, { headers }).pipe(
       retry(this.MAX_RETRIES),
+      map((res: any) => {
+        console.log('[HttpService][POST] Response:', res);
+        return res;
+      }),
       catchError(this.handleError)
     );
   }
@@ -65,9 +67,15 @@ export class HttpService {
   }): Observable<ApiResponse<T>> {
     const url = this.buildUrl(endpoint, options?.isPublic);
     const headers = this.buildHeaders(options?.headers, options?.isPublic);
-    
+    console.log('[HttpService][PUT] URL:', url);
+    console.log('[HttpService][PUT] Body:', body);
+    console.log('[HttpService][PUT] Headers:', headers);
     return this.http.put<ApiResponse<T>>(url, body, { headers }).pipe(
       retry(this.MAX_RETRIES),
+      map((res: any) => {
+        console.log('[HttpService][PUT] Response:', res);
+        return res;
+      }),
       catchError(this.handleError)
     );
   }
@@ -79,9 +87,14 @@ export class HttpService {
   }): Observable<ApiResponse<T>> {
     const url = this.buildUrl(endpoint, options?.isPublic);
     const headers = this.buildHeaders(options?.headers, options?.isPublic);
-    
+    console.log('[HttpService][DELETE] URL:', url);
+    console.log('[HttpService][DELETE] Headers:', headers);
     return this.http.delete<ApiResponse<T>>(url, { headers }).pipe(
       retry(this.MAX_RETRIES),
+      map((res: any) => {
+        console.log('[HttpService][DELETE] Response:', res);
+        return res;
+      }),
       catchError(this.handleError)
     );
   }

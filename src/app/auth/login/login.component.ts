@@ -26,12 +26,15 @@ export class LoginComponent {
     if (this.form.invalid) return;
 
     const { username, password } = this.form.value;
-    const success = this.authService.login(username, password);
-
-    if (success) {
-      this.router.navigate(['/admin-dashboard']);
-    } else {
-      this.error = 'Invalid credentials';
-    }
+    this.error = '';
+    this.authService.login(username, password).subscribe(success => {
+      if (success) {
+        this.router.navigate(['/admin-dashboard']);
+      } else {
+        this.error = 'Invalid credentials or server error.';
+      }
+    }, err => {
+      this.error = 'Server error. Please try again.';
+    });
   }
 }

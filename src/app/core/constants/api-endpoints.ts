@@ -1,3 +1,12 @@
+// Static Pages Endpoints
+export const STATIC_PAGE_ENDPOINTS = {
+  GET_ALL_PUBLIC: '/public/static-pages',
+  GET_ALL_ADMIN: '/public/static-pages',
+  GET_BY_ID: (id: string) => `/admin/static-pages/${id}`,
+  CREATE: '/admin/static-pages',
+  UPDATE: (id: string) => `/admin/static-pages/${id}`,
+  DELETE: (id: string) => `/admin/static-pages/${id}`
+};
 // Base URLs for different environments
 export const API_BASE_URLS = {
   DEVELOPMENT: 'http://localhost:8080/api/v1',

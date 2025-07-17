@@ -49,8 +49,9 @@ export class ProjectListComponent implements OnInit {
     this.error = null;
 
     this.projectService.getProjects(this.filters).subscribe({
-      next: (projects) => {
-        this.projects = projects;
+      next: (response) => {
+        // If response is paginated, extract .data or fallback to []
+        this.projects = Array.isArray(response?.data) ? response.data : [];
         this.applyFiltersAndSearch();
         this.loading = false;
       },
@@ -64,8 +65,9 @@ export class ProjectListComponent implements OnInit {
 
   loadProjectSummary(): void {
     this.projectService.getProjectSummary().subscribe({
-      next: (summary) => {
-        this.projectSummary = summary;
+      next: (res: any) => {
+        // Accepts both { data: ... } and direct object
+        this.projectSummary = res && (res.data || res);
       },
       error: (error) => {
         console.error('Error loading project summary:', error);
@@ -229,12 +231,13 @@ export class ProjectListComponent implements OnInit {
   }
 
   formatCurrency(amount: number): string {
+    const safeAmount = typeof amount === 'number' && !isNaN(amount) ? amount : 0;
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
-    }).format(amount);
+    }).format(safeAmount);
   }
 
   formatDate(date: Date): string {

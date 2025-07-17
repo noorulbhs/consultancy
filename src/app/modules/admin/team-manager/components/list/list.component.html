@@ -143,7 +143,7 @@
           <div class="row mb-3" *ngIf="member.experience || member.education">
             <div class="col-6" *ngIf="member.experience">
               <small class="text-muted d-block">Experience</small>
-              <span class="badge bg-success-subtle text-success">{{ member.experience }}</span>
+              <span class="badge bg-success-subtle text-success">{{ formatExperience(member.experience) }}</span>
             </div>
             <div class="col-6" *ngIf="member.joinDate">
               <small class="text-muted d-block">Joined</small>
@@ -245,7 +245,7 @@
             <div class="row text-start">
               <div class="col-md-6" *ngIf="selectedMember.experience">
                 <strong>Experience:</strong>
-                <p class="text-muted">{{ selectedMember.experience }}</p>
+                <p class="text-muted">{{ formatExperience(selectedMember.experience) }}</p>
               </div>
               <div class="col-md-6" *ngIf="selectedMember.education">
                 <strong>Education:</strong>

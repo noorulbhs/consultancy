@@ -60,7 +60,7 @@ export class ListComponent implements OnInit {
   }
 
   getActiveCount(): number {
-    return this.services.filter(service => service.status === 'active').length;
+    return this.services.filter(service => service.status && service.status.toUpperCase() === 'ACTIVE').length;
   }
 
   getUniqueCategories(): string[] {

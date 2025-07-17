@@ -1,81 +1,80 @@
 // src/app/modules/admin/static-page-manager/services/static-page.service.ts
+
 import { Injectable } from '@angular/core';
-import { Observable, of, BehaviorSubject } from 'rxjs';
-import { STATIC_PAGES, StaticPage } from '../mock/static-content';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ApiResponse } from '../../../../core/interfaces/api-response.interface';
+import { HttpService } from '../../../../core/services/http.service';
+import { STATIC_PAGE_ENDPOINTS } from '../../../../core/constants/api-endpoints';
 
-@Injectable({
-  providedIn: 'root'
-})
+export interface StaticPage {
+  id: string;
+  title: string;
+  content: string;
+  lastUpdated: string | Date;
+  status: 'published' | 'draft';
+  category: string;
+  metaDescription?: string;
+  keywords?: string[];
+}
+
+export interface StaticPageResponse {
+  success: boolean;
+  message: string;
+  page?: StaticPage;
+}
+
+@Injectable({ providedIn: 'root' })
 export class StaticPageService {
-  private pages: { [key: string]: StaticPage } = { ...STATIC_PAGES };
-  private pagesSubject = new BehaviorSubject<StaticPage[]>(Object.values(this.pages));
+  private baseUrl = STATIC_PAGE_ENDPOINTS.GET_ALL_ADMIN;
 
-  getById(id: string): Observable<StaticPage | undefined> {
-    return of(this.pages[id]);
-  }
-
-  update(id: string, data: Partial<StaticPage>): Observable<{ success: boolean; message: string }> {
-    if (this.pages[id]) {
-      this.pages[id] = { 
-        ...this.pages[id], 
-        ...data, 
-        id,
-        lastUpdated: new Date()
-      };
-      this.pagesSubject.next(Object.values(this.pages));
-      return of({ success: true, message: 'Page updated successfully' });
-    }
-    return of({ success: false, message: 'Page not found' });
-  }
-
-  create(data: Omit<StaticPage, 'lastUpdated'>): Observable<{ success: boolean; message: string }> {
-    const newPage: StaticPage = {
-      ...data,
-      lastUpdated: new Date()
-    };
-    this.pages[data.id] = newPage;
-    this.pagesSubject.next(Object.values(this.pages));
-    return of({ success: true, message: 'Page created successfully' });
-  }
-
-  delete(id: string): Observable<{ success: boolean; message: string }> {
-    if (this.pages[id]) {
-      delete this.pages[id];
-      this.pagesSubject.next(Object.values(this.pages));
-      return of({ success: true, message: 'Page deleted successfully' });
-    }
-    return of({ success: false, message: 'Page not found' });
-  }
+  constructor(private http: HttpService) {}
 
   getAll(): Observable<StaticPage[]> {
-    return of(Object.values(this.pages));
-  }
-
-  getByCategory(category: string): Observable<StaticPage[]> {
-    const filteredPages = Object.values(this.pages).filter(page => page.category === category);
-    return of(filteredPages);
-  }
-
-  getPublished(): Observable<StaticPage[]> {
-    const publishedPages = Object.values(this.pages).filter(page => page.status === 'published');
-    return of(publishedPages);
-  }
-
-  // Method to get content for public pages
-  getContent(id: string): Observable<string> {
-    const page = this.pages[id];
-    return of(page ? page.content : '');
-  }
-
-  // Search functionality
-  search(query: string): Observable<StaticPage[]> {
-    const searchResults = Object.values(this.pages).filter(page => 
-      page.title.toLowerCase().includes(query.toLowerCase()) ||
-      page.content.toLowerCase().includes(query.toLowerCase()) ||
-      (page.keywords && page.keywords.some(keyword => 
-        keyword.toLowerCase().includes(query.toLowerCase())
-      ))
+    return this.http.get<StaticPage[]>(STATIC_PAGE_ENDPOINTS.GET_ALL_ADMIN).pipe(
+      map((res: any) => Array.isArray(res) ? res : (res.data || []))
     );
-    return of(searchResults);
+  }
+
+  getById(id: string): Observable<StaticPage> {
+    return this.http.get<StaticPage>(STATIC_PAGE_ENDPOINTS.GET_BY_ID(id)).pipe(
+      map((res: any) => res?.data ? res.data as StaticPage : res as StaticPage)
+    );
+  }
+
+  create(page: Partial<StaticPage>): Observable<StaticPageResponse> {
+    return this.http.post<StaticPage>(STATIC_PAGE_ENDPOINTS.CREATE, page).pipe(
+      map((res: ApiResponse<StaticPage>) => ({
+        success: res.success,
+        message: res.message || '',
+        page: res.data
+      }))
+    );
+  }
+
+  update(id: string, page: Partial<StaticPage>): Observable<StaticPageResponse> {
+    return this.http.put<StaticPage>(STATIC_PAGE_ENDPOINTS.UPDATE(id), page).pipe(
+      map((res: any) => ({
+        success: res.success !== undefined ? res.success : true,
+        message: res.message || '',
+        page: res.data ? res.data : res
+      }))
+    );
+  }
+
+  delete(id: string): Observable<StaticPageResponse> {
+    return this.http.delete<StaticPage>(STATIC_PAGE_ENDPOINTS.DELETE(id)).pipe(
+      map((res: ApiResponse<StaticPage>) => ({
+        success: res.success,
+        message: res.message || ''
+      }))
+    );
+  }
+
+  // For public content fetch (used in about.component.ts)
+  getContent(id: string): Observable<string> {
+    return this.http.get<StaticPage>(`${STATIC_PAGE_ENDPOINTS.GET_ALL_PUBLIC}/${id}`, { isPublic: true }).pipe(
+      map((res: ApiResponse<StaticPage>) => (res.data ? res.data.content : ''))
+    );
   }
 }

@@ -82,8 +82,10 @@
               <p class="card-text text-muted mb-2">{{blog.excerpt}}</p>
               
               <div class="d-flex align-items-center mb-2">
-                <img [src]="blog.author.avatar" class="rounded-circle me-2" width="24" height="24" alt="{{blog.author.name}}">
-                <small class="text-muted">{{blog.author.name}} • {{formatDate(blog.date)}}</small>
+                <img *ngIf="blog.author && blog.author.avatar" [src]="blog.author.avatar" class="rounded-circle me-2" width="24" height="24" alt="{{blog.author.name}}">
+                <small class="text-muted">
+                  {{blog.author ? (blog.author.name || 'Admin') : 'Admin'}} • {{formatDate(blog.date)}}
+                </small>
               </div>
               
               <div class="d-flex flex-wrap gap-1 mb-2">
@@ -152,10 +154,10 @@
         <p class="lead text-muted mb-4">{{selectedBlog.summary}}</p>
         
         <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
-          <img [src]="selectedBlog.author.avatar" class="rounded-circle me-3" width="50" height="50" alt="{{selectedBlog.author.name}}">
+          <img *ngIf="selectedBlog.author && selectedBlog.author.avatar" [src]="selectedBlog.author.avatar" class="rounded-circle me-3" width="50" height="50" alt="{{selectedBlog.author.name}}">
           <div class="flex-grow-1">
-            <h6 class="mb-0 fw-bold">{{selectedBlog.author.name}}</h6>
-            <small class="text-muted">{{selectedBlog.author.title}}</small>
+            <h6 class="mb-0 fw-bold">{{selectedBlog.author ? (selectedBlog.author.name || 'Admin') : 'Admin'}}</h6>
+            <small class="text-muted">{{selectedBlog.author ? (selectedBlog.author.title || '') : ''}}</small>
             <div class="mt-1">
               <small class="text-muted me-3">{{formatDate(selectedBlog.date)}}</small>
               <small class="text-muted me-3">{{selectedBlog.readingTime}}</small>

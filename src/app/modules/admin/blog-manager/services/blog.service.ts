@@ -1,58 +1,72 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { BLOG_DATA } from '../mock/blog-data';
-import { ActivityTrackerService } from '../../services/activity-tracker.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { HttpService } from '../../../../core/services/http.service';
+import { ADMIN_API_ENDPOINTS } from '../../../../core/constants/api-endpoints';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BlogService {
-  private blogs = [...BLOG_DATA];
-
-  constructor(private activityTracker: ActivityTrackerService) {}
+  constructor(private httpService: HttpService) {}
 
   getAll(): Observable<any[]> {
-    return of(this.blogs);
+    return this.httpService.get<any[]>(ADMIN_API_ENDPOINTS.BLOGS)
+      .pipe(map(res => {
+        const blogs = Array.isArray(res.data) ? res.data : [];
+        return blogs.map(blog => {
+          blog.author = {
+            name: blog.authorName || '',
+            title: blog.authorTitle || '',
+            avatar: blog.authorAvatar || '',
+            bio: blog.authorBio || ''
+          };
+          blog.date = blog.publishedAt || blog.updatedAt || blog.createdAt || '';
+          return blog;
+        });
+      }));
   }
 
   getById(id: number): Observable<any> {
-    return of(this.blogs.find(b => b.id === id));
+    return this.httpService.get<any>(ADMIN_API_ENDPOINTS.BLOG_BY_ID(id))
+      .pipe(map(res => {
+        const blog = res.data;
+        blog.author = {
+          name: blog.authorName || '',
+          title: blog.authorTitle || '',
+          avatar: blog.authorAvatar || '',
+          bio: blog.authorBio || ''
+        };
+        blog.date = blog.publishedAt || blog.updatedAt || blog.createdAt || '';
+        return blog;
+      }));
   }
 
   add(blog: any): Observable<any> {
-    blog.id = Date.now();
-    blog.date = new Date().toISOString().split('T')[0];
-    this.blogs.push(blog);
-    
-    // Track activity
-    const authorName = typeof blog.author === 'string' ? blog.author : blog.author?.name || 'Admin';
-    this.activityTracker.trackBlogActivity('Created', blog.title || 'New Blog Post', authorName);
-    
-    return of(blog);
+    const payload = {
+      ...blog,
+      authorName: blog.author?.name || '',
+      authorTitle: blog.author?.title || '',
+      authorAvatar: blog.author?.avatar || '',
+      authorBio: blog.author?.bio || ''
+    };
+    delete payload.author;
+    return this.httpService.post<any>(ADMIN_API_ENDPOINTS.BLOGS, payload);
   }
 
   update(id: number, updated: any): Observable<any> {
-    const index = this.blogs.findIndex(b => b.id === id);
-    if (index !== -1) {
-      this.blogs[index] = { ...updated, id };
-      
-      // Track activity
-      const authorName = typeof updated.author === 'string' ? updated.author : updated.author?.name || 'Admin';
-      this.activityTracker.trackBlogActivity('Updated', updated.title || 'Blog Post', authorName);
-    }
-    return of(updated);
+    const payload = {
+      ...updated,
+      authorName: updated.author?.name || '',
+      authorTitle: updated.author?.title || '',
+      authorAvatar: updated.author?.avatar || '',
+      authorBio: updated.author?.bio || ''
+    };
+    delete payload.author;
+    return this.httpService.put<any>(ADMIN_API_ENDPOINTS.BLOG_BY_ID(id), payload);
   }
 
   delete(id: number): Observable<any> {
-    const blogToDelete = this.blogs.find(b => b.id === id);
-    this.blogs = this.blogs.filter(b => b.id !== id);
-    
-    // Track activity
-    if (blogToDelete) {
-      const authorName = typeof blogToDelete.author === 'string' ? blogToDelete.author : blogToDelete.author?.name || 'Admin';
-      this.activityTracker.trackBlogActivity('Deleted', blogToDelete.title || 'Blog Post', authorName);
-    }
-    
-    return of({ success: true });
+    return this.httpService.delete<any>(ADMIN_API_ENDPOINTS.BLOG_BY_ID(id));
   }
 }

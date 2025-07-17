@@ -124,9 +124,9 @@
               <div class="col-md-6">
                 <div class="mb-3">
                   <label for="experience" class="form-label fw-bold">Years of Experience *</label>
-                  <input formControlName="experience" type="number" class="form-control" 
+                  <input formControlName="experience" type="text" class="form-control" 
                          [class.is-invalid]="isFieldInvalid('experience')" 
-                         id="experience" placeholder="5" min="0" />
+                         id="experience" placeholder="e.g. 9+ years" />
                   <div class="form-text">Total years of professional experience</div>
                   <div *ngIf="isFieldInvalid('experience')" class="invalid-feedback">
                     {{ getFieldError('experience') }}

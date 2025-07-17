@@ -78,7 +78,7 @@ export class FormComponent implements OnInit {
             caseStudySolution: service.caseStudy?.solution || '',
             caseStudyResults: service.caseStudy?.results || '',
             featured: service.featured,
-            status: service.status
+            status: service.status ? service.status.toLowerCase() : 'active'
           });
         }
       });

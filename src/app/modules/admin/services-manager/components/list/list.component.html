@@ -77,11 +77,11 @@
                 <span class="badge bg-warning text-dark" *ngIf="service.featured">
                   <i class="fas fa-star me-1 d-none d-md-inline"></i><span class="d-none d-md-inline">Featured</span><span class="d-md-none">★</span>
                 </span>
-                <span class="badge service-status" [class.bg-success]="service.status === 'active'" 
-                      [class.bg-secondary]="service.status === 'inactive'"
-                      [class.bg-warning]="service.status === 'draft'">
+                <span class="badge service-status" [class.bg-success]="service.status && service.status.toUpperCase() === 'ACTIVE'" 
+                      [class.bg-secondary]="service.status && service.status.toUpperCase() === 'INACTIVE'"
+                      [class.bg-warning]="service.status && service.status.toUpperCase() === 'DRAFT'">
                   <span class="d-none d-md-inline">{{service.status | titlecase}}</span>
-                  <span class="d-md-none">{{service.status === 'active' ? '✓' : service.status === 'inactive' ? '✗' : '⚠'}}</span>
+                  <span class="d-md-none">{{service.status && service.status.toUpperCase() === 'ACTIVE' ? '✓' : service.status && service.status.toUpperCase() === 'INACTIVE' ? '✗' : '⚠'}} </span>
                 </span>
               </div>
             </div>
@@ -183,9 +183,9 @@
               <h6 class="fw-bold mb-3">Service Details</h6>
               <div class="mb-2"><strong>Duration:</strong> {{selectedService.duration}}</div>
               <div class="mb-3"><strong>Status:</strong> 
-                <span class="badge" [class.bg-success]="selectedService.status === 'active'"
-                      [class.bg-secondary]="selectedService.status === 'inactive'"
-                      [class.bg-warning]="selectedService.status === 'draft'">
+                <span class="badge" [class.bg-success]="selectedService.status && selectedService.status.toUpperCase() === 'ACTIVE'"
+                      [class.bg-secondary]="selectedService.status && selectedService.status.toUpperCase() === 'INACTIVE'"
+                      [class.bg-warning]="selectedService.status && selectedService.status.toUpperCase() === 'DRAFT'">
                   {{selectedService.status | titlecase}}
                 </span>
               </div>

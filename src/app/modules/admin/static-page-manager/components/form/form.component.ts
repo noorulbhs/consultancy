@@ -74,7 +74,7 @@ export class StaticPageFormComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    
+    console.log('[StaticPageFormComponent] Route param id:', id);
     if (id && id !== 'new') {
       this.editMode = true;
       this.pageId = id;
@@ -86,30 +86,41 @@ export class StaticPageFormComponent implements OnInit {
   }
 
   loadPage(id: string): void {
-    this.service.getById(id).subscribe(page => {
-      if (!page) {
-        this.notificationService.error('Page not found', 'The requested page could not be found in the system.');
+    this.service.getById(id).subscribe(
+      page => {
+        if (!page) {
+          this.notificationService.error('Page not found', 'The requested page could not be found in the system.');
+          this.router.navigate(['/admin-static-pages']);
+          return;
+        }
+        // Patch all fields except keywords
+        this.form.patchValue({
+          id: page.id,
+          title: page.title,
+          content: page.content,
+          category: page.category,
+          status: page.status,
+          metaDescription: page.metaDescription || ''
+        });
+        console.log('After patchValue', this.form.value);
+        // Always reset and repopulate keywords FormArray
+        this.clearKeywords();
+        if (page.keywords && Array.isArray(page.keywords)) {
+          page.keywords.forEach(keyword => this.addKeyword(keyword));
+        }
+        console.log('After keywords', this.form.value);
+        // Force update for Quill editor (if needed)
+        setTimeout(() => {
+          this.form.get('content')?.setValue(page.content);
+          console.log('After setTimeout content', this.form.value);
+        });
+        this.loading = false;
+      },
+      error => {
+        this.notificationService.error('Error loading page', 'An error occurred while loading the page.');
         this.router.navigate(['/admin-static-pages']);
-        return;
       }
-
-      this.form.patchValue({
-        id: page.id,
-        title: page.title,
-        content: page.content,
-        category: page.category,
-        status: page.status,
-        metaDescription: page.metaDescription || ''
-      });
-
-      // Load keywords
-      this.clearKeywords();
-      if (page.keywords) {
-        page.keywords.forEach(keyword => this.addKeyword(keyword));
-      }
-
-      this.loading = false;
-    });
+    );
   }
 
   get keywords(): FormArray {

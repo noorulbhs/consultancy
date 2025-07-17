@@ -43,7 +43,10 @@ export class StaticPageListComponent implements OnInit {
 
   loadPages(): void {
     this.service.getAll().subscribe(pages => {
-      this.pages = pages;
+      this.pages = pages.map(page => ({
+        ...page,
+        lastUpdated: typeof page.lastUpdated === 'string' ? new Date(page.lastUpdated) : page.lastUpdated
+      }));
       this.categories = [...new Set(pages.map(page => page.category))];
       this.applyFilters();
     });

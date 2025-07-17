@@ -57,7 +57,7 @@ export class FormComponent implements OnInit {
       department: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       location: ['', Validators.required],
-      experience: ['', [Validators.required, Validators.min(0)]],
+      experience: ['', [Validators.required]],
       joinDate: [new Date().toISOString().split('T')[0], Validators.required],
       bio: ['', [Validators.required, Validators.minLength(50)]],
       education: ['', Validators.required],

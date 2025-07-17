@@ -127,4 +127,10 @@ export class ListComponent implements OnInit {
   onFilterChange() {
     this.applyFilters();
   }
+
+  formatExperience(exp: string): string {
+    if (!exp) return '';
+    // Remove 'years', 'year', and trim whitespace
+    return exp.replace(/\s*years?/gi, '').trim();
+  }
 }

@@ -32,9 +32,7 @@ export class NavbarComponent implements OnInit {
   constructor(private featureToggleService: FeatureToggleService) {}
 
   ngOnInit(): void {
-    this.featureToggleService.initializeFromStorage();
     this.updateNavLinks();
-    
     // Subscribe to feature toggle changes
     this.featureToggleService.getFeatures().subscribe(() => {
       this.updateNavLinks();

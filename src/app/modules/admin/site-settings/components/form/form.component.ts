@@ -433,19 +433,7 @@ export class SiteSettingsFormComponent implements OnInit {
   }
 
   onReset(): void {
-    if (confirm('Are you sure you want to reset all settings to default? This action cannot be undone.')) {
-      this.loading = true;
-      this.settingsService.resetSettings().subscribe({
-        next: (response) => {
-          this.showMessage(response.message, 'success');
-          this.loadSettings();
-        },
-        error: () => {
-          this.showMessage('Failed to reset settings', 'error');
-          this.loading = false;
-        }
-      });
-    }
+    this.showMessage('Reset to default is not supported. Please update settings manually.', 'error');
   }
 
   private markFormGroupTouched(): void {

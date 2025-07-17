@@ -41,7 +41,7 @@ export class ListComponent implements OnInit, OnDestroy {
 
   loadEnquiries(): void {
     this.enquiriesSubscription = this.enquiryService.getAll().subscribe((data: Enquiry[]) => {
-      this.enquiries = data;
+      this.enquiries = Array.isArray(data) ? data : [];
     });
   }
 

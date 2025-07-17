@@ -20,12 +20,9 @@ export class AboutPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.featureToggleService.initializeFromStorage();
-    
     // Subscribe to feature toggle changes
     this.featureToggleService.getFeatures().subscribe(() => {
       this.showTeamSection = this.featureToggleService.isFeatureEnabled('featured-team-section');
-      
       // Only load team data if the section is enabled
       if (this.showTeamSection) {
         this.loadTeamData();

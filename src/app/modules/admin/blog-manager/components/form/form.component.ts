@@ -58,7 +58,7 @@ export class FormComponent implements OnInit {
       author: this.fb.group({
         name: ['', Validators.required],
         title: ['', Validators.required],
-        avatar: ['', Validators.required],
+            avatar: [''],
         bio: ['', Validators.required]
       })
     });
@@ -70,7 +70,19 @@ export class FormComponent implements OnInit {
       this.editMode = true;
       this.blogId = +id;
       this.blogService.getById(this.blogId).subscribe(blog => {
-        this.form.patchValue(blog);
+        // Patch top-level fields
+        const { author, ...rest } = blog;
+        this.form.patchValue(rest);
+        // Patch author group strictly, ensuring all fields are present
+        const authorGroup = this.form.get('author');
+        if (authorGroup) {
+          authorGroup.setValue({
+            name: author && typeof author.name === 'string' ? author.name : '',
+            title: author && typeof author.title === 'string' ? author.title : '',
+            avatar: author && typeof author.avatar === 'string' ? author.avatar : '',
+            bio: author && typeof author.bio === 'string' ? author.bio : ''
+          });
+        }
       });
     }
   }

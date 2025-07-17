@@ -1,36 +1,40 @@
+
 import { Injectable } from '@angular/core';
-import { ADMIN_CREDENTIALS } from '../mock/admin-credentials';
+import { HttpService } from '../../core/services/http.service';
+import { ADMIN_API_ENDPOINTS } from '../../core/constants/api-endpoints';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly key = 'admin_logged_in';
+  private readonly TOKEN_KEY = 'authToken';
 
-  login(username: string, password: string): boolean {
-    const found = ADMIN_CREDENTIALS.some(
-        cred => cred.username === username && cred.password === password
-      );
-    if (found) {
-      localStorage.setItem(this.key, 'true');
-      return true;
-    }
-    return false;
+  constructor(private httpService: HttpService) {}
+
+  login(username: string, password: string): Observable<boolean> {
+    return this.httpService.post<any>(
+      ADMIN_API_ENDPOINTS.LOGIN,
+      { email: username, password },
+      { isPublic: false }
+    ).pipe(
+      map((response: any) => {
+        if (response && response.data && response.data.token) {
+          localStorage.setItem(this.TOKEN_KEY, response.data.token);
+          return true;
+        }
+        return false;
+      }),
+      catchError(() => of(false))
+    );
   }
 
-  // login(username: string, password: string): boolean {
-  //     const found = ADMIN_CREDENTIALS.some(
-  //       cred => cred.username === username && cred.password === password
-  //     );
-  //     console.log('[AuthService] Login attempt:', { username, password, found, ADMIN_CREDENTIALS });
-  //     return found;
-  //   }
-
   logout(): void {
-    localStorage.removeItem(this.key);
+    localStorage.removeItem(this.TOKEN_KEY);
   }
 
   isLoggedIn(): boolean {
-    return localStorage.getItem(this.key) === 'true';
+    return !!localStorage.getItem(this.TOKEN_KEY);
   }
 }

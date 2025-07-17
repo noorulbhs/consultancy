@@ -1,75 +1,37 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, of } from 'rxjs';
-import { SERVICE_DATA } from '../mock/service-data';
-import { ActivityTrackerService } from '../../services/activity-tracker.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { HttpService } from '../../../../core/services/http.service';
+import { ADMIN_API_ENDPOINTS } from '../../../../core/constants/api-endpoints';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminServiceService {
-  private storageKey = 'services';
-  private services = this.loadServices();
-  private servicesSubject = new BehaviorSubject<any[]>(this.services);
-  private loadServices(): any[] {
-    const raw = localStorage.getItem(this.storageKey);
-    if (raw) {
-      try {
-        const parsed = JSON.parse(raw);
-        if (Array.isArray(parsed)) {
-          return parsed;
-        }
-      } catch (e) {
-        // ignore parse errors
-      }
-    }
-    return [...SERVICE_DATA];
-  }
-
-  private saveServices(): void {
-    localStorage.setItem(this.storageKey, JSON.stringify(this.services));
-  }
-
-  constructor(private activityTracker: ActivityTrackerService) {}
+  constructor(private httpService: HttpService) {}
 
   getAll(): Observable<any[]> {
-    return this.servicesSubject.asObservable();
+    return this.httpService.get<any[]>(ADMIN_API_ENDPOINTS.SERVICES)
+      .pipe(
+        map(res => Array.isArray(res.data) ? res.data : [])
+      );
   }
 
   getById(id: number): Observable<any> {
-    return of(this.services.find(s => s.id === id));
+    return this.httpService.get<any>(ADMIN_API_ENDPOINTS.SERVICE_BY_ID(id)).pipe(
+      map(res => res.data)
+    );
   }
 
   add(service: any): Observable<any> {
-    const newService = { ...service, id: Date.now() };
-    this.services.push(newService);
-    this.saveServices();
-    this.servicesSubject.next([...this.services]);
-    // Track activity
-    this.activityTracker.trackServiceActivity('Created', service.title || 'New Service', 'Admin');
-    return of(newService);
+    return this.httpService.post<any>(ADMIN_API_ENDPOINTS.SERVICES, service);
   }
 
   update(id: number, updated: any): Observable<any> {
-    const index = this.services.findIndex(s => s.id === id);
-    if (index !== -1) {
-      this.services[index] = { ...updated, id };
-      this.saveServices();
-      this.servicesSubject.next([...this.services]);
-      // Track activity
-      this.activityTracker.trackServiceActivity('Updated', updated.title || 'Service', 'Admin');
-    }
-    return of(updated);
+    return this.httpService.put<any>(ADMIN_API_ENDPOINTS.SERVICE_BY_ID(id), updated);
   }
 
   delete(id: number): Observable<any> {
-    const serviceToDelete = this.services.find(s => s.id === id);
-    this.services = this.services.filter(s => s.id !== id);
-    this.saveServices();
-    this.servicesSubject.next([...this.services]);
-    // Track activity
-    if (serviceToDelete) {
-      this.activityTracker.trackServiceActivity('Deleted', serviceToDelete.title || 'Service', 'Admin');
-    }
-    return of({ success: true });
+    return this.httpService.delete<any>(ADMIN_API_ENDPOINTS.SERVICE_BY_ID(id));
   }
 }

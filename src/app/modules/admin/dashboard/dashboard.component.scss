@@ -227,6 +227,12 @@
               color: #383d41;
             }
             
+.stat-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
             i {
               margin-right: 0.15rem;
               font-size: 0.6rem;
