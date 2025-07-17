@@ -55,10 +55,15 @@ export class FormComponent implements OnInit {
       readingTime: ['', Validators.required],
       featured: [false],
       featuredImage: ['', Validators.required],
+      publishedAt: [''],
+      status: ['DRAFT', Validators.required],
+      metaTitle: [''],
+      metaDescription: [''],
+      sortOrder: [0],
       author: this.fb.group({
         name: ['', Validators.required],
         title: ['', Validators.required],
-            avatar: [''],
+        avatar: [''],
         bio: ['', Validators.required]
       })
     });
@@ -70,9 +75,16 @@ export class FormComponent implements OnInit {
       this.editMode = true;
       this.blogId = +id;
       this.blogService.getById(this.blogId).subscribe(blog => {
-        // Patch top-level fields
+        // Patch top-level fields including new fields
         const { author, ...rest } = blog;
-        this.form.patchValue(rest);
+        this.form.patchValue({
+          ...rest,
+          publishedAt: blog.publishedAt || '',
+          status: blog.status || 'DRAFT',
+          metaTitle: blog.metaTitle || '',
+          metaDescription: blog.metaDescription || '',
+          sortOrder: blog.sortOrder || 0
+        });
         // Patch author group strictly, ensuring all fields are present
         const authorGroup = this.form.get('author');
         if (authorGroup) {

@@ -83,6 +83,39 @@
                 </div>
 
                 <div class="mb-3">
+                  <label for="publishedAt" class="form-label fw-bold">Published At</label>
+                  <input id="publishedAt" type="datetime-local" class="form-control" formControlName="publishedAt" />
+                  <div class="form-text">Set the publish date/time (leave blank for draft)</div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="status" class="form-label fw-bold">Status *</label>
+                  <select id="status" class="form-select" formControlName="status">
+                    <option value="DRAFT">Draft</option>
+                    <option value="PUBLISHED">Published</option>
+                  </select>
+                  <div class="form-text">Control blog post visibility</div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="metaTitle" class="form-label fw-bold">Meta Title</label>
+                  <input id="metaTitle" class="form-control" formControlName="metaTitle" placeholder="SEO meta title (optional)" />
+                  <div class="form-text">For search engines (max 60 chars)</div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="metaDescription" class="form-label fw-bold">Meta Description</label>
+                  <textarea id="metaDescription" class="form-control" formControlName="metaDescription" rows="2" placeholder="SEO meta description (optional)"></textarea>
+                  <div class="form-text">For search engines (max 160 chars)</div>
+                </div>
+
+                <div class="mb-3">
+                  <label for="sortOrder" class="form-label fw-bold">Sort Order</label>
+                  <input id="sortOrder" type="number" class="form-control" formControlName="sortOrder" min="0" />
+                  <div class="form-text">Lower numbers appear first (default: 0)</div>
+                </div>
+
+                <div class="mb-3">
                   <div class="form-check">
                     <input class="form-check-input" type="checkbox" formControlName="featured" id="featured">
                     <label class="form-check-label fw-bold" for="featured">

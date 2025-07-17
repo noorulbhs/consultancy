@@ -9,7 +9,7 @@ import { WhyChooseUsComponent } from './components/why-choose-us/why-choose-us.c
 import { StatsComponent } from './components/stats/stats.component';
 import { FeaturedTeamComponent } from './components/featured-team/featured-team.component';
 import { CommonModule } from '@angular/common';
-import { FeatureToggleService } from '../../admin/services/feature-toggle.service';
+import { FeatureToggleService } from '../featuretoggle.service';
 
 @Component({
   selector: 'app-home',
@@ -73,11 +73,12 @@ export class HomeComponent implements OnInit {
   }
 
   private loadFeatureToggles(): void {
-    this.featureToggleService.getFeatures().subscribe(features => {
-      this.showStats = this.featureToggleService.isFeatureEnabled('stats-section');
-      this.showFeaturedTeam = this.featureToggleService.isFeatureEnabled('featured-team-section');
-      this.showTestimonials = this.featureToggleService.isFeatureEnabled('testimonials-section');
-      this.showWhyChooseUs = this.featureToggleService.isFeatureEnabled('why-choose-us-section');
+    this.featureToggleService.getFeatureToggles().subscribe(() => {
+      const toggles = this.featureToggleService.latestToggles || {};
+      this.showStats = !!toggles['stats-section'];
+      this.showFeaturedTeam = !!toggles['featured-team-section'];
+      this.showTestimonials = !!toggles['testimonials-section'];
+      this.showWhyChooseUs = !!toggles['why-choose-us-section'];
     });
   }
 }

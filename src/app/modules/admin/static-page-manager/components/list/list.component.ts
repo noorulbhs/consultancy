@@ -128,12 +128,17 @@ export class StaticPageListComponent implements OnInit {
   deletePage(page: StaticPage): void {
     if (confirm(`Are you sure you want to delete "${page.title}"?`)) {
       this.service.delete(page.id).subscribe(response => {
-        if (response.success) {
+        if (response.success !== false) {
+          this.closePreview(); // Close modal before reloading
           this.notificationService.success('Page Deleted', 'Static page has been deleted successfully!');
-          this.loadPages();
+          // Optimistically remove the page from the list for instant UI update
+          this.pages = this.pages.filter(p => p.id !== page.id);
+          this.applyFilters();
         } else {
           this.notificationService.error('Deletion Failed', `Error deleting page: ${response.message}`);
         }
+      }, error => {
+        this.notificationService.error('Deletion Failed', 'A network or server error occurred.');
       });
     }
   }

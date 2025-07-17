@@ -43,7 +43,7 @@ export class BlogPageComponent implements OnInit {
   }
 
   private loadBlogPosts() {
-    this.blogService.getAll().subscribe((data: BlogPost[]) => {
+    this.blogService.getAllPublic().subscribe((data: BlogPost[]) => {
       this.blogPosts = data;
       this.featuredPosts = data.filter(post => post.featured);
     });

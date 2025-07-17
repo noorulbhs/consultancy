@@ -42,7 +42,10 @@ export const PUBLIC_API_ENDPOINTS = {
   // Careers
   CAREERS: '/public/careers',
   CAREER_BY_ID: (id: number) => `/public/careers/${id}`,
-  
+
+  // Feature Toggles
+  FEATURES: '/public/features',
+
   // Static Pages
   PAGES: '/public/pages',
   PAGE_BY_ID: (id: string) => `/public/pages/${id}`,

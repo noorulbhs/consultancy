@@ -30,7 +30,7 @@ export class AboutComponent implements OnInit {
   }
 
   loadTeamData(): void {
-    this.teamService.getAll().subscribe((data: TeamMember[]) => {
+    this.teamService.getALLPublic().subscribe((data: TeamMember[]) => {
       this.team = data.filter(member => member.isPublic);
       this.featuredTeam = this.team.filter(member => member.featured);
     });

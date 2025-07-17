@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Testimonial } from '../../../../core/interfaces/content.interface';
 import { ADMIN_API_ENDPOINTS } from '../../../../core/constants/api-endpoints';
+import { PUBLIC_API_ENDPOINTS } from '../../../../core/constants/api-endpoints'; 
 import { HttpService } from '../../../../core/services/http.service';
 
 @Injectable({ providedIn: 'root' })
@@ -12,6 +13,13 @@ export class TestimonialService {
 
   getAll(): Observable<Testimonial[]> {
     return this.http.get<Testimonial[]>(ADMIN_API_ENDPOINTS.TESTIMONIALS).pipe(
+      // Map to .data if API response is wrapped
+      map((res: any) => res && (res.data || res) as Testimonial[])
+    );
+  }
+
+  getAllPublic(): Observable<Testimonial[]> {
+    return this.http.get<Testimonial[]>(PUBLIC_API_ENDPOINTS.TESTIMONIALS).pipe(
       // Map to .data if API response is wrapped
       map((res: any) => res && (res.data || res) as Testimonial[])
     );

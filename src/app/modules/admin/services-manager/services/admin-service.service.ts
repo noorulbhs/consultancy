@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpService } from '../../../../core/services/http.service';
-import { ADMIN_API_ENDPOINTS } from '../../../../core/constants/api-endpoints';
+import { ADMIN_API_ENDPOINTS, PUBLIC_API_ENDPOINTS } from '../../../../core/constants/api-endpoints';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,13 @@ export class AdminServiceService {
 
   getAll(): Observable<any[]> {
     return this.httpService.get<any[]>(ADMIN_API_ENDPOINTS.SERVICES)
+      .pipe(
+        map(res => Array.isArray(res.data) ? res.data : [])
+      );
+  }
+
+  getAllPublic(): Observable<any[]> {
+    return this.httpService.get<any[]>(PUBLIC_API_ENDPOINTS.SERVICES)
       .pipe(
         map(res => Array.isArray(res.data) ? res.data : [])
       );

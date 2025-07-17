@@ -80,6 +80,9 @@ export class SettingsService {
     return this.getSettings().pipe(
       map(settings => ({
         companyName: settings.companyName,
+        description: settings.description,
+        logoUrl: settings.logoUrl,
+        faviconUrl: settings.faviconUrl,
         address: settings.address,
         city: settings.city,
         state: settings.state,

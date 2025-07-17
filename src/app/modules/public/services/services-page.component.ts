@@ -36,6 +36,7 @@ export class ServicesPageComponent implements OnInit {
   filteredServices: Service[] = [];
   selectedCategory: string = 'all';
   selectedService: Service | null = null;
+  isCaseStudyVisible: boolean = false;
 
   constructor(
     private serviceService: AdminServiceService,
@@ -43,8 +44,30 @@ export class ServicesPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.serviceService.getAll().subscribe((data: Service[]) => {
-      this.services = data;
+    this.serviceService.getAllPublic().subscribe((data: any[]) => {
+      // Map backend fields to frontend Service interface
+      this.services = data.map(item => ({
+        id: item.id,
+        title: item.title,
+        description: item.description,
+        detailedDescription: item.detailedDescription,
+        category: item.category,
+        icon: item.icon?.replace('fas fa-', '') || 'cog',
+        features: item.features || [],
+        technologies: item.technologies || [],
+        duration: item.duration,
+        deliverables: item.deliverables || [],
+        caseStudy: {
+          client: item.caseStudyClient || '',
+          challenge: item.caseStudyChallenge || '',
+          solution: item.caseStudySolution || '',
+          results: item.caseStudyResults || ''
+        },
+        featured: !!item.featured,
+        status: item.status,
+        imageUrl: item.imageUrl || '',
+        sortOrder: item.sortOrder || 0
+      }));
       // Keep filteredServices in sync with services and current filter
       this.filterByCategory(this.selectedCategory);
     });
@@ -65,6 +88,9 @@ export class ServicesPageComponent implements OnInit {
 
   openServiceModal(service: Service): void {
     this.selectedService = service;
+    if(this.selectedService?.caseStudy.client.length > 0) {
+      this.isCaseStudyVisible = true;
+    }
     const modal = new (window as any).bootstrap.Modal(document.getElementById('serviceModal'));
     modal.show();
   }

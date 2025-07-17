@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpService } from '../../../../core/services/http.service';
-import { ADMIN_API_ENDPOINTS } from '../../../../core/constants/api-endpoints';
+import { ADMIN_API_ENDPOINTS, PUBLIC_API_ENDPOINTS } from '../../../../core/constants/api-endpoints';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +12,23 @@ export class BlogService {
 
   getAll(): Observable<any[]> {
     return this.httpService.get<any[]>(ADMIN_API_ENDPOINTS.BLOGS)
+      .pipe(map(res => {
+        const blogs = Array.isArray(res.data) ? res.data : [];
+        return blogs.map(blog => {
+          blog.author = {
+            name: blog.authorName || '',
+            title: blog.authorTitle || '',
+            avatar: blog.authorAvatar || '',
+            bio: blog.authorBio || ''
+          };
+          blog.date = blog.publishedAt || blog.updatedAt || blog.createdAt || '';
+          return blog;
+        });
+      }));
+  }
+
+  getAllPublic(): Observable<any[]> {
+    return this.httpService.get<any[]>(PUBLIC_API_ENDPOINTS.BLOGS)
       .pipe(map(res => {
         const blogs = Array.isArray(res.data) ? res.data : [];
         return blogs.map(blog => {

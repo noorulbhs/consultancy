@@ -32,9 +32,13 @@ export class FeatureToggleManagerComponent implements OnInit {
     });
   }
 
-  toggleFeature(featureId: string): void {
-    this.featureToggleService.toggleFeature(featureId);
-  }
+  toggleFeature(featureId: string, enabled: boolean): void {
+    console.log(`Toggling feature ${featureId} to ${enabled}`);
+    
+  this.featureToggleService.toggleFeature(featureId, enabled).subscribe(() => {
+    this.loadFeatures(); // Or update the UI as needed
+  });
+}
 
   updateFeature(featureId: string, enabled: boolean): void {
     this.featureToggleService.updateFeature(featureId, enabled);

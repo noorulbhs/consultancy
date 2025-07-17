@@ -25,14 +25,14 @@ export class HttpService {
   }): Observable<ApiResponse<T>> {
     const url = this.buildUrl(endpoint, options?.isPublic);
     const headers = this.buildHeaders(options?.headers, options?.isPublic);
-    console.log('[HttpService][GET] URL:', url);
-    console.log('[HttpService][GET] Headers:', headers);
+    // console.log('[HttpService][GET] URL:', url);
+    // console.log('[HttpService][GET] Headers:', headers);
     return this.http.get<ApiResponse<T>>(url, {
       headers
     }).pipe(
       retry(this.MAX_RETRIES),
       map((res: any) => {
-        console.log('[HttpService][GET] Response:', res);
+        // console.log('[HttpService][GET] Response:', res);
         return res;
       }),
       catchError(this.handleError)

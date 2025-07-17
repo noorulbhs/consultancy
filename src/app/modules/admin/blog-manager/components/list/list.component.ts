@@ -22,6 +22,11 @@ interface BlogPost {
   featured: boolean;
   featuredImage: string;
   content: string;
+  publishedAt: string;
+  status: string;
+  metaTitle: string;
+  metaDescription: string;
+  sortOrder: number;
 }
 
 @Component({

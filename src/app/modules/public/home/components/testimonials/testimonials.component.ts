@@ -21,7 +21,7 @@ export class TestimonialsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.testimonialService.getAll().subscribe((data: Testimonial[]) => {
+    this.testimonialService.getAllPublic().subscribe((data: Testimonial[]) => {
       this.testimonials = data.filter((t: Testimonial) => t.published);
       this.featuredTestimonials = this.testimonials.filter((t: Testimonial) => t.featured);
     });

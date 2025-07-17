@@ -55,7 +55,7 @@
                 </div>
                 -->
                 <div class="col-md-6 col-lg-4 mb-3" *ngFor="let feature of homeFeatures">
-                  <ng-container *ngIf="feature.id !== 'cta-section'">
+                  <ng-container>
                     <div class="card h-100 toggle-card" 
                          [ngClass]="{'border-success': feature.enabled, 'border-danger': !feature.enabled}">
                       <div class="card-body">
@@ -67,7 +67,8 @@
                               type="checkbox" 
                               [id]="feature.id"
                               [checked]="feature.enabled"
-                              (change)="toggleFeature(feature.id)">
+                              #cb
+                              (change)="toggleFeature(feature.id, cb.checked)">
                           </div>
                         </div>
                         <p class="card-text text-muted small mb-2">{{ feature.description }}</p>
@@ -104,7 +105,8 @@
                             type="checkbox" 
                             [id]="feature.id"
                             [checked]="feature.enabled"
-                            (change)="toggleFeature(feature.id)">
+                            #cb
+                            (change)="toggleFeature(feature.id, cb.checked)">
                         </div>
                       </div>
                       <p class="card-text text-muted small mb-2">{{ feature.description }}</p>

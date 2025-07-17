@@ -9,12 +9,18 @@
 
       <!-- Quick Links -->
       <div class="col-md-4 mb-4">
-        <h6 class="fw-bold mb-3">Quick Links</h6>
+        <h6 class="fw-bold mb-3">Company</h6>
         <ul class="list-unstyled">
           <li *ngFor="let link of footerData.quickLinks">
             <a [routerLink]="link.path" class="text-decoration-none text-light">
               {{ link.label }}
             </a>
+          </li>
+          <li *ngIf="featureToggles['navbar-blog']">
+            <a routerLink="/blogs" class="text-decoration-none text-light">Blog</a>
+          </li>
+          <li *ngIf="featureToggles['navbar-career']">
+            <a routerLink="/careers" class="text-decoration-none text-light">Careers</a>
           </li>
         </ul>
       </div>
@@ -24,7 +30,6 @@
         <h6 class="fw-bold mb-3">Contact Us</h6>
         <p>Email: {{ footerData.contact.email }}</p>
         <p>Phone: {{ footerData.contact.phone }}</p>
-
         <div class="d-flex gap-3 mt-2">
           <a *ngFor="let social of footerData.social" [href]="social.url" class="text-light" target="_blank">
             <mat-icon>{{ social.platform }}</mat-icon>
@@ -32,7 +37,6 @@
         </div>
       </div>
     </div>
-
     <hr class="border-secondary" />
     <p class="text-center text-muted mb-0">{{ footerData.copyright }}</p>
   </div>

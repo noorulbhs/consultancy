@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SettingsService } from '../../../admin/site-settings/services/settings.service';
 import { NotificationService } from '../../../../core/services/notification.service';
-import { FeatureToggleService } from '../../../admin/services/feature-toggle.service';
+import { FeatureToggleService } from '../../../public/featuretoggle.service';
 
 @Component({
   selector: 'app-footer',
@@ -20,7 +20,7 @@ export class FooterComponent implements OnInit {
   defaultCompanyLinks = [
     { url: '/about', title: 'About Us' },
     { url: '/blog', title: 'Blog', featureId: 'navbar-blog' },
-    { url: '/careers', title: 'Careers', featureId: 'navbar-careers' },
+    { url: '/careers', title: 'Careers', featureId: 'navbar-career' },
     { url: '/contact', title: 'Contact Us' }
   ];
 
@@ -33,25 +33,33 @@ export class FooterComponent implements OnInit {
   ngOnInit(): void {
     this.loadFooterData();
     // Subscribe to feature toggle changes
-    this.featureToggleService.getFeatures().subscribe(() => {
+    this.featureToggleService.getFeatureToggles().subscribe((features: any) => {
+      // console.log('[Footer/layouts] feature toggles (raw):', features);
       this.updateCompanyLinks();
     });
+    // console.log('[Footer/layouts] ngOnInit called');
   }
 
   private loadFooterData(): void {
     this.settingsService.getSettingsForFooter().subscribe(data => {
       this.footerData = data;
+      // console.log('[Footer/layouts] footerData:', data);
       this.updateCompanyLinks();
     });
   }
 
   private updateCompanyLinks(): void {
+    // Get the latest toggles synchronously from the service
+    const toggles = this.featureToggleService.latestToggles || {};
     this.filteredCompanyLinks = this.defaultCompanyLinks.filter(link => {
       if (link.featureId) {
-        return this.featureToggleService.isFeatureEnabled(link.featureId);
+        const enabled = toggles[link.featureId];
+        // console.log(`[Footer/layouts] Checking featureId '${link.featureId}':`, enabled);
+        return enabled;
       }
       return true; // Always show links without feature toggle
     });
+    // console.log('[Footer/layouts] filteredCompanyLinks:', this.filteredCompanyLinks);
   }
 
   scrollToTop(): void {
@@ -61,7 +69,7 @@ export class FooterComponent implements OnInit {
   subscribeNewsletter(email: string): void {
     if (email && this.isValidEmail(email)) {
       // In a real application, you would send this to your newsletter service
-      console.log('Newsletter subscription for:', email);
+      // console.log('Newsletter subscription for:', email);
       this.notificationService.success('Newsletter Subscription', 'Thank you for subscribing to our newsletter!');
     } else {
       this.notificationService.error('Invalid Email', 'Please enter a valid email address.');

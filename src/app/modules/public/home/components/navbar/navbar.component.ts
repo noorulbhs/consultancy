@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { FeatureToggleService } from '../../../../admin/services/feature-toggle.service';
+import { FeatureToggleService } from '../../../featuretoggle.service';
 
 @Component({
   selector: 'app-navbar',
@@ -25,7 +25,7 @@ export class NavbarComponent implements OnInit {
     { path: '/services', label: 'Services' },
     { path: '/about', label: 'About Us' },
     { path: '/blog', label: 'Blog', featureId: 'navbar-blog' },
-    { path: '/careers', label: 'Careers', featureId: 'navbar-careers' },
+    { path: '/careers', label: 'Careers', featureId: 'navbar-career' },
     { path: '/contact', label: 'Contact Us' }
   ];
 
@@ -33,18 +33,18 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.updateNavLinks();
-    // Subscribe to feature toggle changes
-    this.featureToggleService.getFeatures().subscribe(() => {
+    this.featureToggleService.getFeatureToggles().subscribe(() => {
       this.updateNavLinks();
     });
   }
 
   private updateNavLinks(): void {
+    const toggles = this.featureToggleService.latestToggles || {};
     this.navLinks = this.allNavLinks.filter(link => {
       if (link.featureId) {
-        return this.featureToggleService.isFeatureEnabled(link.featureId);
+        return toggles[link.featureId];
       }
-      return true; // Always show links without feature toggle
+      return true;
     });
   }
 

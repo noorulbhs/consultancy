@@ -73,8 +73,16 @@ export class StaticPageService {
 
   // For public content fetch (used in about.component.ts)
   getContent(id: string): Observable<string> {
-    return this.http.get<StaticPage>(`${STATIC_PAGE_ENDPOINTS.GET_ALL_PUBLIC}/${id}`, { isPublic: true }).pipe(
-      map((res: ApiResponse<StaticPage>) => (res.data ? res.data.content : ''))
-    );
-  }
+  return this.http.get<StaticPage>(`${STATIC_PAGE_ENDPOINTS.GET_ALL_PUBLIC}/${id}`, { isPublic: true }).pipe(
+    map((res: any) => {
+      if (res && res.data && res.data.content) {
+        return res.data.content;
+      }
+      if (res && res.content) {
+        return res.content;
+      }
+      return '';
+    })
+  );
+}
 }

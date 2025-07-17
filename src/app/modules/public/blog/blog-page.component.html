@@ -28,7 +28,7 @@
           <p class="card-text text-muted mb-3">{{post.excerpt}}</p>
           
           <div class="d-flex align-items-center mb-3">
-            <img [src]="post.author.avatar" class="rounded-circle me-2" width="32" height="32" alt="{{post.author.name}}">
+            <img *ngIf="post.author.avatar" [src]="post.author.avatar" class="rounded-circle me-2" width="32" height="32" alt="{{post.author.name}}">
             <div>
               <small class="fw-bold d-block">{{post.author.name}}</small>
               <small class="text-muted">{{formatDate(post.date)}}</small>
@@ -53,7 +53,7 @@
   </div>
   
   <!-- All Posts Section -->
-  <div class="row mb-4">
+  <div class="row mb-4" *ngIf="blogPosts.length > 0">
     <div class="col-12">
       <h2 class="h4 mb-4">All Articles</h2>
     </div>
@@ -75,7 +75,7 @@
           <p class="card-text text-muted mb-3">{{post.excerpt}}</p>
           
           <div class="d-flex align-items-center mb-3">
-            <img [src]="post.author.avatar" class="rounded-circle me-2" width="28" height="28" alt="{{post.author.name}}">
+            <img *ngIf="post.author.avatar" [src]="post.author.avatar" class="rounded-circle me-2" width="28" height="28" alt="{{post.author.name}}">
             <small class="fw-bold">{{post.author.name}}</small>
           </div>
           
@@ -111,7 +111,7 @@
       </div>
       <div class="modal-body pt-0">
         <div class="position-relative mb-4">
-          <img [src]="selectedBlog.featuredImage" class="w-100 rounded" alt="{{selectedBlog.title}}" style="height: 300px; object-fit: cover;">
+          <img *ngIf="selectedBlog.featuredImage" [src]="selectedBlog.featuredImage" class="w-100 rounded" alt="{{selectedBlog.title}}" style="height: 300px; object-fit: cover;">
           <div class="position-absolute top-0 start-0 m-3">
             <span class="badge bg-primary fs-6">{{selectedBlog.category}}</span>
           </div>
@@ -123,7 +123,7 @@
             <p class="lead text-muted mb-4">{{selectedBlog.summary}}</p>
             
             <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
-              <img [src]="selectedBlog.author.avatar" class="rounded-circle me-3" width="50" height="50" alt="{{selectedBlog.author.name}}">
+              <img *ngIf="selectedBlog.author.avatar" [src]="selectedBlog.author.avatar" class="rounded-circle me-3" width="50" height="50" alt="{{selectedBlog.author.name}}">
               <div class="flex-grow-1">
                 <h6 class="mb-0 fw-bold">{{selectedBlog.author.name}}</h6>
                 <small class="text-muted">{{selectedBlog.author.title}}</small>
@@ -144,7 +144,7 @@
                 <div class="card-body">
                   <h6 class="fw-bold mb-3">About the Author</h6>
                   <div class="d-flex align-items-start">
-                    <img [src]="selectedBlog.author.avatar" class="rounded-circle me-3" width="60" height="60" alt="{{selectedBlog.author.name}}">
+                    <img *ngIf="selectedBlog.author.avatar" [src]="selectedBlog.author.avatar" class="rounded-circle me-3" width="60" height="60" alt="{{selectedBlog.author.name}}">
                     <div>
                       <h6 class="mb-1">{{selectedBlog.author.name}}</h6>
                       <small class="text-primary d-block mb-2">{{selectedBlog.author.title}}</small>

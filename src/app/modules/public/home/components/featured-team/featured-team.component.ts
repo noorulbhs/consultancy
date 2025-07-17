@@ -16,7 +16,7 @@ export class FeaturedTeamComponent implements OnInit {
   constructor(private teamService: TeamService) {}
 
   ngOnInit(): void {
-    this.teamService.getAll().subscribe((team: TeamMember[]) => {
+    this.teamService.getALLPublic().subscribe((team: TeamMember[]) => {
       // Get first 3 team members or those marked as featured
       this.featuredTeam = team.filter(member => member.featured).slice(0, 3);
       if (this.featuredTeam.length === 0) {

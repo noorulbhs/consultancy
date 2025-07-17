@@ -50,6 +50,13 @@ export class TeamService {
     ).pipe(map(response => response.data || []));
   }
 
+  getALLPublic(): Observable<TeamMember[]> {
+    return this.httpService.get<TeamMember[]>(
+      PUBLIC_API_ENDPOINTS.TEAM,
+      { isPublic: true }
+    ).pipe(map(response => response.data || []));
+  }
+
   getById(id: number): Observable<TeamMember | undefined> {
     return this.httpService.get<TeamMember>(
       ADMIN_API_ENDPOINTS.TEAM_BY_ID(id),
