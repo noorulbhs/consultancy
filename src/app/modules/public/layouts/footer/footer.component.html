@@ -83,7 +83,8 @@
       </div>
 
       <!-- Newsletter -->
-      <div class="col-lg-4 col-md-6 mb-4">
+      <div class="col-lg-4 col-md-6 mb-4 d-none d-lg-block">
+      <!-- <div class="col-lg-4 col-md-6 mb-4"> -->
         <div class="footer-section">
           <!-- Newsletter Signup -->
           <div class="newsletter">
@@ -111,12 +112,17 @@
         </div>
         <div class="col-md-6">
           <ul class="footer-bottom-links list-unstyled d-flex justify-content-md-end justify-content-start mb-0">
-            <li *ngFor="let link of footerData.footer?.quickLinks; let last = last" class="me-3">
-              <a [routerLink]="link.url" class="footer-link small">{{ link.title }}</a>
-              <span *ngIf="!last" class="text-muted ms-3">|</span>
+            <li class="me-3" *ngIf="privacyPolicyContent.length > 0">
+              <button type="button" class="footer-link small btn btn-link p-0 align-baseline" (click)="openPolicyModal('privacy')">Privacy Policy</button>
+              <span class="text-muted ms-3">|</span>
+            </li>
+            <li *ngIf="termsOfServiceContent.length > 0">
+              <button type="button" class="footer-link small btn btn-link p-0 align-baseline" (click)="openPolicyModal('terms')">Terms of Service</button>
             </li>
           </ul>
         </div>
+
+        <!-- Modal moved to outside .container for correct stacking -->
       </div>
     </div>
   </div>
@@ -125,4 +131,18 @@
   <button class="back-to-top btn btn-primary" (click)="scrollToTop()" title="Back to Top">
     <i class="fas fa-chevron-up"></i>
   </button>
+<!-- Modal for Privacy Policy and Terms of Service (moved outside .container for correct stacking) -->
+<div class="modal fade" id="policyModal" tabindex="-1" aria-labelledby="policyModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="policyModalLabel">{{ policyModalTitle }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div [innerHTML]="policyModalContent"></div>
+      </div>
+    </div>
+  </div>
+</div>
 </footer>

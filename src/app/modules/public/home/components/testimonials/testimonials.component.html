@@ -78,10 +78,15 @@
                 
                 <!-- Client Information -->
                 <div class="client-info">
-                  <div class="client-avatar">
-                    <div class="avatar-placeholder">
-                      <i class="fas fa-user"></i>
-                    </div>
+                  <div *ngIf="testimonial.photoUrl && testimonial.photoUrl.length > 0;" class="client-avatar">
+                    <ng-container>
+                      <img [src]="testimonial.photoUrl" alt="{{ testimonial.name }} photo" class="avatar-img" style="width:56px;height:56px;object-fit:cover;border-radius:50%;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);" />
+                    </ng-container>
+                    <!-- <ng-template #avatarPlaceholder>
+                      <div class="avatar-placeholder">
+                        <i class="fas fa-user"></i>
+                      </div>
+                    </ng-template> -->
                     <div class="avatar-ring"></div>
                   </div>
                   
@@ -96,7 +101,7 @@
                 </div>
                 
                 <!-- Project Information -->
-                <div class="project-info" *ngIf="testimonial.projectType || testimonial.location">
+                <div class="project-info d-none d-md-block" *ngIf="testimonial.projectType || testimonial.location">
                   <div class="info-grid">
                     <div class="info-item" *ngIf="testimonial.projectType">
                       <div class="info-icon">

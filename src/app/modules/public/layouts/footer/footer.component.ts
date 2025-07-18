@@ -1,9 +1,11 @@
+// ...existing code...
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SettingsService } from '../../../admin/site-settings/services/settings.service';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { FeatureToggleService } from '../../../public/featuretoggle.service';
+import { StaticPageService } from '../../../admin/static-page-manager/services/static-page.service';
 
 @Component({
   selector: 'app-footer',
@@ -13,9 +15,27 @@ import { FeatureToggleService } from '../../../public/featuretoggle.service';
   styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent implements OnInit {
+  policyModalTitle = '';
+  policyModalContent = '';
+  openPolicyModal(type: 'privacy' | 'terms'): void {
+    if (type === 'privacy') {
+      this.policyModalTitle = 'Privacy Policy';
+      this.policyModalContent = this.privacyPolicyContent;
+    } else {
+      this.policyModalTitle = 'Terms of Service';
+      this.policyModalContent = this.termsOfServiceContent;
+    }
+    const modal = document.getElementById('policyModal');
+    if (modal) {
+      const bootstrapModal = new (window as any).bootstrap.Modal(modal);
+      bootstrapModal.show();
+    }
+  }
   footerData: any = {};
   currentYear = new Date().getFullYear();
   filteredCompanyLinks: any[] = [];
+  privacyPolicyContent: string = '';
+  termsOfServiceContent: string = '';
 
   defaultCompanyLinks = [
     { url: '/about', title: 'About Us' },
@@ -27,17 +47,23 @@ export class FooterComponent implements OnInit {
   constructor(
     private settingsService: SettingsService,
     private notificationService: NotificationService,
-    private featureToggleService: FeatureToggleService
+    private featureToggleService: FeatureToggleService,
+    private staticPageService: StaticPageService
   ) {}
 
   ngOnInit(): void {
     this.loadFooterData();
     // Subscribe to feature toggle changes
     this.featureToggleService.getFeatureToggles().subscribe((features: any) => {
-      // console.log('[Footer/layouts] feature toggles (raw):', features);
       this.updateCompanyLinks();
     });
-    // console.log('[Footer/layouts] ngOnInit called');
+    // Fetch static page content for privacy policy and terms of service
+    this.staticPageService.getContent('privacy-policy').subscribe((res: any) => {
+      this.privacyPolicyContent = res || '';
+    });
+    this.staticPageService.getContent('terms-of-service').subscribe((res: any) => {
+      this.termsOfServiceContent = res || '';
+    });
   }
 
   private loadFooterData(): void {
