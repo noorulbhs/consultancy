@@ -31,8 +31,8 @@ export class EnquiryService {
     return this.http.delete<any>(ADMIN_API_ENDPOINTS.ENQUIRY_BY_ID(id));
   }
 
-  toggleReadStatus(id: number): Observable<any> {
+  toggleReadStatus(id: number,isRead:boolean): Observable<any> {
     // This assumes the backend supports a PATCH or PUT to toggle read status
-    return this.http.put<any>(ADMIN_API_ENDPOINTS.ENQUIRY_BY_ID(id), { toggleRead: true });
+    return this.http.patch<any>(ADMIN_API_ENDPOINTS.ENQUIRY_BY_ID(id), { isRead: isRead });
   }
 }

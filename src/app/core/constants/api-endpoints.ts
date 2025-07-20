@@ -1,3 +1,5 @@
+import { DASHBOARD_STATS } from "../../modules/admin/mock/admin-dashboard-data";
+
 // Static Pages Endpoints
 export const STATIC_PAGE_ENDPOINTS = {
   GET_ALL_PUBLIC: '/public/static-pages',
@@ -100,6 +102,7 @@ export const ADMIN_API_ENDPOINTS = {
   // Dashboard & Analytics
   DASHBOARD_METRICS: '/admin/dashboard/metrics',
   DASHBOARD_ACTIVITIES: '/admin/dashboard/activities',
+  DASHBOARD_ALL_DOCUMENTS: '/admin/dashboard/all-document',
   
   // Feature Toggles
   FEATURES: '/admin/features',

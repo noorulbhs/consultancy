@@ -61,9 +61,9 @@ export class ListComponent implements OnInit, OnDestroy {
   viewDetails(enquiry: Enquiry): void {
     this.selectedEnquiry = enquiry;
     // Auto-mark as read when viewing details
-    if (!enquiry.isRead) {
-      this.markAsRead(enquiry.id);
-    }
+    // if (!enquiry.isRead) {
+    //   this.markAsRead(enquiry.id);
+    // }
     // Trigger Bootstrap modal (you can use a proper modal service if available)
     const modal = document.getElementById('detailsModal');
     if (modal) {
@@ -73,7 +73,7 @@ export class ListComponent implements OnInit, OnDestroy {
   }
 
   markAsRead(id: number): void {
-    this.enquiryService.toggleReadStatus(id).subscribe(() => {
+    this.enquiryService.toggleReadStatus(id, true).subscribe(() => {
       // Data will be automatically updated via subscription
       if (this.selectedEnquiry && this.selectedEnquiry.id === id) {
         this.selectedEnquiry.isRead = true;
@@ -93,9 +93,16 @@ export class ListComponent implements OnInit, OnDestroy {
     }
   }
 
-  toggleStatus(id: number): void {
-    this.enquiryService.toggleReadStatus(id).subscribe(() => {
-      // Data will be automatically updated via subscription
+  toggleStatus(id: number, isRead: boolean): void {
+    this.enquiryService.toggleReadStatus(id, isRead).subscribe(() => {
+      // Update the local enquiry immediately for instant UI feedback
+      const enquiry = this.enquiries.find(e => e.id === id);
+      if (enquiry) {
+        enquiry.isRead = isRead;
+      }
+      if (this.selectedEnquiry && this.selectedEnquiry.id === id) {
+        this.selectedEnquiry.isRead = isRead;
+      }
     });
   }
 

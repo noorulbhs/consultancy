@@ -1,8 +1,31 @@
+import { downloadDataAsPdf } from '../../../core/utils/pdf.util';
+  // showAllDocumentsModal = false;
+  // openAllDocumentsModal(): void {
+  //   this.showAllDocumentsModal = true;
+  // }
+
+  // closeAllDocumentsModal(): void {
+  //   this.showAllDocumentsModal = false;
+  // }
+
+  // copyAllDocumentsToClipboard(): void {
+  //   if (this.allDocuments) {
+  //     const text = JSON.stringify(this.allDocuments, null, 2);
+  //     navigator.clipboard.writeText(text);
+  //   }
+  // }
+
+  // downloadAllDocumentsAsPDF(): void {
+  //   if (this.allDocuments) {
+  //     downloadDataAsPdf(this.allDocuments, 'all-documents');
+  //   }
+  // }
 
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { DashboardService } from '../services/dashboard.service';
+import { AllDocument } from '../../../core/interfaces/all-document.interface';
 import { DashboardMetricsResponse } from '../services/dashboard-backend.model';
 
 @Component({
@@ -16,9 +39,35 @@ import { DashboardMetricsResponse } from '../services/dashboard-backend.model';
   imports: [CommonModule],
 })
 export class DashboardComponent implements OnInit {
+  showAllDocumentsModal = false;
+
+  openAllDocumentsModal(): void {
+    this.dashboardService.getAllDocuments().subscribe((docs) => {
+      this.allDocuments = docs;
+    });
+    this.showAllDocumentsModal = true;
+  }
+
+  closeAllDocumentsModal(): void {
+    this.showAllDocumentsModal = false;
+  }
+
+  copyAllDocumentsToClipboard(): void {
+    if (this.allDocuments) {
+      const text = JSON.stringify(this.allDocuments, null, 2);
+      navigator.clipboard.writeText(text);
+    }
+  }
+
+  downloadAllDocumentsAsPDF(): void {
+    if (this.allDocuments) {
+      downloadDataAsPdf(this.allDocuments, 'all-documents');
+    }
+  }
   stats: DashboardMetricsResponse['stats'] = [];
   quickActions: any[] = [];
   ongoingProjects: any[] = [];
+  allDocuments: AllDocument | null = null;
 
   currentTime: Date = new Date();
 
@@ -36,6 +85,11 @@ export class DashboardComponent implements OnInit {
     });
     this.dashboardService.getOngoingProjects().subscribe((projects) => {
       this.ongoingProjects = projects;
+    });
+
+    // Fetch all dashboard documents
+    this.dashboardService.getAllDocuments().subscribe((docs) => {
+      this.allDocuments = docs;
     });
 
     // Start clock for currentTime

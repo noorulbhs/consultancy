@@ -1,3 +1,27 @@
+<!-- Button to open All Documents Modal -->
+<button class="btn btn-info mb-3" (click)="openAllDocumentsModal()" [disabled]="!allDocuments">
+  View All Documents
+</button>
+
+<!-- All Documents Modal -->
+<div class="modal fade show" tabindex="-1" [ngStyle]="{ display: showAllDocumentsModal ? 'block' : 'none', background: 'rgba(0,0,0,0.5)' }" *ngIf="showAllDocumentsModal">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">All Documents Data</h5>
+        <button type="button" class="btn-close" (click)="closeAllDocumentsModal()"></button>
+      </div>
+      <div class="modal-body" style="max-height: 70vh; overflow:auto;">
+        <pre style="white-space: pre-wrap; word-break: break-all;">{{ allDocuments | json }}</pre>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeAllDocumentsModal()">Close</button>
+        <button class="btn btn-outline-primary" (click)="copyAllDocumentsToClipboard()">Copy</button>
+        <button class="btn btn-success" (click)="downloadAllDocumentsAsPDF()">Download PDF</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="dashboard-container">
   <!-- Modern Header Section -->
   <div class="dashboard-header">

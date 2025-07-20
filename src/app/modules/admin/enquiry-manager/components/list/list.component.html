@@ -100,7 +100,7 @@
               </button>
               <button 
                 class="btn btn-outline-secondary" 
-                (click)="toggleStatus(enquiry.id)"
+                (click)="toggleStatus(enquiry.id, !enquiry.isRead)"
                 title="Toggle Status">
                 <i class="fas" [class]="enquiry.isRead ? 'fa-envelope' : 'fa-envelope-open'"></i>
               </button>

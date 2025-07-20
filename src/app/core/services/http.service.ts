@@ -25,14 +25,14 @@ export class HttpService {
   }): Observable<ApiResponse<T>> {
     const url = this.buildUrl(endpoint, options?.isPublic);
     const headers = this.buildHeaders(options?.headers, options?.isPublic);
-    // console.log('[HttpService][GET] URL:', url);
+    console.log('[HttpService][GET] URL:', url);
     // console.log('[HttpService][GET] Headers:', headers);
     return this.http.get<ApiResponse<T>>(url, {
       headers
     }).pipe(
       retry(this.MAX_RETRIES),
       map((res: any) => {
-        // console.log('[HttpService][GET] Response:', res);
+        console.log('[HttpService][GET] Response:', res);
         return res;
       }),
       catchError(this.handleError)
@@ -60,6 +60,7 @@ export class HttpService {
     );
   }
 
+
   // PUT request
   put<T>(endpoint: string, body: any, options?: {
     headers?: HttpHeaders;
@@ -74,6 +75,26 @@ export class HttpService {
       retry(this.MAX_RETRIES),
       map((res: any) => {
         console.log('[HttpService][PUT] Response:', res);
+        return res;
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  // PATCH request
+  patch<T>(endpoint: string, body: any, options?: {
+    headers?: HttpHeaders;
+    isPublic?: boolean;
+  }): Observable<ApiResponse<T>> {
+    const url = this.buildUrl(endpoint, options?.isPublic);
+    const headers = this.buildHeaders(options?.headers, options?.isPublic);
+    console.log('[HttpService][PATCH] URL:', url);
+    console.log('[HttpService][PATCH] Body:', body);
+    console.log('[HttpService][PATCH] Headers:', headers);
+    return this.http.patch<ApiResponse<T>>(url, body, { headers }).pipe(
+      retry(this.MAX_RETRIES),
+      map((res: any) => {
+        console.log('[HttpService][PATCH] Response:', res);
         return res;
       }),
       catchError(this.handleError)

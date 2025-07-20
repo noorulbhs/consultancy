@@ -1,4 +1,5 @@
 // ...existing imports...
+import { HttpService } from '../../../core/services/http.service';
 import { Injectable } from '@angular/core';
 import { Observable, of, forkJoin, map, tap, catchError, combineLatest } from 'rxjs';
 import { 
@@ -29,6 +30,7 @@ import { TestimonialService } from '../testimonial-manager/services/testimonial.
 import { ProjectService } from '../project-manager/services/project.service';
 import { Project, ProjectStatus } from '../project-manager/models/project.model';
 import { ActivityTrackerService } from './activity-tracker.service';
+import { ADMIN_API_ENDPOINTS } from '../../../core/constants/api-endpoints';
 
 
 
@@ -45,8 +47,17 @@ export class DashboardService {
     private teamService: TeamService,
     private testimonialService: TestimonialService,
     private projectService: ProjectService,
-    private activityTrackerService: ActivityTrackerService
+    private activityTrackerService: ActivityTrackerService,
+    private http: HttpService
   ) {}
+  /**
+   * Fetch all dashboard documents (users, blogs, enquiries, etc.)
+   * Endpoint: admin/dashboard/all-document
+   * Returns: AllDocument entity (see backend definition)
+   */
+  getAllDocuments(): Observable<any> {
+    return this.http.get<any>(ADMIN_API_ENDPOINTS.DASHBOARD_ALL_DOCUMENTS);
+  }
 
   // Utility to normalize any project response to an array
   private toProjectArray(val: any): Project[] {
