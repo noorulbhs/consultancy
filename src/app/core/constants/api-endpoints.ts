@@ -12,7 +12,8 @@ export const STATIC_PAGE_ENDPOINTS = {
 // Base URLs for different environments
 export const API_BASE_URLS = {
   DEVELOPMENT: 'http://localhost:8080/api/v1',
-  PRODUCTION: 'https://api.altrevo.com/v1'
+  // PRODUCTION: 'https://api.altrevo.com/v1'
+  PRODUCTION: 'https://consultancy-backend-q0a9.onrender.com/api/v1'
 };
 
 // Get current base URL based on environment
